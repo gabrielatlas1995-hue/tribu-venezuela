@@ -148,7 +148,7 @@
                         <button class="btn-search"><i class="fas fa-search"></i></button>
                     </div>
                     <button class="btn-cart" onclick="mostrarCarrito()"><i class="fas fa-shopping-cart"></i> <span id="cart-count" class="cart-count" style="display: none;">0</span></button>
-                    <button class="btn-user"><i class="fas fa-user"></i></button>
+                    <!-- Botón usuario oculto temporalmente - Login no es prioridad para piloto -->
                 </div>
                 
                 <button class="menu-toggle">
@@ -737,10 +737,10 @@
                     <h3><i class="fas fa-users"></i> Tribu</h3>
                     <p>Comunidad de artesanos venezolanos y latinoamericanos desde 2024</p>
                     <div class="social-links">
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-facebook"></i></a>
-                        <a href="#"><i class="fab fa-tiktok"></i></a>
-                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                        <a href="https://instagram.com/tribuarte" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" onclick="alert('Próximamente: Facebook'); return false;" title="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" onclick="alert('Próximamente: TikTok'); return false;" title="TikTok"><i class="fab fa-tiktok"></i></a>
+                        <a href="#" onclick="alert('Próximamente: Pinterest'); return false;" title="Pinterest"><i class="fab fa-pinterest"></i></a>
                     </div>
                 </div>
                 
@@ -748,41 +748,41 @@
                     <div class="footer-column">
                         <h4>Comprar</h4>
                         <ul>
-                            <li><a href="#">Todos los productos</a></li>
-                            <li><a href="#">Novedades</a></li>
-                            <li><a href="#">Ofertas especiales</a></li>
-                            <li><a href="#">Regalos</a></li>
+                            <li><a href="#" onclick="document.querySelector('.featured-products').scrollIntoView({behavior: 'smooth'}); return false;">Todos los productos</a></li>
+                            <li><a href="#" onclick="alert('Próximamente: Novedades'); return false;">Novedades</a></li>
+                            <li><a href="#" onclick="alert('Próximamente: Ofertas'); return false;">Ofertas especiales</a></li>
+                            <li><a href="#" onclick="alert('Próximamente: Guía de regalos'); return false;">Regalos</a></li>
                         </ul>
                     </div>
-                    
+
                     <div class="footer-column">
                         <h4>Vender</h4>
                         <ul>
-                            <li><a href="#">Conviértete en vendedor</a></li>
-                            <li><a href="#">Guía para artesanos</a></li>
-                            <li><a href="#">Políticas de venta</a></li>
-                            <li><a href="#">Comisiones</a></li>
+                            <li><a href="#" onclick="mostrarFormularioVendedor(); return false;">Conviértete en vendedor</a></li>
+                            <li><a href="#" onclick="alert('Próximamente: Guía para artesanos'); return false;">Guía para artesanos</a></li>
+                            <li><a href="#" onclick="alert('Próximamente: Políticas de venta'); return false;">Políticas de venta</a></li>
+                            <li><a href="#" onclick="alert('Comisión: 5% por venta'); return false;">Comisiones</a></li>
                         </ul>
                     </div>
-                    
+
                     <div class="footer-column">
                         <h4>Ayuda</h4>
                         <ul>
-                            <li><a href="#">Centro de ayuda</a></li>
-                            <li><a href="#">Envíos y devoluciones</a></li>
-                            <li><a href="#">Preguntas frecuentes</a></li>
-                            <li><a href="#">Contacto</a></li>
+                            <li><a href="#" onclick="alert('Próximamente: Centro de ayuda'); return false;">Centro de ayuda</a></li>
+                            <li><a href="#" onclick="alert('Próximamente: Envíos y devoluciones'); return false;">Envíos y devoluciones</a></li>
+                            <li><a href="#" onclick="alert('Próximamente: Preguntas frecuentes'); return false;">Preguntas frecuentes</a></li>
+                            <li><a href="#" onclick="alert('Contacto: hola@tribuarte.com'); return false;">Contacto</a></li>
                         </ul>
                     </div>
                 </div>
             </div>
-            
+
             <div class="footer-bottom">
                 <p>&copy; 2024 Tribu. Todos los derechos reservados.</p>
                 <div class="footer-legal">
-                    <a href="#">Términos y condiciones</a>
-                    <a href="#">Política de privacidad</a>
-                    <a href="#">Aviso legal</a>
+                    <a href="#" onclick="alert('Próximamente: Términos y condiciones'); return false;">Términos y condiciones</a>
+                    <a href="#" onclick="alert('Próximamente: Política de privacidad'); return false;">Política de privacidad</a>
+                    <a href="#" onclick="alert('Próximamente: Aviso legal'); return false;">Aviso legal</a>
                 </div>
             </div>
         </div>
