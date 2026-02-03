@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Producto - Tribu</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        .product-detail {
+            padding: 100px 0 60px;
+            background: linear-gradient(135deg, #FFF8E1 0%, #FFFBF5 100%);
+            min-height: 100vh;
+        }
+        
+        .product-detail-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+        
+        .product-gallery {
+            position: sticky;
+            top: 100px;
+        }
+        
+        .product-gallery img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(139, 69, 19, 0.15);
+        }
+        
+        .product-info {
+            padding: 20px 0;
+        }
+        
+        .product-category {
+            display: inline-block;
+            background: #E65100;
+            color: white;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .product-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: #5D4037;
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+        
+        .product-artisan {
+            color: #6D4C41;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+        
+        .product-rating {
+            color: #FFC107;
+            margin-bottom: 16px;
+        }
+        
+        .product-price {
+            font-size: 2rem;
+            color: #E65100;
+            font-weight: 700;
+            margin-bottom: 24px;
+        }
+        
+        .product-description {
+            color: #6D4C41;
+            line-height: 1.8;
+            margin-bottom: 32px;
+            font-size: 1.05rem;
+        }
+        
+        .product-features {
+            margin-bottom: 32px;
+        }
+        
+        .product-features h3 {
+            color: #5D4037;
+            margin-bottom: 16px;
+            font-size: 1.2rem;
+        }
+        
+        .product-features ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .product-features li {
+            padding: 8px 0;
+            color: #6D4C41;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .product-features li i {
+            color: #43A047;
+        }
+        
+        .product-actions {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        
+        .btn-add-cart {
+            flex: 1;
+            padding: 18px 32px;
+            background: linear-gradient(135deg, #E65100 0%, #F57C00 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        
+        .btn-add-cart:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(230, 81, 0, 0.3);
+        }
+        
+        .btn-contact {
+            padding: 18px 32px;
+            background: #25D366;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .btn-contact:hover {
+            background: #128C7E;
+            transform: translateY(-2px);
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #6D4C41;
+            text-decoration: none;
+            margin-bottom: 24px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .back-link:hover {
+            color: #E65100;
+        }
+        
+        @media (max-width: 768px) {
+            .product-detail-container {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+            
+            .product-gallery {
+                position: relative;
+                top: 0;
+            }
+            
+            .product-title {
+                font-size: 1.8rem;
+            }
+            
+            .product-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <h1><i class="fas fa-users"></i> Tribu</h1>
+                </a>
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="index.html#categorias">Categorías</a></li>
+                        <li><a href="index.html#artesanos">Artesanos</a></li>
+                    </ul>
+                </nav>
+                <div class="header-actions">
+                    <button class="btn-cart" onclick="mostrarCarrito()">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span id="cart-count" class="cart-count" style="display: none;">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Product Detail -->
+    <section class="product-detail">
+        <div class="container">
+            <a href="index.html#categorias" class="back-link">
+                <i class="fas fa-arrow-left"></i> Volver a productos
+            </a>
+            
+            <div class="product-detail-container" id="product-container">
+                <!-- Product content loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="modal">
+        <div class="modal-content cart-modal-content">
+            <span class="close" onclick="cerrarCarrito()">&times;</span>
+            <h2>Tu Carrito</h2>
+            <div id="cart-items"></div>
+        </div>
+    </div>
+
+    <script>
+        // Product data
+        const PRODUCTOS = {
+            'CER-001': {
+                id: 'CER-001',
+                nombre: 'Set de tazas espresso',
+                categoria: 'Cerámica',
+                precio: 52.99,
+                imagen: 'https://images.unsplash.com/photo-1577968897966-3d4325b36b61?w=800',
+                vendedor: 'Taller Cerámico, Oaxaca',
+                rating: 4.9,
+                reviews: 156,
+                descripcion: 'Cerámica artesanal hechas a mano con técnicas tradicionales. Cada pieza es única y cuenta con acabados de alta calidad.',
+                features: ['Hecho a mano', 'Pieza única', 'Materiales naturales', 'Envío disponible']
+            },
+            'TEX-001': {
+                id: 'TEX-001',
+                nombre: 'Mochila wayúu',
+                categoria: 'Textiles',
+                precio: 68.50,
+                imagen: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800',
+                vendedor: 'Comunidad Wayúu, Colombia',
+                rating: 4.9,
+                reviews: 89,
+                descripcion: 'Tejida a mano con colores vibrantes usando técnicas tradicionales wayúu. Cada mochila representa historias y tradiciones ancestrales.',
+                features: ['Tejido a mano', 'Colores vibrantes', 'Diseño tradicional', 'Duradera']
+            },
+            'JOY-001': {
+                id: 'JOY-001',
+                nombre: 'Pulseras de plata',
+                categoria: 'Joyería',
+                precio: 32.00,
+                imagen: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=800',
+                vendedor: 'Taller Plata, Perú',
+                rating: 4.7,
+                reviews: 56,
+                descripcion: 'Diseños inspirados en cultura inca, elaboradas en plata 925 con acabados de alta calidad.',
+                features: ['Plata 925', 'Diseño único', 'Hipoalergénico', 'Acabado premium']
+            },
+            'CER-002': {
+                id: 'CER-002',
+                nombre: 'Tapiz andino',
+                categoria: 'Textiles',
+                precio: 120.00,
+                imagen: 'https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=800',
+                vendedor: 'Tejedores Bolivianos',
+                rating: 5.0,
+                reviews: 42,
+                descripcion: 'Lana de alpaca con diseños tradicionales andinos. Cada tapiz cuenta una historia de la cultura aymara.',
+                features: ['Lana de alpaca', 'Diseños tradicionales', 'Hecho a mano', 'Pieza única']
+            }
+        };
+
+        // Cart functions
+        let carrito = JSON.parse(localStorage.getItem('tribu-carrito') || '[]');
+
+        function actualizarContadorCarrito() {
+            const contador = document.getElementById('cart-count');
+            if (contador) {
+                const total = carrito.reduce((sum, item) => sum + item.cantidad, 0);
+                contador.textContent = total;
+                contador.style.display = total > 0 ? 'block' : 'none';
+            }
+        }
+
+        function agregarAlCarrito(producto) {
+            const itemExistente = carrito.find(item => item.id === producto.id);
+            if (itemExistente) {
+                itemExistente.cantidad += 1;
+            } else {
+                carrito.push({ ...producto, cantidad: 1 });
+            }
+            localStorage.setItem('tribu-carrito', JSON.stringify(carrito));
+            actualizarContadorCarrito();
+            mostrarNotificacion('✅ Producto agregado al carrito');
+        }
+
+        function mostrarCarrito() {
+            const modal = document.getElementById('cart-modal');
+            const contenido = document.getElementById('cart-items');
+            
+            if (!modal || !contenido) return;
+            
+            if (carrito.length === 0) {
+                contenido.innerHTML = `
+                    <div style="text-align: center; padding: 40px;">
+                        <i class="fas fa-shopping-cart" style="font-size: 3rem; color: #ddd; margin-bottom: 16px;"></i>
+                        <p>Tu carrito está vacío</p>
+                        <a href="index.html#categorias" style="display: inline-block; margin-top: 16px; padding: 12px 24px; background: #E65100; color: white; border-radius: 50px; text-decoration: none;">Ver productos</a>
+                    </div>
+                `;
+            } else {
+                contenido.innerHTML = carrito.map(item => `
+                    <div style="display: flex; gap: 16px; padding: 16px; background: #FFF8E1; border-radius: 12px; margin-bottom: 12px;">
+                        <img src="${item.imagen}" alt="${item.nombre}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;">
+                        <div style="flex: 1;">
+                            <h4 style="margin-bottom: 6px;">${item.nombre}</h4>
+                            <p style="color: #E65100; font-weight: 600;">$${item.precio.toFixed(2)}</p>
+                            <div style="display: flex; align-items: center; gap: 12px; margin-top: 8px;">
+                                <button onclick="cambiarCantidad('${item.id}', -1)" style="width: 32px; height: 32px; border: 2px solid #FFE0B2; background: white; border-radius: 50%; cursor: pointer;">-</button>
+                                <span>${item.cantidad}</span>
+                                <button onclick="cambiarCantidad('${item.id}', 1)" style="width: 32px; height: 32px; border: 2px solid #FFE0B2; background: white; border-radius: 50%; cursor: pointer;">+</button>
+                            </div>
+                        </div>
+                        <button onclick="eliminarDelCarrito('${item.id}')" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #E74C3C;">×</button>
+                    </div>
+                `).join('');
+                
+                const total = carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
+                contenido.innerHTML += `
+                    <div style="border-top: 2px solid #FFE0B2; padding-top: 20px; margin-top: 20px;">
+                        <h3 style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                            <span>Total:</span>
+                            <span style="color: #E65100;">$${total.toFixed(2)}</span>
+                        </h3>
+                        <button onclick="procederAlPago()" style="width: 100%; padding: 16px; background: linear-gradient(135deg, #E65100 0%, #F57C00 100%); color: white; border: none; border-radius: 50px; font-size: 1.1rem; font-weight: 600; cursor: pointer;">
+                            Proceder al pago
+                        </button>
+                    </div>
+                `;
+            }
+            
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function cerrarCarrito() {
+            const modal = document.getElementById('cart-modal');
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        function cambiarCantidad(id, cambio) {
+            const item = carrito.find(item => item.id === id);
+            if (item) {
+                item.cantidad += cambio;
+                if (item.cantidad <= 0) {
+                    eliminarDelCarrito(id);
+                } else {
+                    localStorage.setItem('tribu-carrito', JSON.stringify(carrito));
+                    actualizarContadorCarrito();
+                    mostrarCarrito();
+                }
+            }
+        }
+
+        function eliminarDelCarrito(id) {
+            carrito = carrito.filter(item => item.id !== id);
+            localStorage.setItem('tribu-carrito', JSON.stringify(carrito));
+            actualizarContadorCarrito();
+            mostrarCarrito();
+        }
+
+        function procederAlPago() {
+            const total = carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
+            const contenido = document.getElementById('cart-items');
+            contenido.innerHTML = `
+                <div style="padding: 20px 0;">
+                    <h3 style="margin-bottom: 20px;">Información de pago</h3>
+                    <form onsubmit="confirmarPedido(event)">
+                        <div style="margin-bottom: 16px;">
+                            <label style="display: block; margin-bottom: 6px; font-weight: 500;">Nombre completo</label>
+                            <input type="text" name="nombre" required style="width: 100%; padding: 14px; border: 2px solid #FFE0B2; border-radius: 12px; font-size: 1rem;">
+                        </div>
+                        <div style="margin-bottom: 16px;">
+                            <label style="display: block; margin-bottom: 6px; font-weight: 500;">Teléfono (WhatsApp)</label>
+                            <input type="tel" name="telefono" required placeholder="0412-1234567" style="width: 100%; padding: 14px; border: 2px solid #FFE0B2; border-radius: 12px; font-size: 1rem;">
+                        </div>
+                        <div style="margin-bottom: 16px;">
+                            <label style="display: block; margin-bottom: 6px; font-weight: 500;">Email</label>
+                            <input type="email" name="email" style="width: 100%; padding: 14px; border: 2px solid #FFE0B2; border-radius: 12px; font-size: 1rem;">
+                        </div>
+                        <div style="margin-bottom: 16px;">
+                            <label style="display: block; margin-bottom: 6px; font-weight: 500;">Método de pago</label>
+                            <select name="metodo_pago" required style="width: 100%; padding: 14px; border: 2px solid #FFE0B2; border-radius: 12px; font-size: 1rem;">
+                                <option value="">Selecciona...</option>
+                                <option value="pago-movil">Pago Móvil</option>
+                                <option value="zelle">Zelle</option>
+                                <option value="transferencia">Transferencia</option>
+                            </select>
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 6px; font-weight: 500;">Dirección de entrega</label>
+                            <textarea name="direccion" rows="2" placeholder="Ciudad, zona, dirección..." style="width: 100%; padding: 14px; border: 2px solid #FFE0B2; border-radius: 12px; font-size: 1rem; resize: vertical;"></textarea>
+                        </div>
+                        <div style="background: #FFF8E1; padding: 16px; border-radius: 12px; margin-bottom: 20px;">
+                            <div style="display: flex; justify-content: space-between; font-size: 1.2rem; font-weight: 600;">
+                                <span>Total a pagar:</span>
+                                <span style="color: #E65100;">$${total.toFixed(2)}</span>
+                            </div>
+                        </div>
+                        <button type="submit" style="width: 100%; padding: 16px; background: linear-gradient(135deg, #E65100 0%, #F57C00 100%); color: white; border: none; border-radius: 50px; font-size: 1.1rem; font-weight: 600; cursor: pointer;">
+                            <i class="fas fa-lock"></i> Confirmar pedido
+                        </button>
+                    </form>
+                </div>
+            `;
+        }
+
+        function confirmarPedido(e) {
+            e.preventDefault();
+            const ref = 'TRIBU-' + Date.now().toString(36).toUpperCase();
+            const contenido = document.getElementById('cart-items');
+            contenido.innerHTML = `
+                <div style="text-align: center; padding: 40px 20px;">
+                    <div style="font-size: 4rem; color: #43A047; margin-bottom: 20px;">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h3 style="font-size: 1.5rem; color: #5D4037; margin-bottom: 12px;">¡Pedido confirmado!</h3>
+                    <p style="color: #6D4C41; margin-bottom: 8px;">Te hemos enviado un email con los datos de pago.</p>
+                    <p style="color: #6D4C41; font-size: 0.9rem; margin-bottom: 24px;">Referencia: <strong>${ref}</strong></p>
+                    <button onclick="cerrarCarrito(); carrito = []; localStorage.removeItem('tribu-carrito'); actualizarContadorCarrito();" style="padding: 14px 28px; background: linear-gradient(135deg, #E65100 0%, #F57C00 100%); color: white; border: none; border-radius: 50px; font-size: 1rem; font-weight: 600; cursor: pointer;">
+                        Seguir comprando
+                    </button>
+                </div>
+            `;
+        }
+
+        function mostrarNotificacion(mensaje) {
+            const notif = document.createElement('div');
+            notif.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: #43A047;
+                color: white;
+                padding: 16px 28px;
+                border-radius: 50px;
+                box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+                z-index: 99999;
+                font-weight: 500;
+                animation: slideUp 0.3s ease;
+            `;
+            notif.textContent = mensaje;
+            document.body.appendChild(notif);
+            setTimeout(() => {
+                notif.style.opacity = '0';
+                notif.style.transform = 'translateX(-50%) translateY(20px)';
+                setTimeout(() => notif.remove(), 300);
+            }, 3000);
+        }
+
+        // Load product
+        function cargarProducto() {
+            const params = new URLSearchParams(window.location.search);
+            const productId = params.get('id');
+            const producto = PRODUCTOS[productId];
+            
+            if (!producto) {
+                document.getElementById('product-container').innerHTML = `
+                    <div style="text-align: center; padding: 60px 20px;">
+                        <h2 style="color: #5D4037; margin-bottom: 16px;">Producto no encontrado</h2>
+                        <a href="index.html#categorias" style="display: inline-block; padding: 12px 24px; background: #E65100; color: white; border-radius: 50px; text-decoration: none;">Ver todos los productos</a>
+                    </div>
+                `;
+                return;
+            }
+            
+            document.getElementById('product-container').innerHTML = `
+                <div class="product-gallery">
+                    <img src="${producto.imagen}" alt="${producto.nombre}">
+                </div>
+                <div class="product-info">
+                    <span class="product-category">${producto.categoria}</span>
+                    <h1 class="product-title">${producto.nombre}</h1>
+                    <p class="product-artisan">Por: ${producto.vendedor}</p>
+                    <div class="product-rating">
+                        ${'★'.repeat(Math.floor(producto.rating))}${producto.rating % 1 ? '½' : ''} 
+                        <span style="color: #6D4C41;">(${producto.rating}) · ${producto.reviews} reseñas</span>
+                    </div>
+                    <div class="product-price">$${producto.precio.toFixed(2)}</div>
+                    <p class="product-description">${producto.descripcion}</p>
+                    
+                    <div class="product-features">
+                        <h3>Características</h3>
+                        <ul>
+                            ${producto.features.map(f => `<li><i class="fas fa-check"></i> ${f}</li>`).join('')}
+                        </ul>
+                    </div>
+                    
+                    <div class="product-actions">
+                        <button class="btn-add-cart" onclick='agregarAlCarrito(${JSON.stringify(producto)})'>
+                            <i class="fas fa-shopping-cart"></i> Agregar al carrito
+                        </button>
+                        <a href="https://wa.me/584121234567?text=Hola, estoy interesado en el ${encodeURIComponent(producto.nombre)}" class="btn-contact" target="_blank">
+                            <i class="fab fa-whatsapp"></i> Contactar
+                        </a>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            actualizarContadorCarrito();
+            cargarProducto();
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('cart-modal');
+            if (event.target === modal) {
+                cerrarCarrito();
+            }
+        }
+    </script>
+</body>
+</html>

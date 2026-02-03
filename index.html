@@ -144,14 +144,13 @@
                 
                 <div class="header-actions">
                     <div class="search-container">
-                        <input type="text" class="search-input" placeholder="Buscar productos..." id="search-input">
-                        <button class="btn-search"><i class="fas fa-search"></i></button>
+                        <input type="text" class="search-input" placeholder="Buscar productos..." id="search-input" onkeypress="if(event.key==='Enter')buscarProductos()">
+                        <button class="btn-search" onclick="buscarProductos()"><i class="fas fa-search"></i></button>
                     </div>
                     <button class="btn-cart" onclick="mostrarCarrito()"><i class="fas fa-shopping-cart"></i> <span id="cart-count" class="cart-count" style="display: none;">0</span></button>
-                    <!-- Botón usuario oculto temporalmente - Login no es prioridad para piloto -->
                 </div>
-                
-                <button class="menu-toggle">
+
+                <button class="menu-toggle" onclick="toggleMenu()">
                     <i class="fas fa-bars"></i>
                 </button>
             </div>
@@ -832,5 +831,96 @@
     <div id="search-results" class="search-results"></div>
 
     <script src="js/app.js"></script>
+    <script>
+        // ===== FUNCIONES ADICIONALES FIXES =====
+
+        // Toggle menú móvil
+        function toggleMenu() {
+            const nav = document.querySelector('.main-nav');
+            nav.classList.toggle('active');
+        }
+
+        // Cerrar menú al hacer click en un link
+        document.querySelectorAll('.main-nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.querySelector('.main-nav').classList.remove('active');
+            });
+        });
+
+        // Búsqueda de productos
+        function buscarProductos() {
+            const input = document.getElementById('search-input');
+            const query = input.value.trim().toLowerCase();
+
+            if (!query) {
+                mostrarNotificacion('⚠️ Escribe algo para buscar');
+                return;
+            }
+
+            // Productos disponibles
+            const productos = [
+                { id: 'CER-001', nombre: 'Set de tazas espresso', categoria: 'Cerámica', precio: 52.99, imagen: 'https://images.unsplash.com/photo-1577968897966-3d4325b36b61?w=400' },
+                { id: 'TEX-001', nombre: 'Mochila wayúu', categoria: 'Textiles', precio: 68.50, imagen: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400' },
+                { id: 'JOY-001', nombre: 'Pulseras de plata', categoria: 'Joyería', precio: 32.00, imagen: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400' },
+                { id: 'CER-002', nombre: 'Tapiz andino', categoria: 'Textiles', precio: 120.00, imagen: 'https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=400' }
+            ];
+
+            const resultados = productos.filter(p =>
+                p.nombre.toLowerCase().includes(query) ||
+                p.categoria.toLowerCase().includes(query)
+            );
+
+            if (resultados.length === 0) {
+                mostrarNotificacion('❌ No se encontraron productos');
+            } else {
+                mostrarNotificacion(`✅ ${resultados.length} producto(s) encontrado(s)`);
+                // Scroll a productos
+                document.querySelector('.featured-products').scrollIntoView({ behavior: 'smooth' });
+            }
+
+            input.value = '';
+        }
+
+        // Toggle favoritos
+        function toggleFavorito(btn, productId) {
+            btn.classList.toggle('active');
+            const isFav = btn.classList.contains('active');
+            btn.innerHTML = isFav ? '<i class="fas fa-heart"></i>' : '<i class="far fa-heart"></i>';
+            mostrarNotificacion(isFav ? '❤️ Agregado a favoritos' : '💔 Eliminado de favoritos');
+        }
+
+        // Cerrar carrito
+        function cerrarCarrito() {
+            const modal = document.getElementById('cart-modal');
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Fix: Cerrar modal al hacer click fuera
+        window.onclick = function(event) {
+            const cartModal = document.getElementById('cart-modal');
+            const checkoutModal = document.getElementById('checkout-modal');
+
+            if (event.target === cartModal) {
+                cerrarCarrito();
+            }
+            if (event.target === checkoutModal) {
+                checkoutModal.style.display = 'none';
+            }
+        }
+
+        // Ver todos los productos - scroll a la sección
+        function verTodosLosProductos() {
+            document.querySelector('.featured-products').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Fix para categorías - scroll a productos
+        function showCategory(categoria) {
+            mostrarNotificacion(`📂 Categoría: ${categoria}`);
+            document.querySelector('.featured-products').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>
