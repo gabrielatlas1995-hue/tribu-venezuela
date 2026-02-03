@@ -547,32 +547,253 @@ body {
     color: white;
 }
 
-/* Responsive */
+/* Responsive - Mobile Optimizations */
 @media (max-width: 768px) {
+    /* Header móvil */
+    .header {
+        padding: 10px 0;
+    }
+    
+    .logo h1 {
+        font-size: 1.4rem;
+    }
+    
+    .logo .tagline {
+        font-size: 0.7rem;
+    }
+    
+    /* Hero móvil */
+    .hero {
+        padding: 40px 15px;
+    }
+    
     .hero-content {
         grid-template-columns: 1fr;
         text-align: center;
+        gap: 30px;
     }
     
     .hero-text h2 {
-        font-size: 2rem;
+        font-size: 1.6rem;
+        line-height: 1.3;
+    }
+    
+    .hero-text p {
+        font-size: 0.95rem;
+    }
+    
+    .hero-image {
+        order: -1;
+    }
+    
+    .hero-image img {
+        max-height: 280px;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 15px;
     }
     
     .hero-buttons {
-        justify-content: center;
-        flex-wrap: wrap;
+        flex-direction: column;
+        gap: 12px;
     }
     
+    .btn {
+        padding: 14px 25px;
+        font-size: 1rem;
+        width: 100%;
+    }
+    
+    /* Navegación móvil */
     .main-nav {
         display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+        padding: 20px;
+    }
+    
+    .main-nav.active {
+        display: block;
+    }
+    
+    .main-nav ul {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .menu-toggle {
+        display: block;
+    }
+    
+    /* Secciones móvil */
+    .categories, .featured-products, .artisans, 
+    .testimonials, .payment-section, .all-products {
+        padding: 50px 15px;
+    }
+    
+    .section-title {
+        font-size: 1.6rem;
+    }
+    
+    .section-subtitle {
+        font-size: 0.95rem;
+    }
+    
+    /* Grid de productos móvil */
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+    
+    .product-card {
+        border-radius: 12px;
+    }
+    
+    .product-image {
+        height: 150px;
+    }
+    
+    .product-info {
+        padding: 12px;
+    }
+    
+    .product-info h3 {
+        font-size: 0.9rem;
+    }
+    
+    .product-artisan {
+        font-size: 0.75rem;
+    }
+    
+    .product-desc {
+        font-size: 0.75rem;
+        display: none; /* Ocultar descripción en móvil */
+    }
+    
+    .price {
+        font-size: 1rem;
+    }
+    
+    .rating {
+        font-size: 0.7rem;
+    }
+    
+    /* Categorías móvil */
+    .categories-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+    
+    .category-image {
+        height: 130px;
+    }
+    
+    .category-card h3 {
+        padding: 12px;
+        font-size: 1rem;
+    }
+    
+    .category-card p {
+        display: none;
+    }
+    
+    /* Artesanos móvil */
+    .artisans-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .artisan-image {
+        height: 220px;
+    }
+    
+    .artisan-info {
+        padding: 18px;
+    }
+    
+    /* Footer móvil */
+    .footer {
+        padding: 40px 15px 20px;
     }
     
     .footer-content {
         grid-template-columns: 1fr;
+        gap: 30px;
     }
     
     .footer-links {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+    
+    .footer-bottom {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .footer-legal a {
+        margin: 0 10px;
+    }
+    
+    /* Modal móvil */
+    .modal-content {
+        width: 95%;
+        padding: 20px;
+        border-radius: 15px;
+    }
+    
+    /* Formularios móvil */
+    .comprar-form {
+        padding: 25px 20px;
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 12px;
+        font-size: 16px; /* Evitar zoom en iOS */
+    }
+    
+    /* Botón carrito más grande para touch */
+    .btn-cart {
+        font-size: 1.5rem;
+        padding: 10px;
+    }
+    
+    .cart-count {
+        font-size: 0.8rem;
+        min-width: 22px;
+        height: 22px;
+    }
+    
+    /* Testimonios móvil */
+    .testimonials-grid {
         grid-template-columns: 1fr;
+    }
+    
+    .testimonial-card {
+        padding: 20px;
+    }
+    
+    /* Pago métodos móvil */
+    .payment-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .payment-card {
+        padding: 20px;
+    }
+    
+    .payment-steps ol {
+        padding-left: 15px;
+    }
+    
+    .payment-steps li {
+        font-size: 0.9rem;
     }
 }
 
@@ -581,6 +802,16 @@ body {
     display: flex;
     align-items: center;
     gap: 15px;
+}
+
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 8px;
 }
 
 .btn-search, .btn-cart, .menu-toggle {
