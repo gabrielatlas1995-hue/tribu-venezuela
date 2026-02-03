@@ -917,9 +917,15 @@ document.addEventListener('click', function(e) {
 // Función global para abrir el carrito
 window.mostrarCarrito = mostrarCarrito;
 
+// Función para ver detalle de producto (desde los cards de productos)
+function showProductDetail(productId) {
+    window.location.href = 'producto.html?id=' + productId;
+}
+
 // Hacer funciones globales para que estén disponibles en el HTML
 window.agregarAlCarrito = agregarAlCarrito;
 window.eliminarDelCarrito = eliminarDelCarrito;
 window.cambiarCantidad = cambiarCantidad;
 window.mostrarFormularioCompra = mostrarFormularioCompra;
 window.seleccionarProducto = seleccionarProducto;
+window.showProductDetail = showProductDetail;
