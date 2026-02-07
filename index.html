@@ -6,6 +6,7 @@
   <title>Tribu - Artesanías Latinoamericanas</title>
   <meta name="description" content="Descubre artesanías únicas de Latinoamérica. Conectamos artesanos con el mundo.">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/tienda-artesano.css">
 </head>
 <body>
   <!-- Header -->
@@ -39,8 +40,99 @@
     </div>
   </section>
 
-  <!-- Features -->
+  <!-- Featured Products -->
   <section class="section" style="background: white;">
+    <div class="container">
+      <h2 class="section-title">Productos Destacados</h2>
+      <div class="product-grid">
+        <!-- Producto 1 -->
+        <div class="product-card">
+          <a href="producto.html?id=1" class="product-link">
+            <div class="product-image">
+              <img src="https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=400" alt="Cerámica Tallada a Mano">
+            </div>
+            <div class="product-info">
+              <span class="product-category">Cerámica</span>
+              <h3 class="product-title">Cerámica Tallada a Mano</h3>
+              <p class="product-artisan">por <a href="tienda-artesano.html?id=art-001">María González</a></p>
+              <div class="product-rating">⭐⭐⭐⭐⭐ (124)</div>
+              <div class="product-prices">
+                <span class="product-price">$45.00</span>
+                <span class="product-price-bs">Bs. 1,642.50</span>
+              </div>
+            </div>
+          </a>
+          <button class="btn btn-primary btn-add" onclick="event.preventDefault(); addToCart({id: '1', name: 'Cerámica Tallada a Mano', price: 45, image: 'https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=400', artisan: 'María González'})">Agregar al Carrito</button>
+        </div>
+
+        <!-- Producto 2 -->
+        <div class="product-card">
+          <a href="producto.html?id=2" class="product-link">
+            <div class="product-image">
+              <img src="https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=400" alt="Bolso de Mimbre Natural">
+            </div>
+            <div class="product-info">
+              <span class="product-category">Textiles</span>
+              <h3 class="product-title">Bolso de Mimbre Natural</h3>
+              <p class="product-artisan">por <a href="tienda-artesano.html?id=art-002">Artesanías del Sur</a></p>
+              <div class="product-rating">⭐⭐⭐⭐⭐ (89)</div>
+              <div class="product-prices">
+                <span class="product-price">$32.00</span>
+                <span class="product-price-bs">Bs. 1,168.00</span>
+              </div>
+            </div>
+          </a>
+          <button class="btn btn-primary btn-add" onclick="event.preventDefault(); addToCart({id: '2', name: 'Bolso de Mimbre Natural', price: 32, image: 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=400', artisan: 'Artesanías del Sur'})">Agregar al Carrito</button>
+        </div>
+
+        <!-- Producto 3 -->
+        <div class="product-card">
+          <a href="producto.html?id=3" class="product-link">
+            <div class="product-image">
+              <img src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=400" alt="Collar de Plata Étnica">
+            </div>
+            <div class="product-info">
+              <span class="product-category">Joyería</span>
+              <h3 class="product-title">Collar de Plata Étnica</h3>
+              <p class="product-artisan">por <a href="tienda-artesano.html?id=art-003">Juan Pérez</a></p>
+              <div class="product-rating">⭐⭐⭐⭐⭐ (203)</div>
+              <div class="product-prices">
+                <span class="product-price">$78.00</span>
+                <span class="product-price-bs">Bs. 2,847.00</span>
+              </div>
+            </div>
+          </a>
+          <button class="btn btn-primary btn-add" onclick="event.preventDefault(); addToCart({id: '3', name: 'Collar de Plata Étnica', price: 78, image: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=400', artisan: 'Juan Pérez'})">Agregar al Carrito</button>
+        </div>
+
+        <!-- Producto 4 -->
+        <div class="product-card">
+          <a href="producto.html?id=4" class="product-link">
+            <div class="product-image">
+              <img src="https://images.unsplash.com/photo-1582650949472-e9e2bcabc75d?w=400" alt="Cuadro Textil Andino">
+            </div>
+            <div class="product-info">
+              <span class="product-category">Arte</span>
+              <h3 class="product-title">Cuadro Textil Andino</h3>
+              <p class="product-artisan">por <a href="tienda-artesano.html?id=art-004">Comunidad Quechua</a></p>
+              <div class="product-rating">⭐⭐⭐⭐⭐ (67)</div>
+              <div class="product-prices">
+                <span class="product-price">$120.00</span>
+                <span class="product-price-bs">Bs. 4,380.00</span>
+              </div>
+            </div>
+          </a>
+          <button class="btn btn-primary btn-add" onclick="event.preventDefault(); addToCart({id: '4', name: 'Cuadro Textil Andino', price: 120, image: 'https://images.unsplash.com/photo-1582650949472-e9e2bcabc75d?w=400', artisan: 'Comunidad Quechua'})">Agregar al Carrito</button>
+        </div>
+      </div>
+      <div style="text-align: center; margin-top: 2rem;">
+        <a href="pages/productos.html" class="btn btn-secondary">Ver Todos los Productos</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="section">
     <div class="container">
       <h2 class="section-title">¿Por qué elegir Tribu?</h2>
       <div class="features-grid">
@@ -68,61 +160,6 @@
     </div>
   </section>
 
-  <!-- Featured Products -->
-  <section class="section">
-    <div class="container">
-      <h2 class="section-title">Productos Destacados</h2>
-      <div id="featured-products" class="product-grid">
-        <!-- Products rendered by JS -->
-      </div>
-      <div style="text-align: center; margin-top: 2rem;">
-        <a href="pages/productos.html" class="btn btn-secondary">Ver Todos los Productos</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Categories -->
-  <section class="section" style="background: white;">
-    <div class="container">
-      <h2 class="section-title">Explora por Categoría</h2>
-      <div class="categories-grid">
-        <a href="pages/productos.html" class="category-card">
-          <div class="category-icon">🏺</div>
-          <h3>Cerámica</h3>
-        </a>
-        <a href="pages/productos.html" class="category-card">
-          <div class="category-icon">🧶</div>
-          <h3>Textiles</h3>
-        </a>
-        <a href="pages/productos.html" class="category-card">
-          <div class="category-icon">💎</div>
-          <h3>Joyería</h3>
-        </a>
-        <a href="pages/productos.html" class="category-card">
-          <div class="category-icon">🎨</div>
-          <h3>Arte</h3>
-        </a>
-        <a href="pages/productos.html" class="category-card">
-          <div class="category-icon">🪵</div>
-          <h3>Madera</h3>
-        </a>
-        <a href="pages/productos.html" class="category-card">
-          <div class="category-icon">👜</div>
-          <h3>Cuero</h3>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA Section -->
-  <section class="section" style="background: linear-gradient(135deg, var(--color-terracota) 0%, var(--color-dorado) 100%); color: white;">
-    <div class="container" style="text-align: center;">
-      <h2 style="font-size: 2rem; margin-bottom: 1rem;">¿Eres Artesano?</h2>
-      <p style="font-size: 1.25rem; margin-bottom: 2rem; opacity: 0.95;">Únete a nuestra tribu y vende tus creaciones al mundo</p>
-      <a href="pages/registro-artesano.html" class="btn" style="background: white; color: var(--color-terracota); font-size: 1.125rem; padding: 1rem 2rem;">Registrarme como Artesano</a>
-    </div>
-  </section>
-
   <!-- Footer -->
   <footer class="footer">
     <div class="container">
@@ -130,6 +167,12 @@
         <div class="footer-brand">
           <div class="logo">🔥 Tribu</div>
           <p>Conectando artesanos latinoamericanos con el mundo. Cada compra apoya una familia.</p>
+          <div class="footer-social">
+            <a href="#" title="Instagram">📷</a>
+            <a href="#" title="Facebook">📘</a>
+            <a href="#" title="Twitter">🐦</a>
+            <a href="#" title="WhatsApp">💬</a>
+          </div>
         </div>
         <div class="footer-links">
           <h4>Comprar</h4>
@@ -151,26 +194,41 @@
           <h4>Ayuda</h4>
           <ul>
             <li><a href="pages/contacto.html">Contacto</a></li>
-            <li><a href="pages/terminos.html">Términos de Servicio</a></li>
-            <li><a href="pages/privacidad.html">Política de Privacidad</a></li>
+            <li><a href="pages/envios-devoluciones.html">Envíos</a></li>
+            <li><a href="pages/privacidad.html">Privacidad</a></li>
           </ul>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2025 Tribu. Todos los derechos reservados. Hecho con ❤️ en Latinoamérica.</p>
+        <p>© 2024-2025 TribuArte. Todos los derechos reservados.</p>
+        <div class="footer-payments">
+          <span>💳</span> <span>💵</span> <span>📱</span>
+        </div>
       </div>
     </div>
   </footer>
 
   <!-- Cart Sidebar -->
   <div id="cart-sidebar" class="cart-sidebar">
-    <!-- Cart content rendered by JS -->
+    <div class="cart-sidebar-header">
+      <h3>🛒 Tu Carrito</h3>
+      <button class="cart-close" onclick="closeCartSidebar()">✕</button>
+    </div>
+    <div class="cart-empty">
+      <span class="cart-empty-icon">🛍️</span>
+      <p>Tu carrito está vacío</p>
+      <a href="pages/productos.html" class="btn btn-primary" onclick="closeCartSidebar()">Explorar Productos</a>
+    </div>
   </div>
-  <div id="cart-backdrop" class="cart-backdrop"></div>
+  <div id="cart-backdrop" class="cart-backdrop" onclick="closeCartSidebar()"></div>
 
-  <!-- Toast Container -->
-  <div id="toast-container" class="toast-container"></div>
-
+  <!-- Scripts -->
   <script src="js/app.js"></script>
+  <script>
+    // Init cart on load
+    document.addEventListener('DOMContentLoaded', function() {
+      updateCartCount();
+    });
+  </script>
 </body>
 </html>
