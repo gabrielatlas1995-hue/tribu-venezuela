@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tribu - Artesanías Latinoamericanas</title>
+  <meta name="description" content="Descubre artesanías únicas de Latinoamérica. Conectamos artesanos con el mundo.">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <a href="index.html" class="logo">🔥 Tribu</a>
+      <nav class="nav">
+        <ul>
+          <li><a href="pages/productos.html">Productos</a></li>
+          <li><a href="pages/registro-artesano.html">Vender</a></li>
+          <li><a href="pages/faq.html">FAQ</a></li>
+          <li><a href="pages/contacto.html">Contacto</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <button class="cart-btn" onclick="openCartSidebar()">
+          🛒
+          <span class="cart-count" style="display: none;">0</span>
+        </button>
+        <a href="pages/registro-artesano.html" class="btn btn-primary">Comenzar a Vender</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <h1>Artesanías con Alma Latinoamericana</h1>
+      <p>Descubre piezas únicas hechas a mano por artesanos de toda Latinoamérica</p>
+      <a href="pages/productos.html" class="btn btn-secondary" style="font-size: 1.125rem; padding: 1rem 2rem;">Explorar Productos</a>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="section" style="background: white;">
+    <div class="container">
+      <h2 class="section-title">¿Por qué elegir Tribu?</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🤝</div>
+          <h3>Directo del Artesano</h3>
+          <p>Compra directamente, sin intermediarios. Apoya el comercio justo.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">✨</div>
+          <h3>Productos Únicos</h3>
+          <p>Cada pieza es hecha a mano, con técnicas tradicionales.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🌱</div>
+          <h3>Sostenible</h3>
+          <p>Materiales naturales y procesos eco-amigables.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🚀</div>
+          <h3>Envío Seguro</h3>
+          <p>Entregamos a toda Latinoamérica y el mundo.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Products -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Productos Destacados</h2>
+      <div id="featured-products" class="product-grid">
+        <!-- Products rendered by JS -->
+      </div>
+      <div style="text-align: center; margin-top: 2rem;">
+        <a href="pages/productos.html" class="btn btn-secondary">Ver Todos los Productos</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories -->
+  <section class="section" style="background: white;">
+    <div class="container">
+      <h2 class="section-title">Explora por Categoría</h2>
+      <div class="categories-grid">
+        <a href="pages/productos.html" class="category-card">
+          <div class="category-icon">🏺</div>
+          <h3>Cerámica</h3>
+        </a>
+        <a href="pages/productos.html" class="category-card">
+          <div class="category-icon">🧶</div>
+          <h3>Textiles</h3>
+        </a>
+        <a href="pages/productos.html" class="category-card">
+          <div class="category-icon">💎</div>
+          <h3>Joyería</h3>
+        </a>
+        <a href="pages/productos.html" class="category-card">
+          <div class="category-icon">🎨</div>
+          <h3>Arte</h3>
+        </a>
+        <a href="pages/productos.html" class="category-card">
+          <div class="category-icon">🪵</div>
+          <h3>Madera</h3>
+        </a>
+        <a href="pages/productos.html" class="category-card">
+          <div class="category-icon">👜</div>
+          <h3>Cuero</h3>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="section" style="background: linear-gradient(135deg, var(--color-terracota) 0%, var(--color-dorado) 100%); color: white;">
+    <div class="container" style="text-align: center;">
+      <h2 style="font-size: 2rem; margin-bottom: 1rem;">¿Eres Artesano?</h2>
+      <p style="font-size: 1.25rem; margin-bottom: 2rem; opacity: 0.95;">Únete a nuestra tribu y vende tus creaciones al mundo</p>
+      <a href="pages/registro-artesano.html" class="btn" style="background: white; color: var(--color-terracota); font-size: 1.125rem; padding: 1rem 2rem;">Registrarme como Artesano</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo">🔥 Tribu</div>
+          <p>Conectando artesanos latinoamericanos con el mundo. Cada compra apoya una familia.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Comprar</h4>
+          <ul>
+            <li><a href="pages/productos.html">Todos los Productos</a></li>
+            <li><a href="pages/productos.html">Nuevos Ingresos</a></li>
+            <li><a href="pages/productos.html">Más Vendidos</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Vender</h4>
+          <ul>
+            <li><a href="pages/registro-artesano.html">Registro de Artesano</a></li>
+            <li><a href="pages/faq.html">Cómo Funciona</a></li>
+            <li><a href="pages/faq.html">Preguntas Frecuentes</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Ayuda</h4>
+          <ul>
+            <li><a href="pages/contacto.html">Contacto</a></li>
+            <li><a href="pages/terminos.html">Términos de Servicio</a></li>
+            <li><a href="pages/privacidad.html">Política de Privacidad</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Tribu. Todos los derechos reservados. Hecho con ❤️ en Latinoamérica.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Cart Sidebar -->
+  <div id="cart-sidebar" class="cart-sidebar">
+    <!-- Cart content rendered by JS -->
+  </div>
+  <div id="cart-backdrop" class="cart-backdrop"></div>
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
