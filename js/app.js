@@ -369,10 +369,75 @@ function goToPage(pageName) {
   window.location.href = `pages/${pageName}.html`;
 }
 
+// ========== ARTISANOS DEMO ==========
+const sampleArtisans = [
+  {
+    id: 'art-001',
+    name: 'María González',
+    location: 'Oaxaca, México',
+    bio: 'Artesana con más de 20 años de experiencia en cerámica tradicional. Cada pieza es única y refleja la cultura ancestral de su región.',
+    avatar: 'images/artisan-1.jpg',
+    whatsapp: '+52 951 123 4567',
+    rating: 4.8,
+    sales: 156
+  },
+  {
+    id: 'art-002',
+    name: 'Artesanías del Sur',
+    location: 'Colombia',
+    bio: 'Cooperativa de artesanos dedicada a preservar las técnicas ancestrales de tejido. Trabajamos con fibras naturales y sustentables.',
+    avatar: 'images/artisan-2.jpg',
+    whatsapp: '+57 300 123 4567',
+    rating: 4.9,
+    sales: 234
+  },
+  {
+    id: 'art-003',
+    name: 'Juan Pérez',
+    location: 'Cusco, Perú',
+    bio: 'Orfebre especializado en joyería tradicional con plata. Sus diseños están inspirados en la cultura andina y los símbolos precolombinos.',
+    avatar: 'images/artisan-3.jpg',
+    whatsapp: '+51 84 123 456',
+    rating: 4.7,
+    sales: 89
+  },
+  {
+    id: 'art-004',
+    name: 'Comunidad Quechua',
+    location: 'Sierra Peruana',
+    bio: 'Comunidad indígena que preserva el arte textil ancestral. Sus piezas cuentan historias transmitidas de generación en generación.',
+    avatar: 'images/artisan-4.jpg',
+    whatsapp: '+51 1 123 4567',
+    rating: 5.0,
+    sales: 312
+  },
+  {
+    id: 'art-005',
+    name: 'Carlos Mendoza',
+    location: 'Guatemala',
+    bio: 'Tallador de madera con técnicas heredadas de su abuelo. Especializado en máscaras tradicionales y figuras de animales.',
+    avatar: 'images/artisan-5.jpg',
+    whatsapp: '+502 1234 5678',
+    rating: 4.6,
+    sales: 78
+  },
+  {
+    id: 'art-006',
+    name: 'Laura Silva',
+    location: 'Argentina',
+    bio: 'Artesana en cuero con 15 años de experiencia en marroquinería. Cada pieza es trabajada a mano con técnicas tradicionales argentinas.',
+    avatar: 'images/artisan-6.jpg',
+    whatsapp: '+54 9 11 1234 5678',
+    rating: 4.9,
+    sales: 201
+  }
+];
+
 // ========== PRODUCTOS DEMO ==========
 const sampleProducts = [
   {
     id: '1',
+    artisanId: 'art-001',
     name: 'Cerámica Tallada a Mano',
     artisan: 'María González',
     price: 45.00,
@@ -389,6 +454,7 @@ const sampleProducts = [
   },
   {
     id: '2',
+    artisanId: 'art-002',
     name: 'Bolso de Mimbre Natural',
     artisan: 'Artesanías del Sur',
     price: 32.00,
@@ -405,6 +471,7 @@ const sampleProducts = [
   },
   {
     id: '3',
+    artisanId: 'art-003',
     name: 'Collar de Plata Étnica',
     artisan: 'Juan Pérez',
     price: 78.00,
@@ -421,6 +488,7 @@ const sampleProducts = [
   },
   {
     id: '4',
+    artisanId: 'art-004',
     name: 'Cuadro Textil Andino',
     artisan: 'Comunidad Quechua',
     price: 120.00,
@@ -437,6 +505,7 @@ const sampleProducts = [
   },
   {
     id: '5',
+    artisanId: 'art-005',
     name: 'Máscara de Madera Tallada',
     artisan: 'Carlos Mendoza',
     price: 89.00,
@@ -453,6 +522,7 @@ const sampleProducts = [
   },
   {
     id: '6',
+    artisanId: 'art-006',
     name: 'Cartera de Cuero Artesanal',
     artisan: 'Laura Silva',
     price: 65.00,
@@ -477,6 +547,160 @@ function getRelatedProducts(category, excludeId, limit = 3) {
   return sampleProducts
     .filter(p => p.category === category && p.id !== excludeId)
     .slice(0, limit);
+}
+
+// ========== FUNCIONES DE ARTISANOS ==========
+function getArtisanById(id) {
+  return sampleArtisans.find(a => a.id === id);
+}
+
+function getProductsByArtisan(artisanId) {
+  return sampleProducts.filter(p => p.artisanId === artisanId);
+}
+
+function loadArtisanStore() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const artisanId = urlParams.get('id');
+  
+  const profileContainer = document.getElementById('artisan-profile');
+  const productsContainer = document.getElementById('artisan-products-grid');
+  const noProductsMessage = document.getElementById('no-products-message');
+  const breadcrumbName = document.getElementById('breadcrumb-artisan-name');
+  const productsCount = document.getElementById('products-count');
+  
+  if (!artisanId) {
+    if (profileContainer) {
+      profileContainer.innerHTML = `
+        <div class="error-state">
+          <span class="error-icon">⚠️</span>
+          <h2>Artesano no encontrado</h2>
+          <p>No se especificó un artesano válido.</p>
+          <a href="productos.html" class="btn btn-primary">Ver todos los productos</a>
+        </div>
+      `;
+    }
+    return;
+  }
+  
+  const artisan = getArtisanById(artisanId);
+  
+  if (!artisan) {
+    if (profileContainer) {
+      profileContainer.innerHTML = `
+        <div class="error-state">
+          <span class="error-icon">⚠️</span>
+          <h2>Artesano no encontrado</h2>
+          <p>El artesano que buscas no existe en nuestra tienda.</p>
+          <a href="productos.html" class="btn btn-primary">Ver todos los productos</a>
+        </div>
+      `;
+    }
+    return;
+  }
+  
+  // Update page title
+  document.title = `${artisan.name} - Tribu`;
+  
+  // Update breadcrumb
+  if (breadcrumbName) {
+    breadcrumbName.textContent = artisan.name;
+  }
+  
+  // Get artisan products
+  const products = getProductsByArtisan(artisanId);
+  
+  // Render artisan profile
+  if (profileContainer) {
+    profileContainer.innerHTML = `
+      <div class="artisan-avatar-large">
+        ${artisan.avatar ? 
+          `<img src="../${artisan.avatar}" alt="${artisan.name}">` : 
+          `<span class="avatar-placeholder">👤</span>`
+        }
+      </div>
+      <div class="artisan-info-main">
+        <h1 class="artisan-name-large">${artisan.name}</h1>
+        <p class="artisan-location-large">
+          <span>📍</span> ${artisan.location}
+        </p>
+        <p class="artisan-bio-large">${artisan.bio}</p>
+        <div class="artisan-stats-row">
+          <div class="artisan-stat">
+            <span class="stat-icon">⭐</span>
+            <div class="stat-content">
+              <span class="stat-value">${artisan.rating}</span>
+              <span class="stat-label">Rating promedio</span>
+            </div>
+          </div>
+          <div class="artisan-stat">
+            <span class="stat-icon">📦</span>
+            <div class="stat-content">
+              <span class="stat-value">${products.length}</span>
+              <span class="stat-label">Productos</span>
+            </div>
+          </div>
+          <div class="artisan-stat">
+            <span class="stat-icon">🛒</span>
+            <div class="stat-content">
+              <span class="stat-value">${artisan.sales}</span>
+              <span class="stat-label">Ventas</span>
+            </div>
+          </div>
+        </div>
+        <div class="artisan-actions">
+          <a href="https://wa.me/${artisan.whatsapp.replace(/\D/g, '')}" target="_blank" class="btn btn-whatsapp">
+            <span>💬</span> Contactar por WhatsApp
+          </a>
+          <a href="productos.html" class="btn btn-secondary">Ver todos los productos</a>
+        </div>
+      </div>
+    `;
+  }
+  
+  // Update products count
+  if (productsCount) {
+    productsCount.textContent = `${products.length} producto${products.length !== 1 ? 's' : ''} disponible${products.length !== 1 ? 's' : ''}`;
+  }
+  
+  // Render products or show empty message
+  if (productsContainer) {
+    if (products.length === 0) {
+      productsContainer.style.display = 'none';
+      if (noProductsMessage) {
+        noProductsMessage.style.display = 'block';
+      }
+    } else {
+      productsContainer.style.display = 'grid';
+      if (noProductsMessage) {
+        noProductsMessage.style.display = 'none';
+      }
+      
+      productsContainer.innerHTML = products.map(product => `
+        <div class="product-card">
+          <a href="../producto.html?id=${product.id}" class="product-image-link">
+            <div class="product-image" style="background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); display: flex; align-items: center; justify-content: center; color: #9ca3af;">
+              <span style="font-size: 3rem;">🎨</span>
+            </div>
+          </a>
+          <div class="product-info">
+            <span class="product-category">${product.category}</span>
+            <h3 class="product-title">
+              <a href="../producto.html?id=${product.id}">${product.name}</a>
+            </h3>
+            <p class="product-artisan">
+              <a href="tienda-artesano.html?id=${artisan.id}">por ${artisan.name}</a>
+            </p>
+            <div class="product-footer">
+              <span class="product-price">$${product.price.toFixed(2)}</span>
+              <button class="btn btn-primary btn-small" onclick='addToCart(${JSON.stringify(product).replace(/'/g, "&#39;")})'>
+                Agregar
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+  }
 }
 
 function renderProducts(containerId, products = sampleProducts) {
