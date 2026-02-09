@@ -1,354 +1,206 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Checkout - Tribu</title>
-  <meta name="description" content="Completa tu compra de artesanías">
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="css/checkout.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finalizar Compra - TribuArte</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <!-- Header -->
-  <header class="header">
-    <div class="container">
-      <a href="index.html" class="logo">🔥 Tribu</a>
-      <nav class="nav">
-        <ul>
-          <li><a href="pages/productos.html">Productos</a></li>
-          <li><a href="pages/registro-artesano.html">Vender</a></li>
-          <li><a href="pages/faq.html">FAQ</a></li>
-          <li><a href="pages/contacto.html">Contacto</a></li>
-        </ul>
-      </nav>
-      <div class="header-actions">
-        <button class="cart-btn" onclick="openCartSidebar()">
-          🛒
-          <span class="cart-count" style="display: none;">0</span>
-        </button>
-        <a href="pages/registro-artesano.html" class="btn btn-primary">Comenzar a Vender</a>
-      </div>
-    </div>
-  </header>
-
-  <!-- Checkout Section -->
-  <main class="checkout-section">
-    <div class="container">
-      <h1 class="checkout-title">Finalizar Compra</h1>
-      
-      <div class="checkout-grid">
-        <!-- Order Summary -->
-        <div class="order-summary">
-          <h2 class="summary-title">Resumen del Pedido</h2>
-          <div id="order-items" class="order-items">
-            <!-- Items rendered by JS -->
-          </div>
-          
-          <div class="summary-divider"></div>
-          
-          <div class="summary-row">
-            <span>Subtotal</span>
-            <span id="subtotal">$0.00</span>
-          </div>
-          <div class="summary-row">
-            <span>Envío</span>
-            <span id="shipping">$5.00</span>
-          </div>
-          <div class="summary-row summary-total">
-            <span>Total</span>
-            <span id="total">$0.00</span>
-          </div>
-          
-          <div class="secure-badge">
-            <span>🔒</span>
-            <span>Pago seguro garantizado</span>
-          </div>
-        </div>
-
-        <!-- Checkout Form -->
-        <div class="checkout-form-wrapper">
-          <form id="checkout-form" class="checkout-form">
-            <!-- Contact Info -->
-            <div class="form-section">
-              <h3>Información de Contacto</h3>
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="email">Email *</label>
-                  <input type="email" id="email" name="email" required placeholder="tu@email.com">
-                </div>
-                <div class="form-group">
-                  <label for="phone">Teléfono *</label>
-                  <input type="tel" id="phone" name="phone" required placeholder="+1 234 567 8900">
-                </div>
-              </div>
+    <header class="header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                Tribu
+            </a>
+            <nav class="nav">
+                <ul>
+                    <li><a href="pages/productos.html">Productos</a></li>
+                    <li><a href="pages/faq.html">FAQ</a></li>
+                    <li><a href="pages/contacto.html">Contacto</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <button class="cart-btn" onclick="openCartSidebar()" aria-label="Carrito">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                    <span class="cart-count" style="display:none;">0</span>
+                </button>
+                <button class="menu-toggle" aria-label="Menú">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                </button>
             </div>
+        </div>
+    </header>
 
-            <!-- Shipping Address -->
-            <div class="form-section">
-              <h3>Dirección de Envío</h3>
-              <div class="form-row">
-                <div class="form-group form-group-full">
-                  <label for="fullName">Nombre Completo *</label>
-                  <input type="text" id="fullName" name="fullName" required placeholder="Juan Pérez">
+    <main class="checkout-section">
+        <div class="container">
+            <h1 class="checkout-title">Finalizar Compra</h1>
+            <div class="checkout-grid">
+                <div class="order-summary">
+                    <h2 class="summary-title">Resumen del Pedido</h2>
+                    <div id="order-items"></div>
+                    <div class="summary-divider"></div>
+                    <div class="summary-row"><span>Subtotal</span><span id="subtotal">$0.00</span></div>
+                    <div class="summary-row"><span>Envío</span><span id="shipping">$5.00</span></div>
+                    <div class="summary-row summary-total"><span>Total</span><span id="total">$0.00</span></div>
+                    <div class="secure-badge">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        <span>Pago seguro garantizado</span>
+                    </div>
                 </div>
-              </div>
-              <div class="form-row">
-                <div class="form-group form-group-full">
-                  <label for="address">Dirección *</label>
-                  <input type="text" id="address" name="address" required placeholder="Calle Principal 123">
+
+                <div class="checkout-form-wrapper">
+                    <form id="checkout-form" class="checkout-form">
+                        <div class="form-section">
+                            <h3>Información de Contacto</h3>
+                            <div class="form-row">
+                                <div class="form-group"><label for="email">Email *</label><input type="email" id="email" required placeholder="tu@email.com"></div>
+                                <div class="form-group"><label for="phone">Teléfono *</label><input type="tel" id="phone" required placeholder="+58 412 123 4567"></div>
+                            </div>
+                        </div>
+                        <div class="form-section">
+                            <h3>Dirección de Envío</h3>
+                            <div class="form-row">
+                                <div class="form-group form-group-full"><label for="fullName">Nombre Completo *</label><input type="text" id="fullName" required placeholder="María González"></div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group form-group-full"><label for="address">Dirección *</label><input type="text" id="address" required placeholder="Av. Principal, Edif. Centro, Piso 3, Apt. 3B"></div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group"><label for="city">Ciudad *</label><input type="text" id="city" required placeholder="Caracas"></div>
+                                <div class="form-group"><label for="state">Estado *</label><input type="text" id="state" required placeholder="Distrito Capital"></div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group"><label for="zip">Código Postal</label><input type="text" id="zip" placeholder="1010"></div>
+                                <div class="form-group">
+                                    <label for="country">País *</label>
+                                    <select id="country" required>
+                                        <option value="">Seleccionar país</option>
+                                        <option value="VE" selected>Venezuela</option>
+                                        <option value="CO">Colombia</option>
+                                        <option value="MX">México</option>
+                                        <option value="AR">Argentina</option>
+                                        <option value="PE">Perú</option>
+                                        <option value="CL">Chile</option>
+                                        <option value="EC">Ecuador</option>
+                                        <option value="PA">Panamá</option>
+                                        <option value="CR">Costa Rica</option>
+                                        <option value="DO">República Dominicana</option>
+                                        <option value="US">Estados Unidos</option>
+                                        <option value="ES">España</option>
+                                        <option value="OT">Otro</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-section">
+                            <h3>Método de Pago</h3>
+                            <div class="payment-methods">
+                                <label class="payment-method active">
+                                    <input type="radio" name="payment" value="pago_movil" checked>
+                                    <span class="payment-icon">📱</span>
+                                    <span class="payment-label">Pago Móvil (Venezuela)</span>
+                                </label>
+                                <label class="payment-method">
+                                    <input type="radio" name="payment" value="zelle">
+                                    <span class="payment-icon">💵</span>
+                                    <span class="payment-label">Zelle (USD)</span>
+                                </label>
+                                <label class="payment-method">
+                                    <input type="radio" name="payment" value="transfer">
+                                    <span class="payment-icon">🏦</span>
+                                    <span class="payment-label">Transferencia Bancaria</span>
+                                </label>
+                                <label class="payment-method">
+                                    <input type="radio" name="payment" value="card">
+                                    <span class="payment-icon">💳</span>
+                                    <span class="payment-label">Tarjeta de Crédito/Débito</span>
+                                </label>
+                            </div>
+                            <div id="card-details" class="card-details" style="display:none;">
+                                <div class="form-row">
+                                    <div class="form-group form-group-full"><label for="cardNumber">Número de Tarjeta *</label><input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19"></div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group"><label for="cardExpiry">Vencimiento *</label><input type="text" id="cardExpiry" placeholder="MM/AA" maxlength="5"></div>
+                                    <div class="form-group"><label for="cardCvc">CVC *</label><input type="text" id="cardCvc" placeholder="123" maxlength="3"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-section">
+                            <div class="form-group"><label for="notes">Notas adicionales (opcional)</label><textarea id="notes" rows="3" placeholder="Instrucciones especiales para el envío..."></textarea></div>
+                        </div>
+                        <div class="form-section">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="terms" required>
+                                <span>Acepto los <a href="pages/terminos.html" target="_blank">términos y condiciones</a> y la <a href="pages/privacidad.html" target="_blank">política de privacidad</a> *</span>
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-large btn-full">Confirmar Pedido</button>
+                    </form>
                 </div>
-              </div>
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="city">Ciudad *</label>
-                  <input type="text" id="city" name="city" required placeholder="Ciudad de México">
-                </div>
-                <div class="form-group">
-                  <label for="state">Estado/Provincia *</label>
-                  <input type="text" id="state" name="state" required placeholder="CDMX">
-                </div>
-              </div>
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="zip">Código Postal *</label>
-                  <input type="text" id="zip" name="zip" required placeholder="01000">
-                </div>
-                <div class="form-group">
-                  <label for="country">País *</label>
-                  <select id="country" name="country" required>
-                    <option value="">Seleccionar país</option>
-                    <option value="MX">México</option>
-                    <option value="CO">Colombia</option>
-                    <option value="AR">Argentina</option>
-                    <option value="PE">Perú</option>
-                    <option value="CL">Chile</option>
-                    <option value="EC">Ecuador</option>
-                    <option value="GT">Guatemala</option>
-                    <option value="CR">Costa Rica</option>
-                    <option value="US">Estados Unidos</option>
-                    <option value="ES">España</option>
-                    <option value="OT">Otro</option>
-                  </select>
-                </div>
-              </div>
             </div>
-
-            <!-- Payment Method -->
-            <div class="form-section">
-              <h3>Método de Pago</h3>
-              <div class="payment-methods">
-                <label class="payment-method active">
-                  <input type="radio" name="payment" value="card" checked>
-                  <span class="payment-icon">💳</span>
-                  <span class="payment-label">Tarjeta de Crédito/Débito</span>
-                </label>
-                <label class="payment-method">
-                  <input type="radio" name="payment" value="paypal">
-                  <span class="payment-icon">🅿️</span>
-                  <span class="payment-label">PayPal</span>
-                </label>
-                <label class="payment-method">
-                  <input type="radio" name="payment" value="transfer">
-                  <span class="payment-icon">🏦</span>
-                  <span class="payment-label">Transferencia Bancaria</span>
-                </label>
-              </div>
-
-              <!-- Card Details -->
-              <div id="card-details" class="card-details">
-                <div class="form-row">
-                  <div class="form-group form-group-full">
-                    <label for="cardNumber">Número de Tarjeta *</label>
-                    <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
-                  </div>
-                </div>
-                <div class="form-row">
-                  <div class="form-group">
-                    <label for="cardExpiry">Fecha de Expiración *</label>
-                    <input type="text" id="cardExpiry" name="cardExpiry" placeholder="MM/AA" maxlength="5">
-                  </div>
-                  <div class="form-group">
-                    <label for="cardCvc">CVC *</label>
-                    <input type="text" id="cardCvc" name="cardCvc" placeholder="123" maxlength="3">
-                  </div>
-                </div>
-                <div class="form-row">
-                  <div class="form-group form-group-full">
-                    <label for="cardName">Nombre en la Tarjeta *</label>
-                    <input type="text" id="cardName" name="cardName" placeholder="JUAN PEREZ">
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Additional Info -->
-            <div class="form-section">
-              <div class="form-group">
-                <label for="notes">Notas adicionales (opcional)</label>
-                <textarea id="notes" name="notes" rows="3" placeholder="Instrucciones especiales para el envío..."></textarea>
-              </div>
-            </div>
-
-            <!-- Terms -->
-            <div class="form-section">
-              <label class="checkbox-label">
-                <input type="checkbox" name="terms" required>
-                <span>Acepto los <a href="pages/terminos.html" target="_blank">términos y condiciones</a> y la <a href="pages/privacidad.html" target="_blank">política de privacidad</a> *</span>
-              </label>
-            </div>
-
-            <!-- Submit Button -->
-            <button type="submit" class="btn btn-primary btn-large btn-full">
-              Confirmar Pedido
-            </button>
-          </form>
         </div>
-      </div>
-    </div>
-  </main>
+    </main>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-brand">
-          <div class="logo">🔥 Tribu</div>
-          <p>Conectando artesanos latinoamericanos con el mundo. Cada compra apoya una familia.</p>
-        </div>
-        <div class="footer-links">
-          <h4>Comprar</h4>
-          <ul>
-            <li><a href="pages/productos.html">Todos los Productos</a></li>
-            <li><a href="pages/productos.html">Nuevos Ingresos</a></li>
-            <li><a href="pages/productos.html">Más Vendidos</a></li>
-          </ul>
-        </div>
-        <div class="footer-links">
-          <h4>Vender</h4>
-          <ul>
-            <li><a href="pages/registro-artesano.html">Registro de Artesano</a></li>
-            <li><a href="pages/faq.html">Cómo Funciona</a></li>
-            <li><a href="pages/faq.html">Preguntas Frecuentes</a></li>
-          </ul>
-        </div>
-        <div class="footer-links">
-          <h4>Ayuda</h4>
-          <ul>
-            <li><a href="pages/contacto.html">Contacto</a></li>
-            <li><a href="pages/terminos.html">Términos de Servicio</a></li>
-            <li><a href="pages/privacidad.html">Política de Privacidad</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>&copy; 2025 Tribu. Todos los derechos reservados. Hecho con ❤️ en Latinoamérica.</p>
-      </div>
-    </div>
-  </footer>
+    <footer class="footer"><div class="container"><div class="footer-bottom"><p>&copy; 2025-2026 TribuArte.</p></div></div></footer>
 
-  <!-- Cart Sidebar -->
-  <div id="cart-sidebar" class="cart-sidebar"></div>
-  <div id="cart-backdrop" class="cart-backdrop"></div>
+    <div id="cart-sidebar" class="cart-sidebar"></div>
+    <div id="cart-backdrop" class="cart-backdrop" onclick="closeCartSidebar()"></div>
+    <div id="toast-container" class="toast-container"></div>
 
-  <!-- Checkout Loader -->
-  <div id="checkout-loader" class="checkout-loader">
-    <div class="loader-content">
-      <div class="loader-spinner"></div>
-      <p class="loader-message">Procesando tu pedido...</p>
-    </div>
-  </div>
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        function loadOrderSummary() {
+            const cart = getCart();
+            if (cart.length === 0) { window.location.href = 'index.html'; return; }
 
-  <!-- Toast Container -->
-  <div id="toast-container" class="toast-container"></div>
+            document.getElementById('order-items').innerHTML = cart.map(item => `
+                <div class="order-item">
+                    <div class="order-item-image"><img src="${item.image}" alt="${item.name}" loading="lazy"></div>
+                    <div class="order-item-details"><h4>${item.name}</h4><p>Cantidad: ${item.quantity}</p></div>
+                    <div class="order-item-price">${formatPrice(item.price * item.quantity)}</div>
+                </div>`).join('');
 
-  <script src="js/app.js"></script>
-  <script>
-    // Load order summary
-    function loadOrderSummary() {
-      const cart = getCart();
-      const orderItems = document.getElementById('order-items');
-      
-      if (cart.length === 0) {
-        window.location.href = 'index.html';
-        return;
-      }
-      
-      orderItems.innerHTML = cart.map(item => `
-        <div class="order-item">
-          <div class="order-item-image">
-            ${item.image ? `<img src="${item.image}" alt="${item.name}">` : '<span>🎨</span>'}
-          </div>
-          <div class="order-item-details">
-            <h4>${item.name}</h4>
-            <p>Cantidad: ${item.quantity}</p>
-          </div>
-          <div class="order-item-price">
-            $${(item.price * item.quantity).toFixed(2)}
-          </div>
-        </div>
-      `).join('');
-      
-      const subtotal = getCartTotal();
-      const shipping = subtotal >= 50 ? 0 : 5;
-      const total = subtotal + shipping;
-      
-      document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
-      document.getElementById('shipping').textContent = shipping === 0 ? 'Gratis' : `$${shipping.toFixed(2)}`;
-      document.getElementById('total').textContent = `$${total.toFixed(2)}`;
-    }
-    
-    // Payment method selection
-    document.querySelectorAll('input[name="payment"]').forEach(radio => {
-      radio.addEventListener('change', function() {
-        document.querySelectorAll('.payment-method').forEach(method => {
-          method.classList.remove('active');
-        });
-        this.closest('.payment-method').classList.add('active');
-        
-        // Toggle card details
-        const cardDetails = document.getElementById('card-details');
-        if (this.value === 'card') {
-          cardDetails.style.display = 'block';
-          cardDetails.querySelectorAll('input').forEach(input => input.required = true);
-        } else {
-          cardDetails.style.display = 'none';
-          cardDetails.querySelectorAll('input').forEach(input => input.required = false);
+            const subtotal = getCartTotal();
+            const shipping = subtotal >= 50 ? 0 : 5;
+            document.getElementById('subtotal').textContent = formatPrice(subtotal);
+            document.getElementById('shipping').textContent = shipping === 0 ? 'Gratis' : formatPrice(shipping);
+            document.getElementById('total').textContent = formatPrice(subtotal + shipping);
         }
-      });
-    });
-    
-    // Card number formatting
-    document.getElementById('cardNumber')?.addEventListener('input', function(e) {
-      let value = e.target.value.replace(/\s/g, '').replace(/[^0-9]/g, '');
-      let formatted = '';
-      for (let i = 0; i < value.length; i++) {
-        if (i > 0 && i % 4 === 0) formatted += ' ';
-        formatted += value[i];
-      }
-      e.target.value = formatted;
-    });
-    
-    // Expiry date formatting
-    document.getElementById('cardExpiry')?.addEventListener('input', function(e) {
-      let value = e.target.value.replace(/\//g, '').replace(/[^0-9]/g, '');
-      if (value.length >= 2) {
-        value = value.substring(0, 2) + '/' + value.substring(2);
-      }
-      e.target.value = value;
-    });
-    
-    // Form submission
-    document.getElementById('checkout-form')?.addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      const formData = new FormData(this);
-      const data = Object.fromEntries(formData.entries());
-      
-      processCheckout(data);
-    });
-    
-    // Load summary on page load
-    document.addEventListener('DOMContentLoaded', loadOrderSummary);
-  </script>
+
+        document.querySelectorAll('input[name="payment"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('active'));
+                this.closest('.payment-method').classList.add('active');
+                const cardDetails = document.getElementById('card-details');
+                cardDetails.style.display = this.value === 'card' ? 'block' : 'none';
+                cardDetails.querySelectorAll('input').forEach(i => i.required = this.value === 'card');
+            });
+        });
+
+        document.getElementById('cardNumber')?.addEventListener('input', function(e) {
+            let v = e.target.value.replace(/\D/g, '');
+            e.target.value = v.replace(/(.{4})/g, '$1 ').trim();
+        });
+
+        document.getElementById('cardExpiry')?.addEventListener('input', function(e) {
+            let v = e.target.value.replace(/\D/g, '');
+            if (v.length >= 2) v = v.substring(0, 2) + '/' + v.substring(2);
+            e.target.value = v;
+        });
+
+        document.getElementById('checkout-form')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            processCheckout(new FormData(this));
+        });
+
+        document.addEventListener('DOMContentLoaded', loadOrderSummary);
+    </script>
 </body>
 </html>

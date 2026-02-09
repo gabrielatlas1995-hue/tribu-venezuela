@@ -1,234 +1,279 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tribu - Artesanías Latinoamericanas</title>
-  <meta name="description" content="Descubre artesanías únicas de Latinoamérica. Conectamos artesanos con el mundo.">
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="css/tienda-artesano.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TribuArte — Mercado de Artesanías Venezolanas y Latinoamericanas</title>
+    <meta name="description" content="Descubre artesanías únicas hechas a mano por artesanos venezolanos y latinoamericanos. Cerámica, textiles, joyería y más. Comercio justo directo del artesano.">
+    <meta property="og:title" content="TribuArte — Artesanías con Alma Latinoamericana">
+    <meta property="og:description" content="Mercado comunitario de artesanías venezolanas y latinoamericanas. Cada compra apoya a creadores locales.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://tribuarte.com">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <!-- Header -->
-  <header class="header">
-    <div class="container">
-      <a href="index.html" class="logo">🔥 Tribu</a>
-      <nav class="nav">
-        <ul>
-          <li><a href="pages/productos.html">Productos</a></li>
-          <li><a href="pages/registro-artesano.html">Vender</a></li>
-          <li><a href="pages/faq.html">FAQ</a></li>
-          <li><a href="pages/contacto.html">Contacto</a></li>
-        </ul>
-      </nav>
-      <div class="header-actions">
-        <button class="cart-btn" onclick="openCartSidebar()">
-          🛒
-          <span class="cart-count" style="display: none;">0</span>
-        </button>
-        <a href="pages/registro-artesano.html" class="btn btn-primary">Comenzar a Vender</a>
-      </div>
-    </div>
-  </header>
-
-  <!-- Hero -->
-  <section class="hero">
-    <div class="container">
-      <h1>Artesanías con Alma Latinoamericana</h1>
-      <p>Descubre piezas únicas hechas a mano por artesanos de toda Latinoamérica</p>
-      <a href="pages/productos.html" class="btn btn-secondary" style="font-size: 1.125rem; padding: 1rem 2rem;">Explorar Productos</a>
-    </div>
-  </section>
-
-  <!-- Featured Products -->
-  <section class="section" style="background: white;">
-    <div class="container">
-      <h2 class="section-title">Productos Destacados</h2>
-      <div class="product-grid">
-        <!-- Producto 1 -->
-        <div class="product-card">
-          <a href="producto.html?id=1" class="product-link">
-            <div class="product-image">
-              <img src="https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=400" alt="Cerámica Tallada a Mano">
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                Tribu
+            </a>
+            <nav class="nav">
+                <ul>
+                    <li><a href="pages/productos.html">Productos</a></li>
+                    <li><a href="pages/registro-artesano.html">Vender</a></li>
+                    <li><a href="pages/faq.html">FAQ</a></li>
+                    <li><a href="pages/contacto.html">Contacto</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <button class="cart-btn" onclick="openCartSidebar()" aria-label="Carrito de compras">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                    <span class="cart-count" style="display:none;">0</span>
+                </button>
+                <a href="pages/registro-artesano.html" class="btn btn-primary">Vender en Tribu</a>
+                <button class="menu-toggle" aria-label="Abrir menú" aria-expanded="false">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                </button>
             </div>
-            <div class="product-info">
-              <span class="product-category">Cerámica</span>
-              <h3 class="product-title">Cerámica Tallada a Mano</h3>
-              <p class="product-artisan">por <a href="tienda-artesano.html?id=art-001">María González</a></p>
-              <div class="product-rating">⭐⭐⭐⭐⭐ (124)</div>
-              <div class="product-prices">
-                <span class="product-price">$45.00</span>
-                <span class="product-price-bs">Bs. 1,642.50</span>
-              </div>
-            </div>
-          </a>
-          <button class="btn btn-primary btn-add" onclick="event.preventDefault(); addToCart({id: '1', name: 'Cerámica Tallada a Mano', price: 45, image: 'https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=400', artisan: 'María González'})">Agregar al Carrito</button>
         </div>
+    </header>
 
-        <!-- Producto 2 -->
-        <div class="product-card">
-          <a href="producto.html?id=2" class="product-link">
-            <div class="product-image">
-              <img src="https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=400" alt="Bolso de Mimbre Natural">
-            </div>
-            <div class="product-info">
-              <span class="product-category">Textiles</span>
-              <h3 class="product-title">Bolso de Mimbre Natural</h3>
-              <p class="product-artisan">por <a href="tienda-artesano.html?id=art-002">Artesanías del Sur</a></p>
-              <div class="product-rating">⭐⭐⭐⭐⭐ (89)</div>
-              <div class="product-prices">
-                <span class="product-price">$32.00</span>
-                <span class="product-price-bs">Bs. 1,168.00</span>
-              </div>
-            </div>
-          </a>
-          <button class="btn btn-primary btn-add" onclick="event.preventDefault(); addToCart({id: '2', name: 'Bolso de Mimbre Natural', price: 32, image: 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=400', artisan: 'Artesanías del Sur'})">Agregar al Carrito</button>
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <h1>Artesanías con Alma Latinoamericana</h1>
+            <p>Descubre piezas únicas hechas a mano por artesanos de Venezuela y toda Latinoamérica. Cada compra apoya directamente a creadores locales.</p>
+            <a href="pages/productos.html" class="btn btn-secondary btn-large">Explorar Productos</a>
         </div>
+    </section>
 
-        <!-- Producto 3 -->
-        <div class="product-card">
-          <a href="producto.html?id=3" class="product-link">
-            <div class="product-image">
-              <img src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=400" alt="Collar de Plata Étnica">
+    <!-- Categorías -->
+    <section class="section" style="background: var(--color-white);">
+        <div class="container">
+            <h2 class="section-title">Explora por Categoría</h2>
+            <p class="section-subtitle">Encuentra exactamente lo que buscas</p>
+            <div class="categories-grid" id="categories-grid">
+                <!-- Rendered by JS or static -->
             </div>
-            <div class="product-info">
-              <span class="product-category">Joyería</span>
-              <h3 class="product-title">Collar de Plata Étnica</h3>
-              <p class="product-artisan">por <a href="tienda-artesano.html?id=art-003">Juan Pérez</a></p>
-              <div class="product-rating">⭐⭐⭐⭐⭐ (203)</div>
-              <div class="product-prices">
-                <span class="product-price">$78.00</span>
-                <span class="product-price-bs">Bs. 2,847.00</span>
-              </div>
+        </div>
+    </section>
+
+    <!-- Productos Destacados -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Productos Destacados</h2>
+            <p class="section-subtitle">Los favoritos de nuestra comunidad</p>
+            <div class="product-grid" id="featured-products">
+                <!-- Rendered by JS -->
             </div>
-          </a>
-          <button class="btn btn-primary btn-add" onclick="event.preventDefault(); addToCart({id: '3', name: 'Collar de Plata Étnica', price: 78, image: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=400', artisan: 'Juan Pérez'})">Agregar al Carrito</button>
-        </div>
-
-        <!-- Producto 4 -->
-        <div class="product-card">
-          <a href="producto.html?id=4" class="product-link">
-            <div class="product-image">
-              <img src="https://images.unsplash.com/photo-1582650949472-e9e2bcabc75d?w=400" alt="Cuadro Textil Andino">
+            <div style="text-align: center; margin-top: 2rem;">
+                <a href="pages/productos.html" class="btn btn-outline">Ver Todos los Productos</a>
             </div>
-            <div class="product-info">
-              <span class="product-category">Arte</span>
-              <h3 class="product-title">Cuadro Textil Andino</h3>
-              <p class="product-artisan">por <a href="tienda-artesano.html?id=art-004">Comunidad Quechua</a></p>
-              <div class="product-rating">⭐⭐⭐⭐⭐ (67)</div>
-              <div class="product-prices">
-                <span class="product-price">$120.00</span>
-                <span class="product-price-bs">Bs. 4,380.00</span>
-              </div>
+        </div>
+    </section>
+
+    <!-- Por qué Tribu -->
+    <section class="section" style="background: var(--color-white);">
+        <div class="container">
+            <h2 class="section-title">¿Por qué elegir Tribu?</h2>
+            <p class="section-subtitle">Más que un marketplace, somos una comunidad</p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    </div>
+                    <h3>Directo del Artesano</h3>
+                    <p>Compra sin intermediarios. El 90% de tu pago va directo al creador.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    </div>
+                    <h3>Piezas Únicas</h3>
+                    <p>Cada producto es hecho a mano con técnicas tradicionales. No hay dos iguales.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    </div>
+                    <h3>Pago Seguro</h3>
+                    <p>Pago Móvil, Zelle, transferencias y tarjetas. Múltiples opciones para Venezuela.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                    </div>
+                    <h3>Envío Protegido</h3>
+                    <p>Embalaje especial artesanal. Envíos a toda Venezuela y Latinoamérica.</p>
+                </div>
             </div>
-          </a>
-          <button class="btn btn-primary btn-add" onclick="event.preventDefault(); addToCart({id: '4', name: 'Cuadro Textil Andino', price: 120, image: 'https://images.unsplash.com/photo-1582650949472-e9e2bcabc75d?w=400', artisan: 'Comunidad Quechua'})">Agregar al Carrito</button>
         </div>
-      </div>
-      <div style="text-align: center; margin-top: 2rem;">
-        <a href="pages/productos.html" class="btn btn-secondary">Ver Todos los Productos</a>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Features -->
-  <section class="section">
-    <div class="container">
-      <h2 class="section-title">¿Por qué elegir Tribu?</h2>
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon">🤝</div>
-          <h3>Directo del Artesano</h3>
-          <p>Compra directamente, sin intermediarios. Apoya el comercio justo.</p>
+    <!-- Artesanos -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Nuestros Artesanos</h2>
+            <p class="section-subtitle">Conoce a las manos detrás de cada pieza única</p>
+            <div class="artisans-grid" id="artisans-grid">
+                <!-- Rendered by JS -->
+            </div>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon">✨</div>
-          <h3>Productos Únicos</h3>
-          <p>Cada pieza es hecha a mano, con técnicas tradicionales.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">🌱</div>
-          <h3>Sostenible</h3>
-          <p>Materiales naturales y procesos eco-amigables.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">🚀</div>
-          <h3>Envío Seguro</h3>
-          <p>Entregamos a toda Latinoamérica y el mundo.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-brand">
-          <div class="logo">🔥 Tribu</div>
-          <p>Conectando artesanos latinoamericanos con el mundo. Cada compra apoya una familia.</p>
-          <div class="footer-social">
-            <a href="#" title="Instagram">📷</a>
-            <a href="#" title="Facebook">📘</a>
-            <a href="#" title="Twitter">🐦</a>
-            <a href="#" title="WhatsApp">💬</a>
-          </div>
+    <!-- Testimonios -->
+    <section class="section" style="background: linear-gradient(135deg, var(--color-secondary-bg) 0%, var(--color-cream) 100%);">
+        <div class="container">
+            <h2 class="section-title">Voces de nuestra Tribu</h2>
+            <p class="section-subtitle">Lo que dicen nuestros compradores</p>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"El set de tazas espresso que compré es perfecto para mis mañanas de café. Cada taza es única y la calidad de la cerámica es excepcional."</p>
+                    <div class="testimonial-author">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80" alt="Ana Martínez">
+                        <div>
+                            <h4>Ana Martínez</h4>
+                            <p>Caracas, Venezuela</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"La mochila wayúu es hermosa y de excelente calidad. Recibí muchos cumplidos durante mi viaje. El envío fue rápido y bien empacado."</p>
+                    <div class="testimonial-author">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80" alt="Carlos Rodríguez">
+                        <div>
+                            <h4>Carlos Rodríguez</h4>
+                            <p>Bogotá, Colombia</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"Como coleccionista de arte popular, Tribu es mi fuente favorita. Autenticidad garantizada, precios justos y cada pieza cuenta una historia."</p>
+                    <div class="testimonial-author">
+                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80" alt="María González">
+                        <div>
+                            <h4>María González</h4>
+                            <p>Lima, Perú</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="footer-links">
-          <h4>Comprar</h4>
-          <ul>
-            <li><a href="pages/productos.html">Todos los Productos</a></li>
-            <li><a href="pages/productos.html">Nuevos Ingresos</a></li>
-            <li><a href="pages/productos.html">Más Vendidos</a></li>
-          </ul>
-        </div>
-        <div class="footer-links">
-          <h4>Vender</h4>
-          <ul>
-            <li><a href="pages/registro-artesano.html">Registro de Artesano</a></li>
-            <li><a href="pages/faq.html">Cómo Funciona</a></li>
-            <li><a href="pages/faq.html">Preguntas Frecuentes</a></li>
-          </ul>
-        </div>
-        <div class="footer-links">
-          <h4>Ayuda</h4>
-          <ul>
-            <li><a href="pages/contacto.html">Contacto</a></li>
-            <li><a href="pages/envios-devoluciones.html">Envíos</a></li>
-            <li><a href="pages/privacidad.html">Privacidad</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>© 2024-2025 TribuArte. Todos los derechos reservados.</p>
-        <div class="footer-payments">
-          <span>💳</span> <span>💵</span> <span>📱</span>
-        </div>
-      </div>
-    </div>
-  </footer>
+    </section>
 
-  <!-- Cart Sidebar -->
-  <div id="cart-sidebar" class="cart-sidebar">
-    <div class="cart-sidebar-header">
-      <h3>🛒 Tu Carrito</h3>
-      <button class="cart-close" onclick="closeCartSidebar()">✕</button>
-    </div>
-    <div class="cart-empty">
-      <span class="cart-empty-icon">🛍️</span>
-      <p>Tu carrito está vacío</p>
-      <a href="pages/productos.html" class="btn btn-primary" onclick="closeCartSidebar()">Explorar Productos</a>
-    </div>
-  </div>
-  <div id="cart-backdrop" class="cart-backdrop" onclick="closeCartSidebar()"></div>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                        Tribu
+                    </a>
+                    <p>Conectando artesanos venezolanos y latinoamericanos con el mundo. Cada compra apoya una familia.</p>
+                    <div class="footer-social">
+                        <a href="https://instagram.com/tribuarte" target="_blank" aria-label="Instagram">
+                            <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.5"/></svg>
+                        </a>
+                        <a href="https://facebook.com/tribuarte" target="_blank" aria-label="Facebook">
+                            <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                        </a>
+                        <a href="https://wa.me/584122223775" target="_blank" aria-label="WhatsApp">
+                            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Comprar</h4>
+                    <ul>
+                        <li><a href="pages/productos.html">Todos los Productos</a></li>
+                        <li><a href="pages/productos.html">Nuevos Ingresos</a></li>
+                        <li><a href="pages/productos.html">Más Vendidos</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Vender</h4>
+                    <ul>
+                        <li><a href="pages/registro-artesano.html">Registro de Artesano</a></li>
+                        <li><a href="pages/guia-artesanos.html">Guía para Artesanos</a></li>
+                        <li><a href="pages/comisiones.html">Comisiones</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Ayuda</h4>
+                    <ul>
+                        <li><a href="pages/contacto.html">Contacto</a></li>
+                        <li><a href="pages/faq.html">Preguntas Frecuentes</a></li>
+                        <li><a href="pages/envios-devoluciones.html">Envíos y Devoluciones</a></li>
+                        <li><a href="pages/terminos.html">Términos</a></li>
+                        <li><a href="pages/privacidad.html">Privacidad</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025-2026 TribuArte. Todos los derechos reservados.</p>
+                <div class="footer-payments">
+                    <span>Pago Móvil</span> · <span>Zelle</span> · <span>Transferencia</span> · <span>Tarjetas</span>
+                </div>
+            </div>
+        </div>
+    </footer>
 
-  <!-- Scripts -->
-  <script src="js/app.js"></script>
-  <script>
-    // Init cart on load
-    document.addEventListener('DOMContentLoaded', function() {
-      updateCartCount();
-    });
-  </script>
+    <!-- WhatsApp Float -->
+    <a href="https://wa.me/584122223775" class="whatsapp-float" target="_blank" aria-label="Contactar por WhatsApp">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    </a>
+
+    <!-- Cart Sidebar -->
+    <div id="cart-sidebar" class="cart-sidebar"></div>
+    <div id="cart-backdrop" class="cart-backdrop" onclick="closeCartSidebar()"></div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        // Render categories
+        const cGrid = document.getElementById('categories-grid');
+        if (cGrid) {
+            cGrid.innerHTML = CATEGORIAS.map(cat => `
+                <a href="pages/productos.html?cat=${cat.slug}" class="category-card">
+                    <div class="category-image">
+                        <img src="${cat.image}" alt="${cat.name}" loading="lazy">
+                    </div>
+                    <h3>${cat.name}</h3>
+                </a>
+            `).join('');
+        }
+
+        // Render artisans
+        const aGrid = document.getElementById('artisans-grid');
+        if (aGrid) {
+            aGrid.innerHTML = Object.values(ARTESANOS).map(a => `
+                <a href="tienda-artesano.html?id=${a.id}" class="artisan-card">
+                    <div class="artisan-avatar">
+                        <img src="${a.avatar}" alt="${a.name}" loading="lazy">
+                    </div>
+                    <h3>${a.name}</h3>
+                    <div class="artisan-brand">${a.brand}</div>
+                    <div class="artisan-location">📍 ${a.location}</div>
+                    <div class="artisan-meta">
+                        <span class="rating">★ ${a.rating}</span>
+                        <span>${a.sales} ventas</span>
+                    </div>
+                </a>
+            `).join('');
+        }
+    </script>
 </body>
 </html>
