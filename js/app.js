@@ -333,7 +333,7 @@ const VENDEDORES = {
         historia: 'Hace 15 años María Elena dejó su trabajo en una oficina para seguir la tradición familiar de la alfarería. Su abuela le enseñó los secretos del barro rojo de Guataparo, y hoy sus piezas son solicitadas en toda Venezuela.',
         especialidad: 'Cerámica artesanal',
         foto: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400',
-        whatsapp: '+58 412-345-6789',
+        whatsapp: '+58 412-2223775',
         productosCount: 8
     },
     'vend-002': {
@@ -344,7 +344,7 @@ const VENDEDORES = {
         historia: 'José Rafael aprendió a tejer de su madre, quien a su vez lo aprendió de la suya. En su taller junto al río Portuguesa, teje hamacas usando las mismas técnicas que usaban los llaneros hace 200 años.',
         especialidad: 'Hamacas y textiles',
         foto: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
-        whatsapp: '+58 414-567-8910',
+        whatsapp: '+58 412-2223775',
         productosCount: 12
     },
     'vend-003': {
@@ -355,7 +355,7 @@ const VENDEDORES = {
         historia: 'Ana Lucía combina la orfebrería tradicional andina con diseños contemporáneos. En su taller a 1,600 metros de altura, trabaja plata 925 y piedras semipreciosas de la región.',
         especialidad: 'Joyería en plata',
         foto: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
-        whatsapp: '+58 416-789-0123',
+        whatsapp: '+58 412-2223775',
         productosCount: 15
     },
     'vend-004': {
@@ -366,7 +366,7 @@ const VENDEDORES = {
         historia: 'Carlos Eduardo trabaja maderas amazónicas de tala sostenible. Cada pieza incluye un certificado de origen que rastrea el árbol hasta la comunidad indígena que lo cuidó.',
         especialidad: 'Talla en madera',
         foto: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400',
-        whatsapp: '+58 424-901-2345',
+        whatsapp: '+58 412-2223775',
         productosCount: 6
     }
 };
