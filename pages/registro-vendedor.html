@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Vendedor - TribuArte</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        /* Estilos específicos del formulario */
+        .form-container { max-width: 800px; margin: 0 auto; padding: 2rem; }
+        .progress-bar { display: flex; justify-content: space-between; margin-bottom: 2rem; }
+        .step-indicator { text-align: center; flex: 1; }
+        .step-circle { 
+            width: 40px; height: 40px; border-radius: 50%; 
+            background: #ddd; color: #666; display: flex; 
+            align-items: center; justify-content: center; 
+            margin: 0 auto 0.5rem; font-weight: 600;
+        }
+        .step-circle.active { background: #F1641E; color: white; }
+        .step-circle.completed { background: #16A34A; color: white; }
+        .form-step { display: none; }
+        .form-step.active { display: block; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%; padding: 0.75rem; border: 2px solid #ddd; 
+            border-radius: 8px; font-family: inherit;
+        }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            border-color: #F1641E; outline: none;
+        }
+        .checkbox-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.75rem; }
+        .checkbox-card { 
+            border: 2px solid #ddd; border-radius: 8px; padding: 1rem; 
+            cursor: pointer; text-align: center; transition: all 0.2s;
+        }
+        .checkbox-card:hover { border-color: #F1641E; }
+        .checkbox-card input { display: none; }
+        .checkbox-card input:checked + .checkbox-content { color: #F1641E; }
+        .checkbox-card:has(input:checked) { border-color: #F1641E; background: #FFF0E6; }
+        .checkbox-icon { font-size: 1.5rem; display: block; margin-bottom: 0.5rem; }
+        .file-upload { 
+            border: 2px dashed #ddd; border-radius: 8px; padding: 2rem; 
+            text-align: center; cursor: pointer;
+        }
+        .file-upload:hover { border-color: #F1641E; }
+        .btn { 
+            padding: 0.75rem 2rem; border-radius: 8px; border: none; 
+            cursor: pointer; font-weight: 600; transition: all 0.2s;
+        }
+        .btn-primary { background: #F1641E; color: white; }
+        .btn-primary:hover { background: #D4500D; }
+        .btn-outline { background: white; color: #F1641E; border: 2px solid #F1641E; }
+        .btn-outline:hover { background: #FFF0E6; }
+        .form-navigation { display: flex; justify-content: space-between; margin-top: 2rem; }
+        .error-message { color: #DC2626; font-size: 0.875rem; display: none; }
+        .error-message.show { display: block; }
+        .success-message { text-align: center; padding: 3rem; }
+        .success-icon { font-size: 4rem; margin-bottom: 1rem; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <a href="../index.html" class="logo">Tribu</a>
+        </div>
+    </header>
+
+    <main class="form-container">
+        <h1>Registro de Vendedor</h1>
+        <p>Completa el formulario para vender en TribuArte</p>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="step-indicator">
+                <div class="step-circle active" id="step1-circle">1</div>
+                <span>Tu Marca</span>
+            </div>
+            <div class="step-indicator">
+                <div class="step-circle" id="step2-circle">2</div>
+                <span>Productos</span>
+            </div>
+            <div class="step-indicator">
+                <div class="step-circle" id="step3-circle">3</div>
+                <span>Contacto</span>
+            </div>
+            <div class="step-indicator">
+                <div class="step-circle" id="step4-circle">4</div>
+                <span>Confirmar</span>
+            </div>
+        </div>
+
+        <!-- Formulario -->
+        <form id="vendorForm">
+            
+            <!-- PASO 1: TU MARCA -->
+            <div class="form-step active" id="step1">
+                <h2>Tu Marca</h2>
+                
+                <div class="form-group">
+                    <label for="brandName">Nombre de marca *</label>
+                    <input type="text" id="brandName" name="brandName" required placeholder="Ej: Manos de Barro">
+                    <span class="error-message" id="error-brandName">Este campo es obligatorio</span>
+                </div>
+
+                <div class="form-group">
+                    <label>Logo de tu marca</label>
+                    <div class="file-upload" onclick="document.getElementById('logo').click()">
+                        <input type="file" id="logo" name="logo" accept=".jpg,.jpeg,.png,.svg" style="display:none">
+                        <p>📁 Arrastra tu logo aquí o haz clic para seleccionar</p>
+                        <small>JPG, PNG o SVG. Máx 5MB</small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Descripción del taller *</label>
+                    <textarea id="description" name="description" rows="5" required minlength="100" 
+                              placeholder="Cuéntanos tu historia, técnicas, lo que te hace único..."></textarea>
+                    <small>Mínimo 100 caracteres</small>
+                    <span class="error-message" id="error-description">Mínimo 100 caracteres requeridos</span>
+                </div>
+
+                <div class="form-group">
+                    <label>Categorías * (Selecciona al menos una)</label>
+                    <div class="checkbox-grid">
+                        <label class="checkbox-card">
+                            <input type="checkbox" name="categories" value="Cerámica">
+                            <div class="checkbox-content">
+                                <span class="checkbox-icon">🏺</span>
+                                <span>Cerámica</span>
+                            </div>
+                        </label>
+                        <label class="checkbox-card">
+                            <input type="checkbox" name="categories" value="Textiles">
+                            <div class="checkbox-content">
+                                <span class="checkbox-icon">🧵</span>
+                                <span>Textiles</span>
+                            </div>
+                        </label>
+                        <label class="checkbox-card">
+                            <input type="checkbox" name="categories" value="Joyería">
+                            <div class="checkbox-content">
+                                <span class="checkbox-icon">💍</span>
+                                <span>Joyería</span>
+                            </div>
+                        </label>
+                        <label class="checkbox-card">
+                            <input type="checkbox" name="categories" value="Madera">
+                            <div class="checkbox-content">
+                                <span class="checkbox-icon">🪵</span>
+                                <span>Madera</span>
+                            </div>
+                        </label>
+                        <label class="checkbox-card">
+                            <input type="checkbox" name="categories" value="Cestería">
+                            <div class="checkbox-content">
+                                <span class="checkbox-icon">🧺</span>
+                                <span>Cestería</span>
+                            </div>
+                        </label>
+                        <label class="checkbox-card">
+                            <input type="checkbox" name="categories" value="Decoración">
+                            <div class="checkbox-content">
+                                <span class="checkbox-icon">🖼️</span>
+                                <span>Decoración</span>
+                            </div>
+                        </label>
+                        <label class="checkbox-card">
+                            <input type="checkbox" name="categories" value="Arte Popular">
+                            <div class="checkbox-content">
+                                <span class="checkbox-icon">🎨</span>
+                                <span>Arte Popular</span>
+                            </div>
+                        </label>
+                        <label class="checkbox-card">
+                            <input type="checkbox" name="categories" value="Cuero">
+                            <div class="checkbox-content">
+                                <span class="checkbox-icon">👜</span>
+                                <span>Cuero</span>
+                            </div>
+                        </label>
+                        <label class="checkbox-card">
+                            <input type="checkbox" name="categories" value="Velas y Aromas">
+                            <div class="checkbox-content">
+                                <span class="checkbox-icon">🕯️</span>
+                                <span>Velas y Aromas</span>
+                            </div>
+                        </label>
+                        <label class="checkbox-card">
+                            <input type="checkbox" name="categories" value="Otro">
+                            <div class="checkbox-content">
+                                <span class="checkbox-icon">✨</span>
+                                <span>Otro</span>
+                            </div>
+                        </label>
+                    </div>
+                    <span class="error-message" id="error-categories">Selecciona al menos una categoría</span>
+                </div>
+            </div>
+
+            <!-- PASO 2: PRODUCTOS -->
+            <div class="form-step" id="step2">
+                <h2>Tus Productos</h2>
+
+                <div class="form-group">
+                    <label>¿Cuántos productos tienes? *</label>
+                    <select name="productCount" required>
+                        <option value="">Selecciona</option>
+                        <option value="1-5">1-5 productos</option>
+                        <option value="6-10">6-10 productos</option>
+                        <option value="11-20">11-20 productos</option>
+                        <option value="Más de 20">Más de 20 productos</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Rango de precios (Selecciona todos)</label>
+                    <div class="checkbox-grid">
+                        <label class="checkbox-card">
+                            <input type="checkbox" name="priceRange" value="$0-25">
+                            <span>$0 - $25</span>
+                        </label>
+                        <label class="checkbox-card">
+                            <input type="checkbox" name="priceRange" value="$26-50">
+                            <span>$26 - $50</span>
+                        </label>
+                        <label class="checkbox-card">
+                            <input type="checkbox" name="priceRange" value="$51-100">
+                            <span>$51 - $100</span>
+                        </label>
+                        <label class="checkbox-card">
+                            <input type="checkbox" name="priceRange" value="$101-200">
+                            <span>$101 - $200</span>
+                        </label>
+                        <label class="checkbox-card">
+                            <input type="checkbox" name="priceRange" value="Más de $200">
+                            <span>Más de $200</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Tiempo de producción promedio *</label>
+                    <select name="productionTime" required>
+                        <option value="">Selecciona</option>
+                        <option value="1-3 días">1-3 días</option>
+                        <option value="4-7 días">4-7 días</option>
+                        <option value="1-2 semanas">1-2 semanas</option>
+                        <option value="2-4 semanas">2-4 semanas</option>
+                        <option value="Más de 1 mes">Más de 1 mes</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>¿Aceptas pedidos personalizados? *</label>
+                    <select name="customOrders" required>
+                        <option value="">Selecciona</option>
+                        <option value="Sí siempre">Sí, siempre</option>
+                        <option value="Sí según proyecto">Sí, según el proyecto</option>
+                        <option value="No">No por ahora</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Tipo de entrega *</label>
+                    <select name="shipping" required>
+                        <option value="">Selecciona</option>
+                        <option value="A toda Venezuela">🚚 A toda Venezuela</option>
+                        <option value="Solo mi ciudad/estado">📍 Solo mi ciudad/estado</option>
+                        <option value="Entrega personal">🤝 Entrega personal</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- PASO 3: CONTACTO -->
+            <div class="form-step" id="step3">
+                <h2>Información de Contacto</h2>
+
+                <div class="form-group">
+                    <label for="fullName">Nombre completo *</label>
+                    <input type="text" id="fullName" name="fullName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="idNumber">Cédula de identidad *</label>
+                    <input type="text" id="idNumber" name="idNumber" required placeholder="V-12345678">
+                    <small>Formato: V-12345678 o E-12345678</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Teléfono/WhatsApp *</label>
+                    <input type="tel" id="phone" name="phone" required placeholder="0412 123 4567">
+                </div>
+
+                <div class="form-group">
+                    <label for="state">Estado *</label>
+                    <select id="state" name="state" required>
+                        <option value="">Selecciona</option>
+                        <option value="Amazonas">Amazonas</option>
+                        <option value="Anzoátegui">Anzoátegui</option>
+                        <option value="Apure">Apure</option>
+                        <option value="Aragua">Aragua</option>
+                        <option value="Barinas">Barinas</option>
+                        <option value="Bolívar">Bolívar</option>
+                        <option value="Carabobo">Carabobo</option>
+                        <option value="Cojedes">Cojedes</option>
+                        <option value="Delta Amacuro">Delta Amacuro</option>
+                        <option value="Distrito Capital">Distrito Capital</option>
+                        <option value="Falcón">Falcón</option>
+                        <option value="Guárico">Guárico</option>
+                        <option value="Lara">Lara</option>
+                        <option value="Mérida">Mérida</option>
+                        <option value="Miranda">Miranda</option>
+                        <option value="Monagas">Monagas</option>
+                        <option value="Nueva Esparta">Nueva Esparta</option>
+                        <option value="Portuguesa">Portuguesa</option>
+                        <option value="Sucre">Sucre</option>
+                        <option value="Táchira">Táchira</option>
+                        <option value="Trujillo">Trujillo</option>
+                        <option value="Vargas">Vargas</option>
+                        <option value="Yaracuy">Yaracuy</option>
+                        <option value="Zulia">Zulia</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="city">Ciudad *</label>
+                    <input type="text" id="city" name="city" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Dirección</label>
+                    <textarea id="address" name="address" rows="3" placeholder="Opcional"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="instagram">Instagram (opcional)</label>
+                    <input type="text" id="instagram" name="instagram" placeholder="@usuario">
+                </div>
+
+                <div class="form-group">
+                    <label for="facebook">Facebook (opcional)</label>
+                    <input type="text" id="facebook" name="facebook" placeholder="Usuario o página">
+                </div>
+            </div>
+
+            <!-- PASO 4: CONFIRMAR -->
+            <div class="form-step" id="step4">
+                <h2>Confirmar Registro</h2>
+                
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="terms" name="terms" required>
+                        Acepto los <a href="terminos.html" target="_blank">Términos y Condiciones</a> 
+                        y las <a href="politicas-venta.html" target="_blank">Políticas de Venta</a> de TribuArte.
+                    </label>
+                </div>
+
+                <p style="background: #FFF0E6; padding: 1rem; border-radius: 8px;">
+                    📧 Al enviar, nuestro equipo revisará tu solicitud y te contactará en 24-48 horas hábiles.
+                </p>
+            </div>
+
+            <!-- ÉXITO -->
+            <div class="form-step success-message" id="success">
+                <div class="success-icon">🎉</div>
+                <h2>¡Registro Enviado!</h2>
+                <p>Tu solicitud ha sido recibida. Te contactaremos pronto.</p>
+                <a href="../index.html" class="btn btn-primary">Ir al inicio</a>
+            </div>
+
+            <!-- Botones -->
+            <div class="form-navigation" id="navButtons">
+                <button type="button" class="btn btn-outline" id="prevBtn" onclick="changeStep(-1)">← Atrás</button>
+                <button type="button" class="btn btn-primary" id="nextBtn" onclick="changeStep(1)">Siguiente →</button>
+                <button type="submit" class="btn btn-primary" id="submitBtn" style="display:none">Enviar registro</button>
+            </div>
+        </form>
+    </main>
+
+    <script>
+        let currentStep = 1;
+        const totalSteps = 4;
+
+        function changeStep(direction) {
+            // Validar paso actual antes de avanzar
+            if (direction === 1 && !validateStep(currentStep)) {
+                return;
+            }
+
+            // Ocultar paso actual
+            document.getElementById('step' + currentStep).classList.remove('active');
+            
+            // Cambiar paso
+            currentStep += direction;
+            
+            // Mostrar nuevo paso
+            document.getElementById('step' + currentStep).classList.add('active');
+            
+            // Actualizar progress bar
+            updateProgressBar();
+            
+            // Actualizar botones
+            updateButtons();
+        }
+
+        function validateStep(step) {
+            let valid = true;
+            const stepElement = document.getElementById('step' + step);
+            
+            // Validar campos requeridos
+            const requiredFields = stepElement.querySelectorAll('[required]');
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    valid = false;
+                    field.style.borderColor = '#DC2626';
+                } else {
+                    field.style.borderColor = '#ddd';
+                }
+            });
+
+            // Validar categorías (paso 1)
+            if (step === 1) {
+                const categories = document.querySelectorAll('input[name="categories"]:checked');
+                if (categories.length === 0) {
+                    valid = false;
+                    document.getElementById('error-categories').classList.add('show');
+                } else {
+                    document.getElementById('error-categories').classList.remove('show');
+                }
+            }
+
+            // Validar descripción mínima
+            if (step === 1) {
+                const desc = document.getElementById('description');
+                if (desc.value.length < 100) {
+                    valid = false;
+                    document.getElementById('error-description').classList.add('show');
+                } else {
+                    document.getElementById('error-description').classList.remove('show');
+                }
+            }
+
+            return valid;
+        }
+
+        function updateProgressBar() {
+            for (let i = 1; i <= totalSteps; i++) {
+                const circle = document.getElementById('step' + i + '-circle');
+                if (i < currentStep) {
+                    circle.classList.add('completed');
+                    circle.classList.remove('active');
+                    circle.textContent = '✓';
+                } else if (i === currentStep) {
+                    circle.classList.add('active');
+                    circle.classList.remove('completed');
+                    circle.textContent = i;
+                } else {
+                    circle.classList.remove('active', 'completed');
+                    circle.textContent = i;
+                }
+            }
+        }
+
+        function updateButtons() {
+            document.getElementById('prevBtn').style.display = currentStep === 1 ? 'none' : 'inline-block';
+            
+            if (currentStep === totalSteps) {
+                document.getElementById('nextBtn').style.display = 'none';
+                document.getElementById('submitBtn').style.display = 'inline-block';
+            } else {
+                document.getElementById('nextBtn').style.display = 'inline-block';
+                document.getElementById('submitBtn').style.display = 'none';
+            }
+        }
+
+        // Manejar envío del formulario
+        document.getElementById('vendorForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!validateStep(currentStep)) return;
+
+            // Aquí iría la conexión con Google Sheets
+            // Por ahora, mostrar éxito
+            document.getElementById('step4').classList.remove('active');
+            document.getElementById('success').style.display = 'block';
+            document.getElementById('navButtons').style.display = 'none';
+            
+            // TODO: Enviar datos a Google Sheets
+            console.log('Formulario enviado:', new FormData(this));
+        });
+
+        // Inicializar
+        updateButtons();
+    </script>
+</body>
+</html>
