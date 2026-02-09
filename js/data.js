@@ -65,10 +65,10 @@ const PRODUCTOS = [
         categorySlug: 'textiles',
         price: 120.00,
         priceBs: 4284,
-        image: 'https://images.unsplash.com/photo-1582650949472-e9e2bcabc75d?w=600&q=80',
+        image: 'https://images.unsplash.com/photo-1544967082-d9d25d867d66?w=600&q=80',
         images: [
-            'https://images.unsplash.com/photo-1582650949472-e9e2bcabc75d?w=800&q=80',
-            'https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=800&q=80'
+            'https://images.unsplash.com/photo-1544967082-d9d25d867d66?w=800&q=80',
+            'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80'
         ],
         description: 'Tapiz de lana de alpaca con tintes naturales. Diseño tradicional que cuenta historias ancestrales de los pueblos andinos. Medidas: 80x120 cm.',
         rating: 4.7,
@@ -101,10 +101,10 @@ const PRODUCTOS = [
         categorySlug: 'decoracion',
         price: 85.00,
         priceBs: 3033,
-        image: 'https://images.unsplash.com/photo-1513519245088-0e12902e35a6?w=600&q=80',
+        image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80',
         images: [
-            'https://images.unsplash.com/photo-1513519245088-0e12902e35a6?w=800&q=80',
-            'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=800&q=80'
+            'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80',
+            'https://images.unsplash.com/photo-1513506003011-3b03c80175e8?w=800&q=80'
         ],
         description: 'Lámpara colgante tejida con fibras de palma natural. Proyecta sombras hermosas. Incluye sistema eléctrico completo. Diámetro: 35 cm.',
         rating: 4.9,
@@ -205,7 +205,7 @@ const CATEGORIAS = [
     { slug: 'textiles', name: 'Textiles', image: 'https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?w=400&q=80' },
     { slug: 'joyeria', name: 'Joyería', image: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=400&q=80' },
     { slug: 'madera', name: 'Madera', image: 'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=400&q=80' },
-    { slug: 'decoracion', name: 'Decoración', image: 'https://images.unsplash.com/photo-1513519245088-0e12902e35a6?w=400&q=80' },
+    { slug: 'decoracion', name: 'Decoración', image: 'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=400&q=80' },
     { slug: 'cuero', name: 'Cuero', image: 'https://images.unsplash.com/photo-1627123424574-724758594e93?w=400&q=80' }
 ];
 
