@@ -1,931 +1,772 @@
-// Tribu Venezuela - App Principal
-// Funcionalidades: Carrito, menú móvil, búsqueda de productos, formulario de compra, scroll suave
+// Tribu App - JavaScript Completo
 
-document.addEventListener('DOMContentLoaded', function() {
-    // ===== INICIALIZACIÓN =====
-    inicializarCarrito();
-    inicializarMenuMovil();
-    inicializarBusqueda();
-    inicializarFormularioCompra();
-    inicializarScrollSuave();
-    mostrarProductos();
-});
+// ========== CARRITO ==========
+const CART_KEY = 'tribu_cart';
 
-// ===== CARRITO DE COMPRAS =====
-let carrito = [];
-
-function inicializarCarrito() {
-    const carritoGuardado = localStorage.getItem('tribu-carrito');
-    if (carritoGuardado) {
-        carrito = JSON.parse(carritoGuardado);
-        actualizarContadorCarrito();
-    }
+function getCart() {
+  const cart = localStorage.getItem(CART_KEY);
+  return cart ? JSON.parse(cart) : [];
 }
 
-function agregarAlCarrito(producto) {
-    const itemExistente = carrito.find(item => item.id === producto.id);
-    
-    if (itemExistente) {
-        itemExistente.cantidad += 1;
+function saveCart(cart) {
+  localStorage.setItem(CART_KEY, JSON.stringify(cart));
+  updateCartCount();
+  renderCartSidebar();
+}
+
+function addToCart(product) {
+  const cart = getCart();
+  const existing = cart.find(item => item.id === product.id);
+  
+  if (existing) {
+    existing.quantity += 1;
+  } else {
+    cart.push({ ...product, quantity: 1 });
+  }
+  
+  saveCart(cart);
+  showToast(`${product.name} agregado al carrito`, 'success');
+}
+
+function removeFromCart(productId) {
+  const cart = getCart().filter(item => item.id !== productId);
+  saveCart(cart);
+  showToast('Producto eliminado del carrito', 'info');
+}
+
+function updateQuantity(productId, quantity) {
+  const cart = getCart();
+  const item = cart.find(item => item.id === productId);
+  
+  if (item) {
+    if (quantity <= 0) {
+      removeFromCart(productId);
     } else {
-        carrito.push({
-            ...producto,
-            cantidad: 1
-        });
+      item.quantity = quantity;
+      saveCart(cart);
     }
-    
-    guardarCarrito();
-    actualizarContadorCarrito();
-    mostrarNotificacion('Producto agregado al carrito');
+  }
 }
 
-function eliminarDelCarrito(id) {
-    carrito = carrito.filter(item => item.id !== id);
-    guardarCarrito();
-    actualizarContadorCarrito();
-    mostrarCarrito();
+function clearCart() {
+  localStorage.removeItem(CART_KEY);
+  updateCartCount();
+  renderCartSidebar();
 }
 
-function guardarCarrito() {
-    localStorage.setItem('tribu-carrito', JSON.stringify(carrito));
+function getCartTotal() {
+  return getCart().reduce((total, item) => total + (item.price * item.quantity), 0);
 }
 
-function actualizarContadorCarrito() {
-    const contador = document.getElementById('cart-count');
-    if (contador) {
-        const total = carrito.reduce((sum, item) => sum + item.cantidad, 0);
-        contador.textContent = total;
-        contador.style.display = total > 0 ? 'block' : 'none';
-    }
+function getCartCount() {
+  return getCart().reduce((count, item) => count + item.quantity, 0);
 }
 
-function mostrarCarrito() {
-    const modal = document.getElementById('cart-modal');
-    const contenido = document.getElementById('cart-items');
-    
-    if (!modal || !contenido) return;
-    
-    if (carrito.length === 0) {
-        contenido.innerHTML = '<p class="empty-cart">Tu carrito está vacío</p>';
-    } else {
-        contenido.innerHTML = carrito.map(item => `
-            <div class="cart-item">
-                <img src="${item.imagen}" alt="${item.nombre}">
-                <div class="item-info">
-                    <h4>${item.nombre}</h4>
-                    <p>$${item.precio.toFixed(2)}</p>
-                    <div class="quantity-controls">
-                        <button onclick="cambiarCantidad('${item.id}', -1)">-</button>
-                        <span>${item.cantidad}</span>
-                        <button onclick="cambiarCantidad('${item.id}', 1)">+</button>
-                    </div>
+function updateCartCount() {
+  const countElements = document.querySelectorAll('.cart-count');
+  const count = getCartCount();
+  countElements.forEach(el => {
+    el.textContent = count;
+    el.style.display = count > 0 ? 'flex' : 'none';
+  });
+}
+
+// ========== SIDEBAR CARRITO ==========
+function initCartSidebar() {
+  // Crear el backdrop si no existe
+  let backdrop = document.getElementById('cart-backdrop');
+  if (!backdrop) {
+    backdrop = document.createElement('div');
+    backdrop.id = 'cart-backdrop';
+    backdrop.className = 'cart-backdrop';
+    backdrop.onclick = closeCartSidebar;
+    document.body.appendChild(backdrop);
+  }
+  
+  renderCartSidebar();
+}
+
+function openCartSidebar() {
+  const sidebar = document.getElementById('cart-sidebar');
+  const backdrop = document.getElementById('cart-backdrop');
+  
+  if (sidebar) {
+    sidebar.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  if (backdrop) {
+    backdrop.classList.add('open');
+  }
+}
+
+function closeCartSidebar() {
+  const sidebar = document.getElementById('cart-sidebar');
+  const backdrop = document.getElementById('cart-backdrop');
+  
+  if (sidebar) {
+    sidebar.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  if (backdrop) {
+    backdrop.classList.remove('open');
+  }
+}
+
+function renderCartSidebar() {
+  const sidebar = document.getElementById('cart-sidebar');
+  if (!sidebar) return;
+  
+  const cart = getCart();
+  const total = getCartTotal();
+  
+  if (cart.length === 0) {
+    sidebar.innerHTML = `
+      <div class="cart-sidebar-header">
+        <h3>🛒 Tu Carrito</h3>
+        <button class="cart-close" onclick="closeCartSidebar()">✕</button>
+      </div>
+      <div class="cart-empty">
+        <span class="cart-empty-icon">🛍️</span>
+        <p>Tu carrito está vacío</p>
+        <a href="pages/productos.html" class="btn btn-primary" onclick="closeCartSidebar()">Explorar Productos</a>
+      </div>
+    `;
+  } else {
+    sidebar.innerHTML = `
+      <div class="cart-sidebar-header">
+        <h3>🛒 Tu Carrito (${getCartCount()})</h3>
+        <button class="cart-close" onclick="closeCartSidebar()">✕</button>
+      </div>
+      <div class="cart-items">
+        ${cart.map(item => `
+          <div class="cart-item">
+            <div class="cart-item-image">
+              ${item.image ? `<img src="${item.image}" alt="${item.name}">` : '<span>🎨</span>'}
+            </div>
+            <div class="cart-item-details">
+              <h4 class="cart-item-name">${item.name}</h4>
+              <p class="cart-item-artisan">${item.artisan || ''}</p>
+              <div class="cart-item-controls">
+                <div class="quantity-selector">
+                  <button onclick="updateQuantity('${item.id}', ${item.quantity - 1})">−</button>
+                  <span>${item.quantity}</span>
+                  <button onclick="updateQuantity('${item.id}', ${item.quantity + 1})">+</button>
                 </div>
-                <button class="remove-item" onclick="eliminarDelCarrito('${item.id}')">×</button>
+                <span class="cart-item-price">$${(item.price * item.quantity).toFixed(2)}</span>
+              </div>
             </div>
-        `).join('');
-        
-        const total = carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
-        contenido.innerHTML += `
-            <div class="cart-total">
-                <h3>Total: $${total.toFixed(2)}</h3>
-                <button class="checkout-btn" onclick="mostrarFormularioCompra()">Proceder al pago</button>
-            </div>
-        `;
-    }
-    
-    modal.style.display = 'block';
+            <button class="cart-item-remove" onclick="removeFromCart('${item.id}')">🗑️</button>
+          </div>
+        `).join('')}
+      </div>
+      <div class="cart-footer">
+        <div class="cart-total">
+          <span>Total:</span>
+          <span class="cart-total-amount">$${total.toFixed(2)}</span>
+        </div>
+        <button class="btn btn-primary btn-full" onclick="goToCheckout()">Proceder al Pago</button>
+        <button class="btn btn-secondary btn-full btn-outline" onclick="closeCartSidebar()">Seguir Comprando</button>
+      </div>
+    `;
+  }
 }
 
-function cambiarCantidad(id, cambio) {
-    const item = carrito.find(item => item.id === id);
-    if (item) {
-        item.cantidad += cambio;
-        if (item.cantidad <= 0) {
-            eliminarDelCarrito(id);
-        } else {
-            guardarCarrito();
-            actualizarContadorCarrito();
-            mostrarCarrito();
-        }
-    }
+function goToCheckout() {
+  window.location.href = 'checkout.html';
 }
 
-// ===== MENÚ MÓVIL =====
-function inicializarMenuMovil() {
-    const menuToggle = document.querySelector('.menu-toggle');
-    const nav = document.querySelector('nav');
-    
-    if (menuToggle && nav) {
-        menuToggle.addEventListener('click', function() {
-            nav.classList.toggle('active');
-        });
-        
-        // Cerrar menú al hacer clic en un enlace
-        document.querySelectorAll('nav a').forEach(enlace => {
-            enlace.addEventListener('click', () => {
-                nav.classList.remove('active');
-            });
-        });
-    }
+// ========== TOAST NOTIFICATIONS ==========
+function showToast(message, type = 'info') {
+  const container = document.getElementById('toast-container');
+  if (!container) return;
+  
+  const toast = document.createElement('div');
+  toast.className = `toast toast-${type}`;
+  
+  const icons = {
+    success: '✓',
+    error: '✕',
+    info: 'ℹ️',
+    warning: '⚠️'
+  };
+  
+  toast.innerHTML = `
+    <span class="toast-icon">${icons[type] || icons.info}</span>
+    <span class="toast-message">${message}</span>
+    <button class="toast-close" onclick="this.parentElement.remove()">✕</button>
+  `;
+  
+  container.appendChild(toast);
+  
+  // Animación de entrada
+  requestAnimationFrame(() => {
+    toast.classList.add('show');
+  });
+  
+  // Auto-remove
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => toast.remove(), 300);
+  }, 4000);
 }
 
-// ===== BÚSQUEDA DE PRODUCTOS =====
-function inicializarBusqueda() {
-    const searchInput = document.getElementById('search-input');
-    const searchResults = document.getElementById('search-results');
-    const searchContainer = document.querySelector('.search-container');
-    const searchBtn = document.querySelector('.btn-search');
+// ========== GALERÍA DE IMÁGENES ==========
+function initGallery(images, productId) {
+  const gallery = document.getElementById('product-gallery');
+  if (!gallery || !images || images.length === 0) return;
+  
+  gallery.innerHTML = `
+    <div class="gallery-main">
+      <img id="gallery-main-image" src="${images[0]}" alt="Imagen principal">
+      ${images.length > 1 ? `
+        <button class="gallery-nav gallery-prev" onclick="changeImage(-1)">‹</button>
+        <button class="gallery-nav gallery-next" onclick="changeImage(1)">›</button>
+      ` : ''}
+    </div>
+    ${images.length > 1 ? `
+      <div class="gallery-thumbnails">
+        ${images.map((img, idx) => `
+          <button class="gallery-thumb ${idx === 0 ? 'active' : ''}" onclick="setGalleryImage(${idx})">
+            <img src="${img}" alt="Miniatura ${idx + 1}">
+          </button>
+        `).join('')}
+      </div>
+    ` : ''}
+  `;
+  
+  window.galleryImages = images;
+  window.galleryCurrentIndex = 0;
+}
+
+function setGalleryImage(index) {
+  if (!window.galleryImages) return;
+  
+  window.galleryCurrentIndex = index;
+  const mainImage = document.getElementById('gallery-main-image');
+  const thumbs = document.querySelectorAll('.gallery-thumb');
+  
+  if (mainImage) {
+    mainImage.style.opacity = '0';
+    setTimeout(() => {
+      mainImage.src = window.galleryImages[index];
+      mainImage.style.opacity = '1';
+    }, 150);
+  }
+  
+  thumbs.forEach((thumb, i) => {
+    thumb.classList.toggle('active', i === index);
+  });
+}
+
+function changeImage(direction) {
+  if (!window.galleryImages) return;
+  
+  const newIndex = (window.galleryCurrentIndex + direction + window.galleryImages.length) % window.galleryImages.length;
+  setGalleryImage(newIndex);
+}
+
+// ========== COMPARTIR ==========
+function shareProduct(product, platform) {
+  const url = window.location.href;
+  const text = `Mira este producto: ${product.name} por ${product.artisan} - $${product.price}`;
+  
+  switch (platform) {
+    case 'whatsapp':
+      window.open(`https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`, '_blank');
+      break;
+    case 'facebook':
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+      break;
+    case 'twitter':
+      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+      break;
+    case 'copy':
+      navigator.clipboard.writeText(url).then(() => {
+        showToast('Link copiado al portapapeles', 'success');
+      }).catch(() => {
+        showToast('Error al copiar el link', 'error');
+      });
+      break;
+  }
+}
+
+function initShareButtons(product) {
+  const container = document.getElementById('share-buttons');
+  if (!container) return;
+  
+  container.innerHTML = `
+    <button class="share-btn whatsapp" onclick='shareProduct(${JSON.stringify(product).replace(/'/g, "&#39;")}, "whatsapp")' title="Compartir en WhatsApp">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    </button>
+    <button class="share-btn facebook" onclick='shareProduct(${JSON.stringify(product).replace(/'/g, "&#39;")}, "facebook")' title="Compartir en Facebook">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+    </button>
+    <button class="share-btn twitter" onclick='shareProduct(${JSON.stringify(product).replace(/'/g, "&#39;")}, "twitter")' title="Compartir en Twitter">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+    </button>
+    <button class="share-btn copy" onclick='shareProduct(${JSON.stringify(product).replace(/'/g, "&#39;")}, "copy")' title="Copiar link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
+    </button>
+  `;
+}
+
+// ========== CHECKOUT LOADER ==========
+function showCheckoutLoader(message = 'Procesando tu pedido...') {
+  const loader = document.getElementById('checkout-loader');
+  if (!loader) {
+    const newLoader = document.createElement('div');
+    newLoader.id = 'checkout-loader';
+    newLoader.className = 'checkout-loader';
+    newLoader.innerHTML = `
+      <div class="loader-content">
+        <div class="loader-spinner"></div>
+        <p class="loader-message">${message}</p>
+      </div>
+    `;
+    document.body.appendChild(newLoader);
+  } else {
+    loader.querySelector('.loader-message').textContent = message;
+    loader.classList.add('show');
+  }
+}
+
+function hideCheckoutLoader() {
+  const loader = document.getElementById('checkout-loader');
+  if (loader) {
+    loader.classList.remove('show');
+  }
+}
+
+function processCheckout(formData) {
+  showCheckoutLoader('Verificando tu información...');
+  
+  setTimeout(() => {
+    showCheckoutLoader('Procesando el pago...');
     
-    if (!searchInput) return;
-    
-    // Toggle search en móvil
-    if (searchBtn && window.innerWidth <= 768) {
-        searchBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            if (searchContainer) {
-                searchContainer.classList.toggle('mobile-visible');
-                if (searchContainer.classList.contains('mobile-visible')) {
-                    searchInput.focus();
-                }
-            }
-        });
-    }
-    
-    if (!searchResults) return;
-    
-    let timeoutBusqueda;
-    
-    searchInput.addEventListener('input', function() {
-        clearTimeout(timeoutBusqueda);
-        const termino = this.value.toLowerCase().trim();
-        
-        if (termino.length < 2) {
-            searchResults.style.display = 'none';
-            return;
-        }
-        
-        timeoutBusqueda = setTimeout(() => {
-            buscarProductos(termino);
-        }, 300);
+    setTimeout(() => {
+      showCheckoutLoader('¡Pedido confirmado! Redirigiendo...');
+      clearCart();
+      
+      setTimeout(() => {
+        hideCheckoutLoader();
+        window.location.href = 'index.html?order=success';
+      }, 1500);
+    }, 2000);
+  }, 1500);
+}
+
+// ========== NAVEGACIÓN ==========
+function initNavigation() {
+  const menuToggle = document.querySelector('.menu-toggle');
+  if (menuToggle) {
+    menuToggle.addEventListener('click', () => {
+      document.querySelector('.nav').classList.toggle('active');
     });
-    
-    // Cerrar resultados al hacer clic fuera
-    document.addEventListener('click', function(e) {
-        if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
-            searchResults.style.display = 'none';
-        }
-    });
+  }
 }
 
-function buscarProductos(termino) {
-    const productosFiltrados = window.productosGlobales?.filter(producto => 
-        producto.nombre.toLowerCase().includes(termino) ||
-        producto.descripcion?.toLowerCase().includes(termino)
-    ) || [];
-    
-    mostrarResultadosBusqueda(productosFiltrados, termino);
+function goToPage(pageName) {
+  window.location.href = `pages/${pageName}.html`;
 }
 
-function mostrarResultadosBusqueda(productos, termino) {
-    const searchResults = document.getElementById('search-results');
-    if (!searchResults) return;
-    
-    if (productos.length === 0) {
-        searchResults.innerHTML = '<div class="no-results">No se encontraron productos</div>';
-    } else {
-        searchResults.innerHTML = productos.map(producto => `
-            <div class="search-result-item" onclick="seleccionarProducto('${producto.id}')">
-                <img src="${producto.imagen}" alt="${producto.nombre}">
-                <div>
-                    <h4>${producto.nombre}</h4>
-                    <p>$${producto.precio.toFixed(2)}</p>
-                </div>
-            </div>
-        `).join('');
-    }
-    
-    searchResults.style.display = 'block';
-}
-
-function seleccionarProducto(id) {
-    document.getElementById('search-results').style.display = 'none';
-    document.getElementById('search-input').value = '';
-    // Scroll al producto
-    const productoElement = document.querySelector(`[data-product-id="${id}"]`);
-    if (productoElement) {
-        productoElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        productoElement.classList.add('highlighted');
-        setTimeout(() => productoElement.classList.remove('highlighted'), 2000);
-    }
-}
-
-// ===== FORMULARIO DE COMPRA =====
-function inicializarFormularioCompra() {
-    const formulario = document.getElementById('checkout-form');
-    if (formulario) {
-        formulario.addEventListener('submit', function(e) {
-            e.preventDefault();
-            procesarCompra();
-        });
-    }
-}
-
-function mostrarFormularioCompra() {
-    const modal = document.getElementById('checkout-modal');
-    if (modal && carrito.length > 0) {
-        modal.style.display = 'block';
-        document.getElementById('cart-modal').style.display = 'none';
-    }
-}
-
-function procesarCompra() {
-    const formData = new FormData(document.getElementById('checkout-form'));
-    const datosCliente = Object.fromEntries(formData);
-    
-    if (carrito.length === 0) {
-        alert('Tu carrito está vacío');
-        return;
-    }
-    
-    // Preparar datos para Telegram
-    const mensaje = formatearMensajeTelegram(datosCliente, carrito);
-    enviarTelegram(mensaje);
-}
-
-function formatearMensajeTelegram(cliente, productos) {
-    const total = productos.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
-    
-    let mensaje = `🛒 NUEVA COMPRA - Tribu Venezuela\n\n`;
-    mensaje += `👤 Cliente: ${cliente.nombre} ${cliente.apellido}\n`;
-    mensaje += `📞 Teléfono: ${cliente.telefono}\n`;
-    mensaje += `📧 Email: ${cliente.email}\n`;
-    mensaje += `📍 Dirección: ${cliente.direccion}\n\n`;
-    
-    mensaje += `📦 Productos:\n`;
-    productos.forEach(item => {
-        mensaje += `• ${item.nombre} x${item.cantidad} - $${(item.precio * item.cantidad).toFixed(2)}\n`;
-    });
-    
-    mensaje += `\n💰 Total: $${total.toFixed(2)}\n`;
-    mensaje += `🕐 Fecha: ${new Date().toLocaleString('es-VE')}`;
-    
-    return mensaje;
-}
-
-function enviarTelegram(mensaje) {
-    const botToken = '7052869673:AAHzGqZJ7V0IaW1VaLhsL7i83LXeD6KzLJ0';
-    const chatId = '7052869673';
-    
-    fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            chat_id: chatId,
-            text: mensaje,
-            parse_mode: 'HTML'
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.ok) {
-            alert('¡Pedido enviado exitosamente! Nos pondremos en contacto contigo pronto.');
-            carrito = [];
-            guardarCarrito();
-            actualizarContadorCarrito();
-            document.getElementById('checkout-modal').style.display = 'none';
-            document.getElementById('cart-modal').style.display = 'none';
-            document.getElementById('checkout-form').reset();
-        } else {
-            alert('Error al enviar el pedido. Por favor, intenta de nuevo.');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Error al enviar el pedido. Por favor, intenta de nuevo.');
-    });
-}
-
-// ===== SCROLL SUAVE =====
-function inicializarScrollSuave() {
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        });
-    });
-}
-
-// ===== DATOS DEMO =====
-const VENDEDORES = {
-    'vend-001': {
-        id: 'vend-001',
-        nombre: 'María Elena Gutiérrez',
-        marca: 'Manos de Barro',
-        ubicacion: 'Valencia, Carabobo',
-        historia: 'Hace 15 años María Elena dejó su trabajo en una oficina para seguir la tradición familiar de la alfarería. Su abuela le enseñó los secretos del barro rojo de Guataparo, y hoy sus piezas son solicitadas en toda Venezuela.',
-        especialidad: 'Cerámica artesanal',
-        foto: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400',
-        whatsapp: '+58 412-2223775',
-        productosCount: 8
-    },
-    'vend-002': {
-        id: 'vend-002',
-        nombre: 'José Rafael Morales',
-        marca: 'Tejidos del Llano',
-        ubicacion: 'San Fernando de Apure',
-        historia: 'José Rafael aprendió a tejer de su madre, quien a su vez lo aprendió de la suya. En su taller junto al río Portuguesa, teje hamacas usando las mismas técnicas que usaban los llaneros hace 200 años.',
-        especialidad: 'Hamacas y textiles',
-        foto: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
-        whatsapp: '+58 412-2223775',
-        productosCount: 12
-    },
-    'vend-003': {
-        id: 'vend-003',
-        nombre: 'Ana Lucía Pérez',
-        marca: 'Orfebre Andina',
-        ubicacion: 'Mérida, Mérida',
-        historia: 'Ana Lucía combina la orfebrería tradicional andina con diseños contemporáneos. En su taller a 1,600 metros de altura, trabaja plata 925 y piedras semipreciosas de la región.',
-        especialidad: 'Joyería en plata',
-        foto: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
-        whatsapp: '+58 412-2223775',
-        productosCount: 15
-    },
-    'vend-004': {
-        id: 'vend-004',
-        nombre: 'Carlos Eduardo Mendoza',
-        marca: 'Maderas del Sur',
-        ubicacion: 'Santa Elena de Uairén, Bolívar',
-        historia: 'Carlos Eduardo trabaja maderas amazónicas de tala sostenible. Cada pieza incluye un certificado de origen que rastrea el árbol hasta la comunidad indígena que lo cuidó.',
-        especialidad: 'Talla en madera',
-        foto: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400',
-        whatsapp: '+58 412-2223775',
-        productosCount: 6
-    }
-};
-
-const PRODUCTOS = [
-    {
-        id: 'prod-001',
-        vendedorId: 'vend-001',
-        nombre: 'Set de Tazas Espresso Artesanales',
-        descripcion: 'Set de 4 tazas para espresso, hechas a mano en torno manual. Cada una es única. Vidriado interior seguro para alimentos.',
-        precio: 45.00,
-        precioBs: 4500000,
-        categoria: 'ceramica',
-        imagen: 'https://images.unsplash.com/photo-1577968897966-3d4325b36b61?w=600',
-        stock: 5,
-        rating: 4.8,
-        reviews: 23,
-        tiempoEntrega: '3-5 días'
-    },
-    {
-        id: 'prod-002',
-        vendedorId: 'vend-001',
-        nombre: 'Vasija Decorativa Terracota',
-        descripcion: 'Pieza decorativa inspirada en las vasijas precolombinas del valle de Quíbor. Perfecta para flores secas.',
-        precio: 78.00,
-        precioBs: 7800000,
-        categoria: 'decoracion',
-        imagen: 'https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?w=600',
-        stock: 3,
-        rating: 4.9,
-        reviews: 12,
-        tiempoEntrega: '3-5 días'
-    },
-    {
-        id: 'prod-003',
-        vendedorId: 'vend-001',
-        nombre: 'Cuenco Rústico para Frutas',
-        descripcion: 'Cuenco grande para frutas o ensaladas. Pieza de edición limitada, numerada.',
-        precio: 65.00,
-        precioBs: 6500000,
-        categoria: 'ceramica',
-        imagen: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600',
-        stock: 2,
-        rating: 5.0,
-        reviews: 8,
-        tiempoEntrega: '3-5 días'
-    },
-    {
-        id: 'prod-004',
-        vendedorId: 'vend-002',
-        nombre: 'Hamaca Tradicional Llanera',
-        descripcion: 'Hamaca tejida a mano con hilo de cumare. Resiste hasta 200kg. Incluye ganchos de madera.',
-        precio: 120.00,
-        precioBs: 12000000,
-        categoria: 'textiles',
-        imagen: 'https://images.unsplash.com/photo-1522771753037-a0a1f66cd459?w=600',
-        stock: 8,
-        rating: 4.7,
-        reviews: 34,
-        tiempoEntrega: '5-7 días'
-    },
-    {
-        id: 'prod-005',
-        vendedorId: 'vend-002',
-        nombre: 'Chinchorro Doble con Borlas',
-        descripcion: 'Chinchorro tradicional venezolano, tamaño matrimonial. Tejido en crochet con algodón egipcio.',
-        precio: 280.00,
-        precioBs: 28000000,
-        categoria: 'textiles',
-        imagen: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600',
-        stock: 2,
-        rating: 4.9,
-        reviews: 19,
-        tiempoEntrega: '7-10 días'
-    },
-    {
-        id: 'prod-006',
-        vendedorId: 'vend-002',
-        nombre: 'Set de 4 Manteles Individuales',
-        descripcion: 'Manteles tejidos con fibras de cumare y chiquichique del Llano. Resistentes al agua.',
-        precio: 55.00,
-        precioBs: 5500000,
-        categoria: 'textiles',
-        imagen: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600',
-        stock: 10,
-        rating: 4.6,
-        reviews: 15,
-        tiempoEntrega: '5-7 días'
-    },
-    {
-        id: 'prod-007',
-        vendedorId: 'vend-003',
-        nombre: 'Anillo Páramo - Plata 925',
-        descripcion: 'Anillo inspirado en los frailejones del páramo andino. Plata 925 con ónix negro natural.',
-        precio: 85.00,
-        precioBs: 8500000,
-        categoria: 'joyeria',
-        imagen: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600',
-        stock: 6,
-        rating: 4.9,
-        reviews: 42,
-        tiempoEntrega: '3-5 días'
-    },
-    {
-        id: 'prod-008',
-        vendedorId: 'vend-003',
-        nombre: 'Collar Filigrana Flor de Andes',
-        descripcion: 'Collar de filigrana tradicional. Plata 925 con piedra de amatista de Los Andes.',
-        precio: 140.00,
-        precioBs: 14000000,
-        categoria: 'joyeria',
-        imagen: 'https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=600',
-        stock: 3,
-        rating: 5.0,
-        reviews: 28,
-        tiempoEntrega: '3-5 días'
-    },
-    {
-        id: 'prod-009',
-        vendedorId: 'vend-003',
-        nombre: 'Pulsera Cuero y Plata',
-        descripcion: 'Pulsera unisex en cuero vegetal con dijes de plata 925. Ajustable.',
-        precio: 45.00,
-        precioBs: 4500000,
-        categoria: 'joyeria',
-        imagen: 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=600',
-        stock: 15,
-        rating: 4.7,
-        reviews: 56,
-        tiempoEntrega: '3-5 días'
-    },
-    {
-        id: 'prod-010',
-        vendedorId: 'vend-004',
-        nombre: 'Tabla de Cortar Artesanal',
-        descripcion: 'Tabla de cedro amazónico, tratada con aceite de linaza. Medidas: 45x30cm.',
-        precio: 95.00,
-        precioBs: 9500000,
-        categoria: 'materiales-naturales',
-        imagen: 'https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?w=600',
-        stock: 4,
-        rating: 4.8,
-        reviews: 31,
-        tiempoEntrega: '5-7 días'
-    },
-    {
-        id: 'prod-011',
-        vendedorId: 'vend-004',
-        nombre: 'Caja Decorativa Tallada a Mano',
-        descripcion: 'Caja de araguaney con tallas geométricas indígenas Pemón. Interior en terciopelo.',
-        precio: 160.00,
-        precioBs: 16000000,
-        categoria: 'decoracion',
-        imagen: 'https://images.unsplash.com/photo-1605218427306-649cd9b09588?w=600',
-        stock: 2,
-        rating: 4.9,
-        reviews: 14,
-        tiempoEntrega: '5-7 días'
-    },
-    {
-        id: 'prod-012',
-        vendedorId: 'vend-004',
-        nombre: 'Set de Utensilios de Cocina',
-        descripcion: 'Set de 5 piezas en madera de mora. Acabado con cera de abejas natural.',
-        precio: 68.00,
-        precioBs: 6800000,
-        categoria: 'materiales-naturales',
-        imagen: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600',
-        stock: 7,
-        rating: 4.7,
-        reviews: 22,
-        tiempoEntrega: '5-7 días'
-    }
+// ========== ARTISANOS DEMO ==========
+const sampleArtisans = [
+  {
+    id: 'art-001',
+    name: 'María González',
+    location: 'Oaxaca, México',
+    bio: 'Artesana con más de 20 años de experiencia en cerámica tradicional. Cada pieza es única y refleja la cultura ancestral de su región.',
+    avatar: 'images/artisan-1.jpg',
+    whatsapp: '+58 412-2223775',
+    rating: 4.8,
+    sales: 156
+  },
+  {
+    id: 'art-002',
+    name: 'Artesanías del Sur',
+    location: 'Colombia',
+    bio: 'Cooperativa de artesanos dedicada a preservar las técnicas ancestrales de tejido. Trabajamos con fibras naturales y sustentables.',
+    avatar: 'images/artisan-2.jpg',
+    whatsapp: '+58 412-2223775',
+    rating: 4.9,
+    sales: 234
+  },
+  {
+    id: 'art-003',
+    name: 'Juan Pérez',
+    location: 'Cusco, Perú',
+    bio: 'Orfebre especializado en joyería tradicional con plata. Sus diseños están inspirados en la cultura andina y los símbolos precolombinos.',
+    avatar: 'images/artisan-3.jpg',
+    whatsapp: '+58 412-2223775',
+    rating: 4.7,
+    sales: 89
+  },
+  {
+    id: 'art-004',
+    name: 'Comunidad Quechua',
+    location: 'Sierra Peruana',
+    bio: 'Comunidad indígena que preserva el arte textil ancestral. Sus piezas cuentan historias transmitidas de generación en generación.',
+    avatar: 'images/artisan-4.jpg',
+    whatsapp: '+58 412-2223775',
+    rating: 5.0,
+    sales: 312
+  },
+  {
+    id: 'art-005',
+    name: 'Carlos Mendoza',
+    location: 'Guatemala',
+    bio: 'Tallador de madera con técnicas heredadas de su abuelo. Especializado en máscaras tradicionales y figuras de animales.',
+    avatar: 'images/artisan-5.jpg',
+    whatsapp: '+58 412-2223775',
+    rating: 4.6,
+    sales: 78
+  },
+  {
+    id: 'art-006',
+    name: 'Laura Silva',
+    location: 'Argentina',
+    bio: 'Artesana en cuero con 15 años de experiencia en marroquinería. Cada pieza es trabajada a mano con técnicas tradicionales argentinas.',
+    avatar: 'images/artisan-6.jpg',
+    whatsapp: '+58 412-2223775',
+    rating: 4.9,
+    sales: 201
+  }
 ];
 
-// ===== VARIABLE GLOBAL PARA FILTRO =====
-let categoriaActiva = null;
-
-// ===== MOSTRAR PRODUCTOS =====
-function mostrarProductos(filtrarCategoria = null) {
-    const contenedor = document.querySelector('.all-products .products-grid') || document.querySelector('.products-grid');
-    if (!contenedor) return;
-    
-    categoriaActiva = filtrarCategoria;
-    let productosAMostrar = PRODUCTOS;
-    
-    // Filtrar por categoría si se especifica
-    if (filtrarCategoria) {
-        productosAMostrar = PRODUCTOS.filter(p => p.categoria === filtrarCategoria);
+// ========== PRODUCTOS DEMO ==========
+const sampleProducts = [
+  {
+    id: '1',
+    artisanId: 'art-001',
+    name: 'Cerámica Tallada a Mano',
+    artisan: 'María González',
+    price: 45.00,
+    category: 'ceramica',
+    image: 'images/product-1.jpg',
+    description: 'Hermosa cerámica tallada a mano con técnicas tradicionales. Pieza única que refleja la cultura ancestral.',
+    images: ['images/product-1.jpg', 'images/product-1-2.jpg', 'images/product-1-3.jpg'],
+    artisanInfo: {
+      name: 'María González',
+      location: 'Oaxaca, México',
+      bio: 'Artesana con más de 20 años de experiencia en cerámica tradicional.',
+      avatar: 'images/artisan-1.jpg'
     }
-    
-    // Actualizar título según filtro
-    const tituloSeccion = document.querySelector('.all-products .section-title') || document.querySelector('.featured-products .section-title');
-    const subtituloSeccion = document.querySelector('.all-products .section-subtitle') || document.querySelector('.featured-products .section-subtitle');
-    
-    if (filtrarCategoria && tituloSeccion) {
-        const nombresCategorias = {
-            'ceramica': 'Cerámica Artesanal',
-            'textiles': 'Textiles y Tejidos',
-            'joyeria': 'Joyería en Plata',
-            'materiales-naturales': 'Materiales Naturales',
-            'decoracion': 'Decoración',
-            'arte-popular': 'Arte Popular'
-        };
-        tituloSeccion.textContent = nombresCategorias[filtrarCategoria] || filtrarCategoria;
-        if (subtituloSeccion) {
-            subtituloSeccion.textContent = `${productosAMostrar.length} productos encontrados`;
+  },
+  {
+    id: '2',
+    artisanId: 'art-002',
+    name: 'Bolso de Mimbre Natural',
+    artisan: 'Artesanías del Sur',
+    price: 32.00,
+    category: 'textiles',
+    image: 'images/product-2.jpg',
+    description: 'Bolso tejido a mano con fibras naturales de mimbre. Resistente y elegante.',
+    images: ['images/product-2.jpg', 'images/product-2-2.jpg'],
+    artisanInfo: {
+      name: 'Artesanías del Sur',
+      location: 'Colombia',
+      bio: 'Cooperativa de artesanos dedicada a preservar las técnicas ancestrales de tejido.',
+      avatar: 'images/artisan-2.jpg'
+    }
+  },
+  {
+    id: '3',
+    artisanId: 'art-003',
+    name: 'Collar de Plata Étnica',
+    artisan: 'Juan Pérez',
+    price: 78.00,
+    category: 'joyeria',
+    image: 'images/product-3.jpg',
+    description: 'Collar de plata 925 con diseños étnicos inspirados en la cultura andina.',
+    images: ['images/product-3.jpg', 'images/product-3-2.jpg', 'images/product-3-3.jpg'],
+    artisanInfo: {
+      name: 'Juan Pérez',
+      location: 'Cusco, Perú',
+      bio: 'Orfebre especializado en joyería tradicional con plata.',
+      avatar: 'images/artisan-3.jpg'
+    }
+  },
+  {
+    id: '4',
+    artisanId: 'art-004',
+    name: 'Cuadro Textil Andino',
+    artisan: 'Comunidad Quechua',
+    price: 120.00,
+    category: 'arte',
+    image: 'images/product-4.jpg',
+    description: 'Cuadro textil bordado a mano con lana de alpaca y tintes naturales.',
+    images: ['images/product-4.jpg', 'images/product-4-2.jpg'],
+    artisanInfo: {
+      name: 'Comunidad Quechua',
+      location: 'Sierra Peruana',
+      bio: 'Comunidad indígena que preserva el arte textil ancestral.',
+      avatar: 'images/artisan-4.jpg'
+    }
+  },
+  {
+    id: '5',
+    artisanId: 'art-005',
+    name: 'Máscara de Madera Tallada',
+    artisan: 'Carlos Mendoza',
+    price: 89.00,
+    category: 'madera',
+    image: 'images/product-5.jpg',
+    description: 'Máscara tradicional tallada en madera de cedro. Pintada a mano.',
+    images: ['images/product-5.jpg', 'images/product-5-2.jpg'],
+    artisanInfo: {
+      name: 'Carlos Mendoza',
+      location: 'Guatemala',
+      bio: 'Tallador de madera con técnicas heredadas de su abuelo.',
+      avatar: 'images/artisan-5.jpg'
+    }
+  },
+  {
+    id: '6',
+    artisanId: 'art-006',
+    name: 'Cartera de Cuero Artesanal',
+    artisan: 'Laura Silva',
+    price: 65.00,
+    category: 'cuero',
+    image: 'images/product-6.jpg',
+    description: 'Cartera de cuero genuino hecha a mano. Diseño elegante y duradero.',
+    images: ['images/product-6.jpg', 'images/product-6-2.jpg', 'images/product-6-3.jpg'],
+    artisanInfo: {
+      name: 'Laura Silva',
+      location: 'Argentina',
+      bio: 'Artesana en cuero con 15 años de experiencia en marroquinería.',
+      avatar: 'images/artisan-6.jpg'
+    }
+  }
+];
+
+function getProductById(id) {
+  return sampleProducts.find(p => p.id === id);
+}
+
+function getRelatedProducts(category, excludeId, limit = 3) {
+  return sampleProducts
+    .filter(p => p.category === category && p.id !== excludeId)
+    .slice(0, limit);
+}
+
+// ========== FUNCIONES DE ARTISANOS ==========
+function getArtisanById(id) {
+  return sampleArtisans.find(a => a.id === id);
+}
+
+function getProductsByArtisan(artisanId) {
+  return sampleProducts.filter(p => p.artisanId === artisanId);
+}
+
+function loadArtisanStore() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const artisanId = urlParams.get('id');
+  
+  const profileContainer = document.getElementById('artisan-profile');
+  const productsContainer = document.getElementById('artisan-products-grid');
+  const noProductsMessage = document.getElementById('no-products-message');
+  const breadcrumbName = document.getElementById('breadcrumb-artisan-name');
+  const productsCount = document.getElementById('products-count');
+  
+  if (!artisanId) {
+    if (profileContainer) {
+      profileContainer.innerHTML = `
+        <div class="error-state">
+          <span class="error-icon">⚠️</span>
+          <h2>Artesano no encontrado</h2>
+          <p>No se especificó un artesano válido.</p>
+          <a href="productos.html" class="btn btn-primary">Ver todos los productos</a>
+        </div>
+      `;
+    }
+    return;
+  }
+  
+  const artisan = getArtisanById(artisanId);
+  
+  if (!artisan) {
+    if (profileContainer) {
+      profileContainer.innerHTML = `
+        <div class="error-state">
+          <span class="error-icon">⚠️</span>
+          <h2>Artesano no encontrado</h2>
+          <p>El artesano que buscas no existe en nuestra tienda.</p>
+          <a href="productos.html" class="btn btn-primary">Ver todos los productos</a>
+        </div>
+      `;
+    }
+    return;
+  }
+  
+  // Update page title
+  document.title = `${artisan.name} - Tribu`;
+  
+  // Update breadcrumb
+  if (breadcrumbName) {
+    breadcrumbName.textContent = artisan.name;
+  }
+  
+  // Get artisan products
+  const products = getProductsByArtisan(artisanId);
+  
+  // Render artisan profile
+  if (profileContainer) {
+    profileContainer.innerHTML = `
+      <div class="artisan-avatar-large">
+        ${artisan.avatar ? 
+          `<img src="../${artisan.avatar}" alt="${artisan.name}">` : 
+          `<span class="avatar-placeholder">👤</span>`
         }
-    } else if (tituloSeccion && !filtrarCategoria) {
-        // Restaurar título original si venimos de un filtro
-        if (tituloSeccion.textContent.includes('Cerámica') || 
-            tituloSeccion.textContent.includes('Textiles') || 
-            tituloSeccion.textContent.includes('Joyería')) {
-            tituloSeccion.textContent = 'Todos los Productos';
-            if (subtituloSeccion) {
-                subtituloSeccion.textContent = 'Descubre toda nuestra colección de artesanías';
-            }
-        }
-    }
-    
-    window.productosGlobales = productosAMostrar;
-    
-    // Construir HTML de productos
-    let htmlProductos = productosAMostrar.map(producto => {
-        const vendedor = VENDEDORES[producto.vendedorId];
-        return `
-            <div class="product-card" onclick="mostrarDetalleProducto('${producto.id}')">
-                <div class="product-image">
-                    <img src="${producto.imagen}" alt="${producto.nombre}" loading="lazy">
-                    <button class="btn-quick-add" onclick="event.stopPropagation(); agregarAlCarritoDesdeGrid('${producto.id}')">
-                        <i class="fas fa-cart-plus"></i>
-                    </button>
-                </div>
-                <div class="product-info">
-                    <h3>${producto.nombre}</h3>
-                    <p class="product-artisan">Por: ${vendedor.marca}, ${vendedor.ubicacion}</p>
-                    <p class="product-desc">${producto.descripcion.substring(0, 60)}...</p>
-                    <div class="product-price">
-                        <span class="price">$${producto.precio.toFixed(2)}</span>
-                        <span class="rating"><i class="fas fa-star"></i> ${producto.rating} (${producto.reviews})</span>
-                    </div>
-                </div>
+      </div>
+      <div class="artisan-info-main">
+        <h1 class="artisan-name-large">${artisan.name}</h1>
+        <p class="artisan-location-large">
+          <span>📍</span> ${artisan.location}
+        </p>
+        <p class="artisan-bio-large">${artisan.bio}</p>
+        <div class="artisan-stats-row">
+          <div class="artisan-stat">
+            <span class="stat-icon">⭐</span>
+            <div class="stat-content">
+              <span class="stat-value">${artisan.rating}</span>
+              <span class="stat-label">Rating promedio</span>
             </div>
-        `;
-    }).join('');
-    
-    // Agregar botón "Ver todos" si estamos filtrando
-    if (filtrarCategoria) {
-        htmlProductos += `
-            <div style="grid-column: 1 / -1; text-align: center; margin-top: 20px;">
-                <button onclick="mostrarProductos(); window.scrollTo({top: document.querySelector('.all-products').offsetTop - 100, behavior: 'smooth'});" class="btn btn-secondary">
-                    <i class="fas fa-arrow-left"></i> Ver todos los productos
-                </button>
+          </div>
+          <div class="artisan-stat">
+            <span class="stat-icon">📦</span>
+            <div class="stat-content">
+              <span class="stat-value">${products.length}</span>
+              <span class="stat-label">Productos</span>
             </div>
-        `;
-    }
-    
-    contenedor.innerHTML = htmlProductos;
-}
-
-// ===== FUNCIÓN PARA FILTRAR POR CATEGORÍA =====
-function showCategory(categoria) {
-    // Nombres amigables para mostrar
-    const nombresCategorias = {
-        'ceramica': 'Cerámica',
-        'textiles': 'Textiles',
-        'joyeria': 'Joyería',
-        'materiales-naturales': 'Materiales Naturales',
-        'decoracion': 'Decoración',
-        'arte-popular': 'Arte Popular'
-    };
-    
-    // Mostrar productos filtrados
-    mostrarProductos(categoria);
-    
-    // Scroll a la sección de productos
-    const seccionProductos = document.querySelector('.all-products');
-    if (seccionProductos) {
-        seccionProductos.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-    
-    // Mostrar notificación
-    mostrarNotificacion(`Mostrando productos de ${nombresCategorias[categoria] || categoria}`);
-}
-
-function agregarAlCarritoDesdeGrid(productoId) {
-    const producto = PRODUCTOS.find(p => p.id === productoId);
-    if (producto) {
-        agregarAlCarrito({
-            id: producto.id,
-            nombre: producto.nombre,
-            precio: producto.precio,
-            imagen: producto.imagen
-        });
-    }
-}
-
-function mostrarDetalleProducto(productoId) {
-    const producto = PRODUCTOS.find(p => p.id === productoId);
-    const vendedor = VENDEDORES[producto.vendedorId];
-    
-    if (!producto) return;
-    
-    const modal = document.createElement('div');
-    modal.className = 'modal product-modal';
-    modal.id = 'product-detail-modal';
-    modal.innerHTML = `
-        <div class="modal-content product-detail">
-            <button class="close-modal" onclick="cerrarModal('product-detail-modal')">&times;</button>
-            <div class="product-detail-grid">
-                <div class="product-detail-image">
-                    <img src="${producto.imagen}" alt="${producto.nombre}">
-                </div>
-                <div class="product-detail-info">
-                    <h2>${producto.nombre}</h2>
-                    <div class="product-rating">
-                        <i class="fas fa-star"></i> ${producto.rating} (${producto.reviews} reseñas)
-                    </div>
-                    <p class="product-detail-price">$${producto.precio.toFixed(2)} USD</p>
-                    <p class="product-detail-bs">${producto.precioBs.toLocaleString()} Bs</p>
-                    <p class="product-detail-desc">${producto.descripcion}</p>
-                    
-                    <div class="vendedor-card">
-                        <img src="${vendedor.foto}" alt="${vendedor.nombre}" class="vendedor-foto">
-                        <div class="vendedor-info">
-                            <h4>${vendedor.marca}</h4>
-                            <p>${vendedor.ubicacion}</p>
-                            <button onclick="mostrarPerfilVendedor('${vendedor.id}')" class="btn-link">Ver perfil del artesano</button>
-                        </div>
-                    </div>
-                    
-                    <div class="product-meta">
-                        <p><i class="fas fa-box"></i> Stock: ${producto.stock} unidades</p>
-                        <p><i class="fas fa-shipping-fast"></i> Entrega: ${producto.tiempoEntrega}</p>
-                    </div>
-                    
-                    <button class="btn btn-primary btn-large" onclick="agregarAlCarrito({id: '${producto.id}', nombre: '${producto.nombre}', precio: ${producto.precio}, imagen: '${producto.imagen}'}); cerrarModal('product-detail-modal');">
-                        <i class="fas fa-cart-plus"></i> Agregar al carrito
-                    </button>
-                </div>
+          </div>
+          <div class="artisan-stat">
+            <span class="stat-icon">🛒</span>
+            <div class="stat-content">
+              <span class="stat-value">${artisan.sales}</span>
+              <span class="stat-label">Ventas</span>
             </div>
+          </div>
         </div>
-    `;
-    
-    document.body.appendChild(modal);
-    modal.style.display = 'block';
-}
-
-function mostrarPerfilVendedor(vendedorId) {
-    const vendedor = VENDEDORES[vendedorId];
-    if (!vendedor) return;
-    
-    const productosVendedor = PRODUCTOS.filter(p => p.vendedorId === vendedorId);
-    
-    const modal = document.createElement('div');
-    modal.className = 'modal vendedor-modal';
-    modal.id = 'vendedor-modal';
-    modal.innerHTML = `
-        <div class="modal-content vendedor-profile">
-            <button class="close-modal" onclick="cerrarModal('vendedor-modal')">&times;</button>
-            <div class="vendedor-header">
-                <img src="${vendedor.foto}" alt="${vendedor.nombre}" class="vendedor-foto-large">
-                <div class="vendedor-header-info">
-                    <h2>${vendedor.marca}</h2>
-                    <p class="vendedor-nombre">Por ${vendedor.nombre}</p>
-                    <p class="vendedor-ubicacion"><i class="fas fa-map-marker-alt"></i> ${vendedor.ubicacion}</p>
-                    <p class="vendedor-especialidad">${vendedor.especialidad}</p>
-                </div>
-            </div>
-            <div class="vendedor-historia">
-                <h3>Su historia</h3>
-                <p>${vendedor.historia}</p>
-            </div>
-            <div class="vendedor-stats">
-                <div class="stat">
-                    <span class="stat-number">${productosVendedor.length}</span>
-                    <span class="stat-label">Productos</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-number">${vendedor.productosCount}</span>
-                    <span class="stat-label">Ventas</span>
-                </div>
-            </div>
-            <div class="vendedor-productos">
-                <h3>Productos de ${vendedor.marca}</h3>
-                <div class="products-grid small">
-                    ${productosVendedor.map(p => `
-                        <div class="product-card" onclick="cerrarModal('vendedor-modal'); mostrarDetalleProducto('${p.id}')">
-                            <img src="${p.imagen}" alt="${p.nombre}">
-                            <h4>${p.nombre}</h4>
-                            <p class="price">$${p.precio.toFixed(2)}</p>
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-            <div class="vendedor-contacto">
-                <a href="https://wa.me/${vendedor.whatsapp.replace(/\D/g, '')}" target="_blank" class="btn btn-whatsapp">
-                    <i class="fab fa-whatsapp"></i> Contactar por WhatsApp
-                </a>
-            </div>
+        <div class="artisan-actions">
+          <a href="#" class="btn btn-primary">Ir a su tienda</a>
+          <a href="productos.html" class="btn btn-secondary">Ver todos los productos</a>
         </div>
+      </div>
     `;
-    
-    document.body.appendChild(modal);
-    modal.style.display = 'block';
-}
-
-function cerrarModal(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal) {
-        modal.remove();
+  }
+  
+  // Update products count
+  if (productsCount) {
+    productsCount.textContent = `${products.length} producto${products.length !== 1 ? 's' : ''} disponible${products.length !== 1 ? 's' : ''}`;
+  }
+  
+  // Render products or show empty message
+  if (productsContainer) {
+    if (products.length === 0) {
+      productsContainer.style.display = 'none';
+      if (noProductsMessage) {
+        noProductsMessage.style.display = 'block';
+      }
+    } else {
+      productsContainer.style.display = 'grid';
+      if (noProductsMessage) {
+        noProductsMessage.style.display = 'none';
+      }
+      
+      productsContainer.innerHTML = products.map(product => `
+        <div class="product-card">
+          <a href="../producto.html?id=${product.id}" class="product-image-link">
+            <div class="product-image" style="background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); display: flex; align-items: center; justify-content: center; color: #9ca3af;">
+              <span style="font-size: 3rem;">🎨</span>
+            </div>
+          </a>
+          <div class="product-info">
+            <span class="product-category">${product.category}</span>
+            <h3 class="product-title">
+              <a href="../producto.html?id=${product.id}">${product.name}</a>
+            </h3>
+            <p class="product-artisan">
+              <a href="tienda-artesano.html?id=${artisan.id}">por ${artisan.name}</a>
+            </p>
+            <div class="product-footer">
+              <span class="product-price">$${product.price.toFixed(2)}</span>
+              <button class="btn btn-primary btn-small" onclick='addToCart(${JSON.stringify(product).replace(/'/g, "&#39;")})'>
+                Agregar
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
     }
+  }
 }
 
-// ===== FORMULARIO PARA NUEVOS VENDEDORES =====
-function mostrarFormularioVendedor() {
-    const modal = document.createElement('div');
-    modal.className = 'modal';
-    modal.id = 'form-vendedor-modal';
-    modal.innerHTML = `
-        <div class="modal-content" style="max-width: 600px; padding: 40px;">
-            <button class="close-modal" onclick="cerrarModal('form-vendedor-modal')">&times;</button>
-            <h2 style="font-family: var(--font-secondary); margin-bottom: 10px;">Únete a Tribu</h2>
-            <p style="color: var(--gray); margin-bottom: 30px;">Comparte tu arte con toda Venezuela</p>
-            
-            <form id="form-vendedor" onsubmit="enviarFormularioVendedor(event)">
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 500;">Nombre completo</label>
-                    <input type="text" name="nombre" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem;">
-                </div>
-                
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 500;">Nombre de tu marca/taller</label>
-                    <input type="text" name="marca" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem;">
-                </div>
-                
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 500;">Ubicación (Ciudad, Estado)</label>
-                    <input type="text" name="ubicacion" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem;">
-                </div>
-                
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 500;">Especialidad</label>
-                    <select name="especialidad" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem;">
-                        <option value="">Selecciona tu especialidad</option>
-                        <option value="ceramica">Cerámica</option>
-                        <option value="textiles">Textiles</option>
-                        <option value="joyeria">Joyería</option>
-                        <option value="madera">Talla en madera</option>
-                        <option value="arte">Arte popular</option>
-                        <option value="otros">Otros</option>
-                    </select>
-                </div>
-                
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 500;">Tu historia (¿cómo empezaste?)</label>
-                    <textarea name="historia" rows="4" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; resize: vertical;"></textarea>
-                </div>
-                
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 500;">WhatsApp</label>
-                    <input type="tel" name="whatsapp" placeholder="0412-1234567" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem;">
-                </div>
-                
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 500;">Instagram (opcional)</label>
-                    <input type="text" name="instagram" placeholder="@tumarca" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem;">
-                </div>
-                
-                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 15px; font-size: 1.1rem;">
-                    Enviar solicitud
-                </button>
-                
-                <p style="font-size: 0.85rem; color: var(--gray); margin-top: 15px; text-align: center;">
-                    Revisaremos tu solicitud y te contactaremos en 24-48 horas.
-                </p>
-            </form>
+function renderProducts(containerId, products = sampleProducts) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  
+  container.innerHTML = products.map(product => `
+    <div class="product-card">
+      <a href="producto.html?id=${product.id}" class="product-image-link">
+        <div class="product-image" style="background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); display: flex; align-items: center; justify-content: center; color: #9ca3af;">
+          <span style="font-size: 3rem;">🎨</span>
         </div>
-    `;
-    
-    document.body.appendChild(modal);
-    modal.style.display = 'block';
-}
-
-function enviarFormularioVendedor(e) {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData);
-    
-    // Aquí se enviaría a un backend
-    console.log('Nuevo vendedor:', data);
-    
-    // Mostrar confirmación
-    cerrarModal('form-vendedor-modal');
-    
-    const confirmacion = document.createElement('div');
-    confirmacion.className = 'modal';
-    confirmacion.innerHTML = `
-        <div class="modal-content" style="max-width: 400px; padding: 40px; text-align: center;">
-            <div style="font-size: 60px; color: var(--success); margin-bottom: 20px;">
-                <i class="fas fa-check-circle"></i>
-            </div>
-            <h2 style="font-family: var(--font-secondary); margin-bottom: 10px;">¡Solicitud enviada!</h2>
-            <p style="color: var(--gray);">Revisaremos tu perfil y te contactaremos pronto por WhatsApp.</p>
-            <button onclick="this.closest('.modal').remove()" class="btn btn-primary" style="margin-top: 20px;">Entendido</button>
+      </a>
+      <div class="product-info">
+        <span class="product-category">${product.category}</span>
+        <h3 class="product-title">
+          <a href="producto.html?id=${product.id}">${product.name}</a>
+        </h3>
+        <p class="product-artisan">por ${product.artisan}</p>
+        <div class="product-footer">
+          <span class="product-price">$${product.price.toFixed(2)}</span>
+          <button class="btn btn-primary btn-small" onclick='addToCart(${JSON.stringify(product).replace(/'/g, "&#39;")})'>
+            Agregar
+          </button>
         </div>
-    `;
-    document.body.appendChild(confirmacion);
-    confirmacion.style.display = 'block';
+      </div>
+    </div>
+  `).join('');
 }
 
-// Hacer funciones globales
-window.mostrarDetalleProducto = mostrarDetalleProducto;
-window.mostrarPerfilVendedor = mostrarPerfilVendedor;
-window.cerrarModal = cerrarModal;
-window.mostrarFormularioVendedor = mostrarFormularioVendedor;
-window.enviarFormularioVendedor = enviarFormularioVendedor;
-window.agregarAlCarritoDesdeGrid = agregarAlCarritoDesdeGrid;
-window.showCategory = showCategory;
-window.mostrarProductos = mostrarProductos;
-
-// ===== FUNCIONES AUXILIARES =====
-function mostrarNotificacion(mensaje) {
-    const notificacion = document.createElement('div');
-    notificacion.className = 'notification';
-    notificacion.textContent = mensaje;
-    document.body.appendChild(notificacion);
-    
-    setTimeout(() => {
-        notificacion.classList.add('show');
-    }, 100);
-    
-    setTimeout(() => {
-        notificacion.classList.remove('show');
-        setTimeout(() => {
-            document.body.removeChild(notificacion);
-        }, 300);
-    }, 3000);
+function renderRelatedProducts(containerId, category, excludeId) {
+  const products = getRelatedProducts(category, excludeId);
+  renderProducts(containerId, products);
 }
 
-// Cerrar modales al hacer clic fuera
-document.addEventListener('click', function(e) {
-    if (e.target.classList.contains('modal')) {
-        e.target.style.display = 'none';
-    }
+// ========== INICIALIZACIÓN ==========
+document.addEventListener('DOMContentLoaded', () => {
+  updateCartCount();
+  initNavigation();
+  initCartSidebar();
+  
+  // Crear toast container si no existe
+  if (!document.getElementById('toast-container')) {
+    const toastContainer = document.createElement('div');
+    toastContainer.id = 'toast-container';
+    toastContainer.className = 'toast-container';
+    document.body.appendChild(toastContainer);
+  }
+  
+  // Renderizar productos en la página principal
+  renderProducts('featured-products');
+  
+  // Check for order success
+  if (window.location.search.includes('order=success')) {
+    showToast('¡Tu pedido ha sido confirmado! Te contactaremos pronto.', 'success');
+  }
 });
 
-// Función global para abrir el carrito
-window.mostrarCarrito = mostrarCarrito;
-
-// Función para ver detalle de producto (desde los cards de productos)
-function showProductDetail(productId) {
-    window.location.href = 'producto.html?id=' + productId;
-}
-
-// Hacer funciones globales para que estén disponibles en el HTML
-window.agregarAlCarrito = agregarAlCarrito;
-window.eliminarDelCarrito = eliminarDelCarrito;
-window.cambiarCantidad = cambiarCantidad;
-window.mostrarFormularioCompra = mostrarFormularioCompra;
-window.seleccionarProducto = seleccionarProducto;
-window.showProductDetail = showProductDetail;
+// ========== ANIMACIONES CSS ==========
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+  @keyframes slideOut {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(100%); opacity: 1; }
+  }
+`;
+document.head.appendChild(style);

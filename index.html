@@ -1,829 +1,234 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tribu - Mercado Comunitario de Artesanías</title>
-    <link rel="stylesheet" href="css/styles.css?v=2">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
-    <style>
-        #password-protection {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-        }
-        .password-box {
-            background: white;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            text-align: center;
-            max-width: 400px;
-            width: 90%;
-        }
-        .password-box h2 {
-            color: #333;
-            margin-bottom: 20px;
-            font-family: 'Poppins', sans-serif;
-        }
-        .password-box input {
-            width: 100%;
-            padding: 15px;
-            margin: 15px 0;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: border 0.3s;
-        }
-        .password-box input:focus {
-            border-color: #667eea;
-            outline: none;
-        }
-        .password-box button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            width: 100%;
-            transition: transform 0.3s;
-        }
-        .password-box button:hover {
-            transform: translateY(-2px);
-        }
-        .error-message {
-            color: #e74c3c;
-            margin-top: 10px;
-            display: none;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tribu - Artesanías Latinoamericanas</title>
+  <meta name="description" content="Descubre artesanías únicas de Latinoamérica. Conectamos artesanos con el mundo.">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/tienda-artesano.css">
 </head>
 <body>
-    <!-- Password Protection (Temporarily Disabled) -->
-    <!--
-    <div id="password-protection">
-        <div class="password-box">
-            <h2>🔒 Acceso Restringido</h2>
-            <p>Este sitio es privado. Ingresa la contraseña:</p>
-            <input type="password" id="password-input" placeholder="Ingresa la contraseña" autocomplete="off">
-            <button onclick="checkPassword()">Acceder</button>
-            <div class="error-message" id="error-msg">Contraseña incorrecta. Intenta nuevamente.</div>
-        </div>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <a href="index.html" class="logo">🔥 Tribu</a>
+      <nav class="nav">
+        <ul>
+          <li><a href="pages/productos.html">Productos</a></li>
+          <li><a href="pages/registro-artesano.html">Vender</a></li>
+          <li><a href="pages/faq.html">FAQ</a></li>
+          <li><a href="pages/contacto.html">Contacto</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <button class="cart-btn" onclick="openCartSidebar()">
+          🛒
+          <span class="cart-count" style="display: none;">0</span>
+        </button>
+        <a href="pages/registro-artesano.html" class="btn btn-primary">Comenzar a Vender</a>
+      </div>
     </div>
-    -->
+  </header>
 
-    <!-- Password script temporarily disabled -->
-    <!--
-    <script>
-        // CONTRASEÑA (cámbiala aquí)
-        const SITE_PASSWORD = "tribu2024";
-        
-        function checkPassword() {
-            const input = document.getElementById('password-input').value;
-            const errorMsg = document.getElementById('error-msg');
-            
-            if (input === SITE_PASSWORD) {
-                // Contraseña correcta - mostrar sitio
-                document.getElementById('password-protection').style.display = 'none';
-                document.body.style.overflow = 'auto';
-                
-                // Guardar en sessionStorage (dura mientras la pestaña esté abierta)
-                sessionStorage.setItem('tribu_authenticated', 'true');
-            } else {
-                // Contraseña incorrecta
-                errorMsg.style.display = 'block';
-                document.getElementById('password-input').value = '';
-                document.getElementById('password-input').focus();
-            }
-        }
-        
-        // Verificar si ya está autenticado
-        if (sessionStorage.getItem('tribu_authenticated') === 'true') {
-            document.getElementById('password-protection').style.display = 'none';
-            document.body.style.overflow = 'auto';
-        } else {
-            document.body.style.overflow = 'hidden';
-        }
-        
-        // Permitir Enter para enviar
-        document.getElementById('password-input').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                checkPassword();
-            }
-        });
-    </script>
-    -->
-    <!-- Header -->
-    <header class="header">
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">
-                    <h1><i class="fas fa-users"></i> Tribu</h1>
-                    <p class="tagline">Conexiones auténticas, artesanía con historia</p>
-                </div>
-                
-                <nav class="main-nav">
-                    <ul>
-                        <li><a href="#inicio" class="active">Inicio</a></li>
-                        <li><a href="#categorias">Categorías</a></li>
-                        <li><a href="#artesanos">Artesanos</a></li>
-                        <li><a href="#como-funciona">Cómo funciona</a></li>
-                        <li><a href="#contacto">Contacto</a></li>
-                    </ul>
-                </nav>
-                
-                <div class="header-actions">
-                    <div class="search-container">
-                        <input type="text" class="search-input" placeholder="Buscar productos..." id="search-input" onkeypress="if(event.key==='Enter')buscarProductos()">
-                        <button class="btn-search" onclick="buscarProductos()"><i class="fas fa-search"></i></button>
-                    </div>
-                    <button class="btn-cart" onclick="mostrarCarrito()"><i class="fas fa-shopping-cart"></i> <span id="cart-count" class="cart-count" style="display: none;">0</span></button>
-                </div>
-
-                <button class="menu-toggle" onclick="toggleMenu()">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="hero" id="inicio">
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <h2>Comunidad que crea, comparte y conecta</h2>
-                    <p>Un espacio donde artesanos venezolanos y latinoamericanos encuentran su tribu. Cada compra apoya directamente a creadores locales.</p>
-                    <div class="hero-buttons">
-                        <a href="#categorias" class="btn btn-primary">Explorar productos</a>
-                        <a href="#artesanos" class="btn btn-secondary">Conocer artesanos</a>
-                    </div>
-                </div>
-                <div class="hero-image">
-                    <div class="hero-image-container">
-                        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" 
-                             alt="Artesanía textil tradicional" 
-                             class="hero-img">
-                        <div class="image-overlay">
-                            <p>Artesanía venezolana y latinoamericana</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Categorías -->
-    <section class="categories" id="categorias">
-        <div class="container">
-            <h2 class="section-title">Tesoros de nuestra Tribu</h2>
-            <p class="section-subtitle">Artesanía venezolana y latinoamericana, hecha con pasión y tradición</p>
-            
-            <div class="categories-grid">
-                <div class="category-card" onclick="showCategory('ceramica')">
-                    <div class="category-image">
-                        <img src="https://images.unsplash.com/photo-1577968897966-3d4325b36b61?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
-                             alt="Tazas de espresso de cerámica artesanal">
-                        <div class="category-overlay">
-                            <i class="fas fa-mug-hot"></i>
-                        </div>
-                    </div>
-                    <h3>Cerámica</h3>
-                    <p>Tazas, vasijas y piezas decorativas</p>
-                </div>
-                
-                <div class="category-card" onclick="showCategory('textiles')">
-                    <div class="category-image">
-                        <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
-                             alt="Textiles wayúu">
-                        <div class="category-overlay">
-                            <i class="fas fa-tshirt"></i>
-                        </div>
-                    </div>
-                    <h3>Textiles</h3>
-                    <p>Tejidos, bordados y prendas tradicionales</p>
-                </div>
-                
-                <div class="category-card" onclick="showCategory('joyeria')">
-                    <div class="category-image">
-                        <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
-                             alt="Joyería de plata">
-                        <div class="category-overlay">
-                            <i class="fas fa-gem"></i>
-                        </div>
-                    </div>
-                    <h3>Joyería</h3>
-                    <p>Plata, piedras semipreciosas y diseños únicos</p>
-                </div>
-                
-                <div class="category-card" onclick="showCategory('arte-popular')">
-                    <div class="category-image">
-                        <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
-                             alt="Arte popular mexicano">
-                        <div class="category-overlay">
-                            <i class="fas fa-palette"></i>
-                        </div>
-                    </div>
-                    <h3>Arte Popular</h3>
-                    <p>Pinturas, tallados y arte tradicional</p>
-                </div>
-                
-                <div class="category-card" onclick="showCategory('materiales-naturales')">
-                    <div class="category-image">
-                        <img src="https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
-                             alt="Cestería y tejidos con fibras naturales">
-                        <div class="category-overlay">
-                            <i class="fas fa-leaf"></i>
-                        </div>
-                    </div>
-                    <h3>Materiales Naturales</h3>
-                    <p>Cestería, madera y fibras sostenibles</p>
-                </div>
-                
-                <div class="category-card" onclick="showCategory('decoracion')">
-                    <div class="category-image">
-                        <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
-                             alt="Decoración artesanal con vasijas">
-                        <div class="category-overlay">
-                            <i class="fas fa-home"></i>
-                        </div>
-                    </div>
-                    <h3>Decoración</h3>
-                    <p>Objetos para el hogar y espacios únicos</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Productos Destacados -->
-    <section class="featured-products">
-        <div class="container">
-            <h2 class="section-title">Favoritos de la comunidad</h2>
-            <p class="section-subtitle">Productos más amados por nuestra Tribu</p>
-            
-            <div class="products-grid">
-                <div class="product-card" onclick="showProductDetail('CER-001')">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1577968897966-3d4325b36b61?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
-                             alt="Set de tazas de espresso de cerámica" 
-                             class="product-img">
-                        <span class="product-badge">Más vendido</span>
-                    </div>
-                    <div class="product-info">
-                        <h3>Set de tazas espresso</h3>
-                        <p class="product-artisan">Por: Taller Cerámico, Oaxaca</p>
-                        <p class="product-desc">Cerámica artesanal, hechas a mano</p>
-                        <div class="product-price">
-                            <span class="price">$52.99</span>
-                            <span class="rating"><i class="fas fa-star"></i> 4.9 (156)</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="product-card" onclick="showProductDetail('TEX-001')">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
-                             alt="Mochila wayúu tejida a mano" 
-                             class="product-img">
-                    </div>
-                    <div class="product-info">
-                        <h3>Mochila wayúu</h3>
-                        <p class="product-artisan">Por: Comunidad Wayúu, Colombia</p>
-                        <p class="product-desc">Tejida a mano con colores vibrantes</p>
-                        <div class="product-price">
-                            <span class="price">$68.50</span>
-                            <span class="rating"><i class="fas fa-star"></i> 4.9 (89)</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="product-card" onclick="showProductDetail('JOY-001')">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
-                             alt="Pulseras de plata con diseños incas" 
-                             class="product-img">
-                        <span class="product-badge">Nuevo</span>
-                    </div>
-                    <div class="product-info">
-                        <h3>Pulseras de plata</h3>
-                        <p class="product-artisan">Por: Taller Plata, Perú</p>
-                        <p class="product-desc">Diseños inspirados en cultura inca</p>
-                        <div class="product-price">
-                            <span class="price">$32.00</span>
-                            <span class="rating"><i class="fas fa-star"></i> 4.7 (56)</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="product-card" onclick="showProductDetail('CER-002')">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
-                             alt="Tapiz andino tejido con lana de alpaca" 
-                             class="product-img">
-                    </div>
-                    <div class="product-info">
-                        <h3>Tapiz andino</h3>
-                        <p class="product-artisan">Por: Tejedores Bolivianos</p>
-                        <p class="product-desc">Lana de alpaca, diseños tradicionales</p>
-                        <div class="product-price">
-                            <span class="price">$120.00</span>
-                            <span class="rating"><i class="fas fa-star"></i> 5.0 (42)</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="section-cta">
-                <a href="#" class="btn btn-primary" onclick="document.querySelector('.all-products').scrollIntoView({behavior: 'smooth'}); return false;">Ver todos los productos</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Artesanos Destacados -->
-    <section class="artisans" id="artesanos">
-        <div class="container">
-            <h2 class="section-title">Nuestros Artesanos</h2>
-            <p class="section-subtitle">Conoce a las manos detrás de cada pieza única</p>
-            
-            <div class="artisans-grid">
-                <div class="artisan-card" onclick="mostrarPerfilVendedor('vend-001')">
-                    <div class="artisan-image">
-                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400" alt="María Elena Gutiérrez">
-                    </div>
-                    <div class="artisan-info">
-                        <h3>Manos de Barro</h3>
-                        <p class="artisan-name">María Elena Gutiérrez</p>
-                        <p class="artisan-location"><i class="fas fa-map-marker-alt"></i> Valencia, Carabobo</p>
-                        <p class="artisan-specialty">Cerámica artesanal</p>
-                        <p class="artisan-story">15 años honrando la tradición familiar del barro rojo de Guataparo.</p>
-                    </div>
-                </div>
-                
-                <div class="artisan-card" onclick="mostrarPerfilVendedor('vend-002')">
-                    <div class="artisan-image">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400" alt="José Rafael Morales">
-                    </div>
-                    <div class="artisan-info">
-                        <h3>Tejidos del Llano</h3>
-                        <p class="artisan-name">José Rafael Morales</p>
-                        <p class="artisan-location"><i class="fas fa-map-marker-alt"></i> San Fernando de Apure</p>
-                        <p class="artisan-specialty">Hamacas y textiles</p>
-                        <p class="artisan-story">Técnicas de tejido transmitidas por generaciones junto al río Portuguesa.</p>
-                    </div>
-                </div>
-                
-                <div class="artisan-card" onclick="mostrarPerfilVendedor('vend-003')">
-                    <div class="artisan-image">
-                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400" alt="Ana Lucía Pérez">
-                    </div>
-                    <div class="artisan-info">
-                        <h3>Orfebre Andina</h3>
-                        <p class="artisan-name">Ana Lucía Pérez</p>
-                        <p class="artisan-location"><i class="fas fa-map-marker-alt"></i> Mérida, Mérida</p>
-                        <p class="artisan-specialty">Joyería en plata</p>
-                        <p class="artisan-story">Plata 925 y piedras semipreciosas a 1,600 metros de altura en los Andes.</p>
-                    </div>
-                </div>
-                
-                <div class="artisan-card" onclick="mostrarPerfilVendedor('vend-004')">
-                    <div class="artisan-image">
-                        <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400" alt="Carlos Eduardo Mendoza">
-                    </div>
-                    <div class="artisan-info">
-                        <h3>Maderas del Sur</h3>
-                        <p class="artisan-name">Carlos Eduardo Mendoza</p>
-                        <p class="artisan-location"><i class="fas fa-map-marker-alt"></i> Santa Elena de Uairén, Bolívar</p>
-                        <p class="artisan-specialty">Talla en madera</p>
-                        <p class="artisan-story">Maderas amazónicas de tala sostenible con certificado de origen indígena.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="section-cta">
-                <a href="#" class="btn btn-secondary" onclick="mostrarFormularioVendedor(); return false;">¿Eres artesano? Únete a Tribu</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Todos los Productos -->
-    <section class="all-products">
-        <div class="container">
-            <h2 class="section-title">Todos los Productos</h2>
-            <p class="section-subtitle">Descubre toda nuestra colección de artesanías</p>
-            
-            <div id="products-container" class="products-grid">
-                <!-- Los productos se cargarán dinámicamente aquí -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonios -->
-    <section class="testimonials">
-        <div class="container">
-            <h2 class="section-title">Voces de nuestra Tribu</h2>
-            <p class="section-subtitle">Lo que dicen artesanos y compradores de nuestra comunidad</p>
-            
-            <div class="testimonials-grid">
-                <div class="testimonial-card">
-                    <div class="testimonial-content">
-                        <p>"El set de tazas espresso que compré es perfecto para mis mañanas de café. Cada taza es única y la calidad de la cerámica es excepcional."</p>
-                    </div>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">
-                            <i class="fas fa-user-circle"></i>
-                        </div>
-                        <div class="author-info">
-                            <h4>Ana Martínez</h4>
-                            <p>Ciudad de México</p>
-                            <div class="rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="testimonial-card">
-                    <div class="testimonial-content">
-                        <p>"La mochila wayúu que compré es hermosa y de excelente calidad. Recibí muchos cumplidos durante mi viaje a Europa."</p>
-                    </div>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">
-                            <i class="fas fa-user-circle"></i>
-                        </div>
-                        <div class="author-info">
-                            <h4>Carlos Rodríguez</h4>
-                            <p>Bogotá, Colombia</p>
-                            <div class="rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="testimonial-card">
-                    <div class="testimonial-content">
-                        <p>"Como coleccionista de arte popular, ArteLatino es mi fuente favorita. Autenticidad garantizada y envío impecable."</p>
-                    </div>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">
-                            <i class="fas fa-user-circle"></i>
-                        </div>
-                        <div class="author-info">
-                            <h4>María González</h4>
-                            <p>Lima, Perú</p>
-                            <div class="rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Métodos de Pago Venezuela -->
-    <section class="payment-section" id="metodos-pago">
-        <div class="container">
-            <h2 class="section-title">Métodos de Pago en Venezuela</h2>
-            <p class="section-subtitle">Facilitamos transacciones seguras y rápidas para nuestra comunidad Tribu</p>
-            
-            <div class="payment-grid">
-                <!-- Pago Móvil (Principal) -->
-                <div class="payment-card primary">
-                    <div class="payment-icon">
-                        <i class="fas fa-mobile-alt"></i>
-                    </div>
-                    <h3>Pago Móvil</h3>
-                    <p><strong>Método preferido en Venezuela</strong>. Transferencias inmediatas 24/7 desde tu teléfono. Rápido, seguro y sin comisiones.</p>
-                    
-                    <div class="payment-steps">
-                        <h4>¿Cómo pagar con Pago Móvil?</h4>
-                        <ol>
-                            <li>Abre la app de tu banco (Banesco, Mercantil, Provincial, etc.)</li>
-                            <li>Selecciona "Pago Móvil"</li>
-                            <li>Ingresa nuestro número: <strong>0412-2223775</strong></li>
-                            <li>Confirma la cédula: <strong>V-XX.XXX.XXX</strong></li>
-                            <li>Envía el monto exacto de tu compra</li>
-                            <li>Envía el comprobante por WhatsApp/Telegram</li>
-                        </ol>
-                    </div>
-                    
-                    <div class="qr-code">
-                        <div class="qr-placeholder">
-                            <i class="fas fa-qrcode"></i>
-                            <div>QR Pago Móvil</div>
-                        </div>
-                        <p>Escanea para pagar directamente</p>
-                    </div>
-                </div>
-                
-                <!-- Transferencias Bancarias -->
-                <div class="payment-card">
-                    <div class="payment-icon">
-                        <i class="fas fa-university"></i>
-                    </div>
-                    <h3>Transferencias Bancarias</h3>
-                    <p>Transferencias directas a nuestras cuentas en bolívares o dólares.</p>
-                    
-                    <div class="bank-info">
-                        <p><strong>Banesco:</strong> 0134-XXXX-XX-XXXXXXX-X</p>
-                        <p><strong>Mercantil:</strong> 0105-XXXX-XX-XXXXXXX-X</p>
-                        <p><strong>Provincial:</strong> 0108-XXXX-XX-XXXXXXX-X</p>
-                        <p><strong>Titular:</strong> Tribu Comercio C.A.</p>
-                        <p><strong>RIF:</strong> J-XXXXXX-X</p>
-                    </div>
-                    
-                    <div class="payment-steps">
-                        <h4>Instrucciones:</h4>
-                        <ol>
-                            <li>Realiza transferencia a la cuenta indicada</li>
-                            <li>Incluye tu número de pedido como referencia</li>
-                            <li>Envía comprobante por WhatsApp/Telegram</li>
-                            <li>Tu pedido se procesa en 1-2 horas hábiles</li>
-                        </ol>
-                    </div>
-                </div>
-                
-                <!-- Zelle (USD) -->
-                <div class="payment-card">
-                    <div class="payment-icon">
-                        <i class="fas fa-dollar-sign"></i>
-                    </div>
-                    <h3>Zelle (USD)</h3>
-                    <p>Para pagos en dólares desde cuentas estadounidenses. Ideal para compradores internacionales.</p>
-                    
-                    <div class="bank-info">
-                        <p><strong>Email Zelle:</strong> pagos@tribu.com.ve</p>
-                        <p><strong>Nombre:</strong> Tribu Commerce LLC</p>
-                        <p><strong>Nota:</strong> Solo cuentas bancarias USA</p>
-                    </div>
-                    
-                    <div class="payment-steps">
-                        <h4>Para pagar con Zelle:</h4>
-                        <ol>
-                            <li>Accede a tu app bancaria (USA)</li>
-                            <li>Busca opción "Send with Zelle"</li>
-                            <li>Ingresa nuestro email: pagos@tribu.com.ve</li>
-                            <li>Envía el monto en USD</li>
-                            <li>Incluye número de pedido en memo</li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Tarjetas locales -->
-            <div class="payment-card wide-card">
-                <div class="payment-icon">
-                    <i class="fas fa-credit-card"></i>
-                </div>
-                <h3>Tarjetas de Crédito/Débito</h3>
-                <p>Aceptamos tarjetas Visa y Mastercard emitidas en Venezuela a través de pasarelas locales seguras.</p>
-                
-                <div class="payment-features">
-                    <div class="feature">
-                        <i class="fas fa-shield-alt"></i>
-                        <h4>Protección SSL</h4>
-                        <p>Transacciones encriptadas 256-bit</p>
-                    </div>
-                    <div class="feature">
-                        <i class="fas fa-bolt"></i>
-                        <h4>Procesamiento Rápido</h4>
-                        <p>Confirmación instantánea</p>
-                    </div>
-                    <div class="feature">
-                        <i class="fas fa-user-shield"></i>
-                        <h4>Verificación 3D Secure</h4>
-                        <p>Autenticación adicional</p>
-                    </div>
-                </div>
-                
-                <div class="payment-note">
-                    <p><i class="fas fa-info-circle"></i> <strong>Importante:</strong> Las tarjetas internacionales pueden tener restricciones. Recomendamos Pago Móvil para mayor rapidez y menores comisiones.</p>
-                </div>
-            </div>
-            
-            <div class="payment-note final-note">
-                <p><i class="fas fa-clock"></i> <strong>Tiempos de procesamiento:</strong> Pago Móvil (inmediato), Transferencias (1-2 horas), Zelle (2-4 horas), Tarjetas (instantáneo).</p>
-                <p><i class="fas fa-headset"></i> <strong>Soporte:</strong> WhatsApp +58 412-2223775 | Telegram @TribuAyuda | Email: soporte@tribu.com.ve</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer" id="contacto">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <h3><i class="fas fa-users"></i> Tribu</h3>
-                    <p>Comunidad de artesanos venezolanos y latinoamericanos desde 2024</p>
-                    <div class="social-links">
-                        <a href="https://instagram.com/tribuarte" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="#" onclick="alert('Próximamente: Facebook'); return false;" title="Facebook"><i class="fab fa-facebook"></i></a>
-                        <a href="#" onclick="alert('Próximamente: TikTok'); return false;" title="TikTok"><i class="fab fa-tiktok"></i></a>
-                        <a href="#" onclick="alert('Próximamente: Pinterest'); return false;" title="Pinterest"><i class="fab fa-pinterest"></i></a>
-                    </div>
-                </div>
-                
-                <div class="footer-links">
-                    <div class="footer-column">
-                        <h4>Comprar</h4>
-                        <ul>
-                            <li><a href="#" onclick="document.querySelector('.featured-products').scrollIntoView({behavior: 'smooth'}); return false;">Todos los productos</a></li>
-                            <li><a href="#" onclick="alert('Próximamente: Novedades'); return false;">Novedades</a></li>
-                            <li><a href="#" onclick="alert('Próximamente: Ofertas'); return false;">Ofertas especiales</a></li>
-                            <li><a href="#" onclick="alert('Próximamente: Guía de regalos'); return false;">Regalos</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="footer-column">
-                        <h4>Vender</h4>
-                        <ul>
-                            <li><a href="#" onclick="mostrarFormularioVendedor(); return false;">Conviértete en vendedor</a></li>
-                            <li><a href="#" onclick="alert('Próximamente: Guía para artesanos'); return false;">Guía para artesanos</a></li>
-                            <li><a href="#" onclick="alert('Próximamente: Políticas de venta'); return false;">Políticas de venta</a></li>
-                            <li><a href="#" onclick="alert('Comisión: 5% por venta'); return false;">Comisiones</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="footer-column">
-                        <h4>Ayuda</h4>
-                        <ul>
-                            <li><a href="#" onclick="alert('Próximamente: Centro de ayuda'); return false;">Centro de ayuda</a></li>
-                            <li><a href="#" onclick="alert('Próximamente: Envíos y devoluciones'); return false;">Envíos y devoluciones</a></li>
-                            <li><a href="#" onclick="alert('Próximamente: Preguntas frecuentes'); return false;">Preguntas frecuentes</a></li>
-                            <li><a href="#" onclick="alert('Contacto: hola@tribuarte.com'); return false;">Contacto</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="footer-bottom">
-                <p>&copy; 2024 Tribu. Todos los derechos reservados.</p>
-                <div class="footer-legal">
-                    <a href="#" onclick="alert('Próximamente: Términos y condiciones'); return false;">Términos y condiciones</a>
-                    <a href="#" onclick="alert('Próximamente: Política de privacidad'); return false;">Política de privacidad</a>
-                    <a href="#" onclick="alert('Próximamente: Aviso legal'); return false;">Aviso legal</a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Modal del Carrito -->
-    <div id="cart-modal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="document.getElementById('cart-modal').style.display='none'">&times;</span>
-            <h2>Tu Carrito</h2>
-            <div id="cart-items"></div>
-        </div>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <h1>Artesanías con Alma Latinoamericana</h1>
+      <p>Descubre piezas únicas hechas a mano por artesanos de toda Latinoamérica</p>
+      <a href="pages/productos.html" class="btn btn-secondary" style="font-size: 1.125rem; padding: 1rem 2rem;">Explorar Productos</a>
     </div>
+  </section>
 
-    <!-- Modal de Checkout -->
-    <div id="checkout-modal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="document.getElementById('checkout-modal').style.display='none'">&times;</span>
-            <h2>Finalizar Compra</h2>
-            <form id="checkout-form">
-                <div class="form-group">
-                    <label for="nombre">Nombre:</label>
-                    <input type="text" id="nombre" name="nombre" required>
-                </div>
-                <div class="form-group">
-                    <label for="apellido">Apellido:</label>
-                    <input type="text" id="apellido" name="apellido" required>
-                </div>
-                <div class="form-group">
-                    <label for="telefono">Teléfono:</label>
-                    <input type="tel" id="telefono" name="telefono" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="direccion">Dirección:</label>
-                    <textarea id="direccion" name="direccion" required></textarea>
-                </div>
-                <button type="submit" class="btn-submit">Enviar Pedido</button>
-            </form>
+  <!-- Featured Products -->
+  <section class="section" style="background: white;">
+    <div class="container">
+      <h2 class="section-title">Productos Destacados</h2>
+      <div class="product-grid">
+        <!-- Producto 1 -->
+        <div class="product-card">
+          <a href="producto.html?id=1" class="product-link">
+            <div class="product-image">
+              <img src="https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=400" alt="Cerámica Tallada a Mano">
+            </div>
+            <div class="product-info">
+              <span class="product-category">Cerámica</span>
+              <h3 class="product-title">Cerámica Tallada a Mano</h3>
+              <p class="product-artisan">por <a href="tienda-artesano.html?id=art-001">María González</a></p>
+              <div class="product-rating">⭐⭐⭐⭐⭐ (124)</div>
+              <div class="product-prices">
+                <span class="product-price">$45.00</span>
+                <span class="product-price-bs">Bs. 1,642.50</span>
+              </div>
+            </div>
+          </a>
+          <button class="btn btn-primary btn-add" onclick="event.preventDefault(); addToCart({id: '1', name: 'Cerámica Tallada a Mano', price: 45, image: 'https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=400', artisan: 'María González'})">Agregar al Carrito</button>
         </div>
+
+        <!-- Producto 2 -->
+        <div class="product-card">
+          <a href="producto.html?id=2" class="product-link">
+            <div class="product-image">
+              <img src="https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=400" alt="Bolso de Mimbre Natural">
+            </div>
+            <div class="product-info">
+              <span class="product-category">Textiles</span>
+              <h3 class="product-title">Bolso de Mimbre Natural</h3>
+              <p class="product-artisan">por <a href="tienda-artesano.html?id=art-002">Artesanías del Sur</a></p>
+              <div class="product-rating">⭐⭐⭐⭐⭐ (89)</div>
+              <div class="product-prices">
+                <span class="product-price">$32.00</span>
+                <span class="product-price-bs">Bs. 1,168.00</span>
+              </div>
+            </div>
+          </a>
+          <button class="btn btn-primary btn-add" onclick="event.preventDefault(); addToCart({id: '2', name: 'Bolso de Mimbre Natural', price: 32, image: 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=400', artisan: 'Artesanías del Sur'})">Agregar al Carrito</button>
+        </div>
+
+        <!-- Producto 3 -->
+        <div class="product-card">
+          <a href="producto.html?id=3" class="product-link">
+            <div class="product-image">
+              <img src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=400" alt="Collar de Plata Étnica">
+            </div>
+            <div class="product-info">
+              <span class="product-category">Joyería</span>
+              <h3 class="product-title">Collar de Plata Étnica</h3>
+              <p class="product-artisan">por <a href="tienda-artesano.html?id=art-003">Juan Pérez</a></p>
+              <div class="product-rating">⭐⭐⭐⭐⭐ (203)</div>
+              <div class="product-prices">
+                <span class="product-price">$78.00</span>
+                <span class="product-price-bs">Bs. 2,847.00</span>
+              </div>
+            </div>
+          </a>
+          <button class="btn btn-primary btn-add" onclick="event.preventDefault(); addToCart({id: '3', name: 'Collar de Plata Étnica', price: 78, image: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=400', artisan: 'Juan Pérez'})">Agregar al Carrito</button>
+        </div>
+
+        <!-- Producto 4 -->
+        <div class="product-card">
+          <a href="producto.html?id=4" class="product-link">
+            <div class="product-image">
+              <img src="https://images.unsplash.com/photo-1582650949472-e9e2bcabc75d?w=400" alt="Cuadro Textil Andino">
+            </div>
+            <div class="product-info">
+              <span class="product-category">Arte</span>
+              <h3 class="product-title">Cuadro Textil Andino</h3>
+              <p class="product-artisan">por <a href="tienda-artesano.html?id=art-004">Comunidad Quechua</a></p>
+              <div class="product-rating">⭐⭐⭐⭐⭐ (67)</div>
+              <div class="product-prices">
+                <span class="product-price">$120.00</span>
+                <span class="product-price-bs">Bs. 4,380.00</span>
+              </div>
+            </div>
+          </a>
+          <button class="btn btn-primary btn-add" onclick="event.preventDefault(); addToCart({id: '4', name: 'Cuadro Textil Andino', price: 120, image: 'https://images.unsplash.com/photo-1582650949472-e9e2bcabc75d?w=400', artisan: 'Comunidad Quechua'})">Agregar al Carrito</button>
+        </div>
+      </div>
+      <div style="text-align: center; margin-top: 2rem;">
+        <a href="pages/productos.html" class="btn btn-secondary">Ver Todos los Productos</a>
+      </div>
     </div>
+  </section>
 
-    <!-- Resultados de búsqueda -->
-    <div id="search-results" class="search-results"></div>
+  <!-- Features -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">¿Por qué elegir Tribu?</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🤝</div>
+          <h3>Directo del Artesano</h3>
+          <p>Compra directamente, sin intermediarios. Apoya el comercio justo.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">✨</div>
+          <h3>Productos Únicos</h3>
+          <p>Cada pieza es hecha a mano, con técnicas tradicionales.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🌱</div>
+          <h3>Sostenible</h3>
+          <p>Materiales naturales y procesos eco-amigables.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🚀</div>
+          <h3>Envío Seguro</h3>
+          <p>Entregamos a toda Latinoamérica y el mundo.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <script src="js/app.js?v=2"></script>
-    <script>
-        // ===== FUNCIONES ADICIONALES FIXES =====
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo">🔥 Tribu</div>
+          <p>Conectando artesanos latinoamericanos con el mundo. Cada compra apoya una familia.</p>
+          <div class="footer-social">
+            <a href="#" title="Instagram">📷</a>
+            <a href="#" title="Facebook">📘</a>
+            <a href="#" title="Twitter">🐦</a>
+            <a href="#" title="WhatsApp">💬</a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <h4>Comprar</h4>
+          <ul>
+            <li><a href="pages/productos.html">Todos los Productos</a></li>
+            <li><a href="pages/productos.html">Nuevos Ingresos</a></li>
+            <li><a href="pages/productos.html">Más Vendidos</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Vender</h4>
+          <ul>
+            <li><a href="pages/registro-artesano.html">Registro de Artesano</a></li>
+            <li><a href="pages/faq.html">Cómo Funciona</a></li>
+            <li><a href="pages/faq.html">Preguntas Frecuentes</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Ayuda</h4>
+          <ul>
+            <li><a href="pages/contacto.html">Contacto</a></li>
+            <li><a href="pages/envios-devoluciones.html">Envíos</a></li>
+            <li><a href="pages/privacidad.html">Privacidad</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2024-2025 TribuArte. Todos los derechos reservados.</p>
+        <div class="footer-payments">
+          <span>💳</span> <span>💵</span> <span>📱</span>
+        </div>
+      </div>
+    </div>
+  </footer>
 
-        // Toggle menú móvil
-        function toggleMenu() {
-            const nav = document.querySelector('.main-nav');
-            nav.classList.toggle('active');
-        }
+  <!-- Cart Sidebar -->
+  <div id="cart-sidebar" class="cart-sidebar">
+    <div class="cart-sidebar-header">
+      <h3>🛒 Tu Carrito</h3>
+      <button class="cart-close" onclick="closeCartSidebar()">✕</button>
+    </div>
+    <div class="cart-empty">
+      <span class="cart-empty-icon">🛍️</span>
+      <p>Tu carrito está vacío</p>
+      <a href="pages/productos.html" class="btn btn-primary" onclick="closeCartSidebar()">Explorar Productos</a>
+    </div>
+  </div>
+  <div id="cart-backdrop" class="cart-backdrop" onclick="closeCartSidebar()"></div>
 
-        // Cerrar menú al hacer click en un link
-        document.querySelectorAll('.main-nav a').forEach(link => {
-            link.addEventListener('click', () => {
-                document.querySelector('.main-nav').classList.remove('active');
-            });
-        });
-
-        // Búsqueda de productos
-        function buscarProductos() {
-            const input = document.getElementById('search-input');
-            const query = input.value.trim().toLowerCase();
-
-            if (!query) {
-                mostrarNotificacion('⚠️ Escribe algo para buscar');
-                return;
-            }
-
-            // Productos disponibles
-            const productos = [
-                { id: 'CER-001', nombre: 'Set de tazas espresso', categoria: 'Cerámica', precio: 52.99, imagen: 'https://images.unsplash.com/photo-1577968897966-3d4325b36b61?w=400' },
-                { id: 'TEX-001', nombre: 'Mochila wayúu', categoria: 'Textiles', precio: 68.50, imagen: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400' },
-                { id: 'JOY-001', nombre: 'Pulseras de plata', categoria: 'Joyería', precio: 32.00, imagen: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400' },
-                { id: 'CER-002', nombre: 'Tapiz andino', categoria: 'Textiles', precio: 120.00, imagen: 'https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=400' }
-            ];
-
-            const resultados = productos.filter(p =>
-                p.nombre.toLowerCase().includes(query) ||
-                p.categoria.toLowerCase().includes(query)
-            );
-
-            if (resultados.length === 0) {
-                mostrarNotificacion('❌ No se encontraron productos');
-            } else {
-                mostrarNotificacion(`✅ ${resultados.length} producto(s) encontrado(s)`);
-                // Scroll a productos
-                document.querySelector('.featured-products').scrollIntoView({ behavior: 'smooth' });
-            }
-
-            input.value = '';
-        }
-
-        // Toggle favoritos
-        function toggleFavorito(btn, productId) {
-            btn.classList.toggle('active');
-            const isFav = btn.classList.contains('active');
-            btn.innerHTML = isFav ? '<i class="fas fa-heart"></i>' : '<i class="far fa-heart"></i>';
-            mostrarNotificacion(isFav ? '❤️ Agregado a favoritos' : '💔 Eliminado de favoritos');
-        }
-
-        // Cerrar carrito
-        function cerrarCarrito() {
-            const modal = document.getElementById('cart-modal');
-            if (modal) {
-                modal.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            }
-        }
-
-        // Fix: Cerrar modal al hacer click fuera
-        window.onclick = function(event) {
-            const cartModal = document.getElementById('cart-modal');
-            const checkoutModal = document.getElementById('checkout-modal');
-
-            if (event.target === cartModal) {
-                cerrarCarrito();
-            }
-            if (event.target === checkoutModal) {
-                checkoutModal.style.display = 'none';
-            }
-        }
-
-        // Ver todos los productos - scroll a la sección
-        function verTodosLosProductos() {
-            document.querySelector('.featured-products').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // Fix para categorías - scroll a productos
-        function showCategory(categoria) {
-            mostrarNotificacion(`📂 Categoría: ${categoria}`);
-            document.querySelector('.featured-products').scrollIntoView({ behavior: 'smooth' });
-        }
-    </script>
+  <!-- Scripts -->
+  <script src="js/app.js"></script>
+  <script>
+    // Init cart on load
+    document.addEventListener('DOMContentLoaded', function() {
+      updateCartCount();
+    });
+  </script>
 </body>
 </html>

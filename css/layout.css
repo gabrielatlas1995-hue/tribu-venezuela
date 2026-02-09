@@ -1,0 +1,278 @@
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Tablet (768px - 1023px) */
+@media (max-width: 1023px) {
+    .hero-content {
+        grid-template-columns: 1fr;
+        gap: var(--space-8);
+        text-align: center;
+    }
+    
+    .hero-text p {
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .hero-buttons {
+        justify-content: center;
+    }
+    
+    .hero-image {
+        max-width: 500px;
+        margin: 0 auto;
+    }
+    
+    .categories-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .products-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .artisans-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .testimonials-slider {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: var(--space-8);
+    }
+    
+    .footer-brand {
+        max-width: 100%;
+        text-align: center;
+    }
+    
+    .footer-social {
+        justify-content: center;
+    }
+    
+    .footer-links {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Mobile (< 768px) */
+@media (max-width: 767px) {
+    :root {
+        --text-3xl: 1.75rem;
+        --text-4xl: 2rem;
+        --text-5xl: 2.5rem;
+    }
+    
+    section {
+        padding: var(--space-12) 0;
+    }
+    
+    .section-title {
+        font-size: var(--text-2xl);
+    }
+    
+    /* Header Mobile */
+    .header-content {
+        padding: var(--space-3) 0;
+    }
+    
+    .search-bar {
+        display: none;
+    }
+    
+    .search-bar.mobile-open {
+        display: block;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        padding: var(--space-4);
+        background: var(--color-white);
+        border-bottom: 1px solid var(--color-gray-200);
+        box-shadow: var(--shadow-lg);
+    }
+    
+    .menu-toggle {
+        display: flex;
+    }
+    
+    .main-nav {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--color-white);
+        border-bottom: 1px solid var(--color-gray-200);
+        box-shadow: var(--shadow-lg);
+        padding: var(--space-4);
+    }
+    
+    .main-nav.active {
+        display: block;
+    }
+    
+    .main-nav ul {
+        flex-direction: column;
+        gap: var(--space-2);
+    }
+    
+    .main-nav a {
+        display: block;
+        padding: var(--space-3) 0;
+        border-bottom: 1px solid var(--color-gray-100);
+    }
+    
+    .main-nav a::after {
+        display: none;
+    }
+    
+    /* Hero Mobile */
+    .hero {
+        padding: var(--space-10) 0;
+    }
+    
+    .hero-text h1 {
+        font-size: var(--text-3xl);
+    }
+    
+    .hero-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .hero-buttons .btn {
+        width: 100%;
+    }
+    
+    /* Categories Mobile */
+    .categories-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-4);
+    }
+    
+    .category-card {
+        padding: var(--space-4);
+    }
+    
+    .category-image {
+        width: 80px;
+        height: 80px;
+    }
+    
+    /* Products Mobile */
+    .section-header {
+        flex-direction: column;
+        gap: var(--space-4);
+        text-align: center;
+    }
+    
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-4);
+    }
+    
+    /* Artisans Mobile */
+    .artisans-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-4);
+    }
+    
+    .artisan-card {
+        padding: var(--space-4);
+    }
+    
+    .artisan-image {
+        width: 80px;
+        height: 80px;
+    }
+    
+    /* Testimonials Mobile */
+    .testimonials-slider {
+        grid-template-columns: 1fr;
+    }
+    
+    .testimonial-card {
+        padding: var(--space-6);
+    }
+    
+    /* Footer Mobile */
+    .footer-links {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-6);
+    }
+    
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--space-4);
+    }
+    
+    /* WhatsApp Float Mobile */
+    .whatsapp-float {
+        width: 50px;
+        height: 50px;
+        font-size: var(--text-xl);
+        bottom: var(--space-4);
+        right: var(--space-4);
+    }
+    
+    /* Modal Mobile */
+    .modal {
+        padding: 0;
+        align-items: flex-end;
+    }
+    
+    .modal-content {
+        border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+        max-height: 85vh;
+    }
+}
+
+/* Small Mobile (< 480px) */
+@media (max-width: 479px) {
+    .categories-grid,
+    .products-grid,
+    .artisans-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .category-card,
+    .artisan-card {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: var(--space-4);
+        text-align: left;
+        align-items: center;
+    }
+    
+    .category-image {
+        margin: 0;
+    }
+    
+    .footer-links {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    
+    .footer-column h4 {
+        margin-bottom: var(--space-2);
+    }
+}
+
+/* ===== UTILIDADES RESPONSIVE ===== */
+.hide-mobile {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .hide-mobile {
+        display: initial;
+    }
+    
+    .hide-desktop {
+        display: none;
+    }
+}
