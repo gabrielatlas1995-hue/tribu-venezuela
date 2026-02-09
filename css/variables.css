@@ -6,11 +6,11 @@
     --color-primary-light: #E07A52;
     --color-primary-bg: #FDF2EC;
 
-    /* Secundarios */
-    --color-secondary: #2D6A4F;
-    --color-secondary-dark: #1B4332;
-    --color-secondary-light: #40916C;
-    --color-secondary-bg: #E8F5E9;
+    /* Secundarios - NARANJA */
+    --color-secondary: #E65100;
+    --color-secondary-dark: #BF360C;
+    --color-secondary-light: #FF8A65;
+    --color-secondary-bg: #FFF3E0;
 
     /* Acento */
     --color-accent: #D4A574;
@@ -32,9 +32,9 @@
     --color-gray-800: #262626;
     --color-gray-900: #171717;
 
-    /* Estado */
-    --color-success: #16A34A;
-    --color-success-bg: #DCFCE7;
+    /* Estado - NARANJA */
+    --color-success: #E65100;
+    --color-success-bg: #FFF3E0;
     --color-error: #DC2626;
     --color-error-bg: #FEE2E2;
     --color-warning: #F59E0B;
