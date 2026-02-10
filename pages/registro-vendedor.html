@@ -482,20 +482,52 @@
             }
         }
 
-        // Manejar envío del formulario
-        document.getElementById('vendorForm').addEventListener('submit', function(e) {
+        // Manejar envío del formulario a Formspree
+        document.getElementById('vendorForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             if (!validateStep(currentStep)) return;
 
-            // Aquí iría la conexión con Google Sheets
-            // Por ahora, mostrar éxito
-            document.getElementById('step4').classList.remove('active');
-            document.getElementById('success').style.display = 'block';
-            document.getElementById('navButtons').style.display = 'none';
+            // Preparar datos
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
             
-            // TODO: Enviar datos a Google Sheets
-            console.log('Formulario enviado:', new FormData(this));
+            // Agregar categorías seleccionadas
+            const categories = Array.from(document.querySelectorAll('input[name="categories"]:checked'))
+                .map(cb => cb.value);
+            data.categories = categories.join(', ');
+            
+            // Agregar rangos de precios
+            const priceRanges = Array.from(document.querySelectorAll('input[name="priceRange"]:checked'))
+                .map(cb => cb.value);
+            data.priceRanges = priceRanges.join(', ');
+
+            try {
+                // Enviar a Formspree
+                const response = await fetch('https://formspree.io/f/mkovgaor', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    // Mostrar éxito
+                    document.getElementById('step4').classList.remove('active');
+                    document.getElementById('success').style.display = 'block';
+                    document.getElementById('navButtons').style.display = 'none';
+                    
+                    // Scroll al inicio
+                    window.scrollTo(0, 0);
+                } else {
+                    alert('Hubo un error al enviar. Intenta de nuevo.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error de conexión. Verifica tu internet e intenta de nuevo.');
+            }
         });
 
         // Inicializar
