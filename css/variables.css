@@ -1,10 +1,10 @@
 /* ===== TRIBU — Sistema de Variables Unificado ===== */
 :root {
-    /* Paleta principal */
-    --color-primary: #C4613A;
-    --color-primary-dark: #A34D2E;
-    --color-primary-light: #E07A52;
-    --color-primary-bg: #FDF2EC;
+    /* Paleta principal - ETSY ORANGE */
+    --color-primary: #F1641E;
+    --color-primary-dark: #D4500D;
+    --color-primary-light: #FF8C69;
+    --color-primary-bg: #FFF0E6;
 
     /* Secundarios - ETSY ORANGE */
     --color-secondary: #F1641E;
